@@ -76,6 +76,7 @@ class Categories_For_AnsPress
 
         add_action('ap_option_navigation', array($this, 'option_navigation' ));
         add_action('ap_option_fields', array($this, 'option_fields' ));
+        add_action('ap_display_question_metas', array($this, 'ap_display_question_metas' ), 10, 2);
 
     }
 
@@ -215,6 +216,21 @@ class Categories_For_AnsPress
         
     }
 
+    /**
+     * Append meta display
+     * @param  array $metas
+     * @param array $question_id        
+     * @return array
+     * @since 2.0
+     */
+    public function ap_display_question_metas($metas, $question_id)
+    {   
+        if(ap_opt('enable_categories') &&  ap_question_have_category($question_id))
+            $metas['categories'] = ap_question_categories_html(array('label' => __('Posted in ', 'categories_for_anspress')));
+
+        return $metas;
+    }
+
 }
 
 /**
@@ -231,36 +247,52 @@ function categories_for_anspress() {
 }
 add_action( 'plugins_loaded', 'categories_for_anspress' );
 
-
-function ap_question_categories_html($post_id = false, $list = true, $label = false){
+/**
+ * Output question categories
+ * @param  array  $args 
+ * @return string
+ */
+function ap_question_categories_html($args = array()){
+    
     if(!ap_opt('enable_categories'))
         return;
+
+    $defaults  = array(
+        'question_id'   => get_the_ID(),
+        'list'           => false,
+        'tag'           => 'span',
+        'class'         => 'question-categories',
+        'label'         => __('Categories', 'categories_for_anspress'),
+        'echo'          => false
+    );
+
+    $args = wp_parse_args( $args, $defaults );
     
-    if(!$post_id)
-        $post_id = get_the_ID();
+
         
-    $cats = get_the_terms( $post_id, 'question_category' );
+    $cats = get_the_terms( $args['question_id'], 'question_category' );
     
     if($cats){
-        if($list){
-            $o = '<ul class="question-categories">';
+        $o = '';
+        if($args['list']){
+            $o = '<ul class="'.$args['class'].'">';
             foreach($cats as $c){
                 $o .= '<li><a href="'.esc_url( get_term_link($c)).'" title="'.$c->description.'">'. $c->name .'</a></li>';
             }
             $o .= '</ul>';
-            echo $o;
+            
         }else{
-            $o = 'Categories:';
-            if($label)
-                $o = $label;
-                
-            $o .= ' <span class="question-categories-list">';
+            $o = $args['label'];
+            $o .= '<'.$args['tag'].' class="'.$args['class'].'">';
             foreach($cats as $c){
                 $o .= '<a href="'.esc_url( get_term_link($c)).'" title="'.$c->description.'">'. $c->name .'</a>';
             }
-            $o .= '</span>';
-            echo $o;
+            $o .= '</'.$args['tag'].'>';
         }
+        if($args['echo'])
+            echo $o;
+
+        return $o;
     }
 
 }
