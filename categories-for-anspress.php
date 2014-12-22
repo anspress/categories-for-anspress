@@ -1,12 +1,27 @@
 <?php
 /**
- * AnsPress categories
+ * Categories extension for AnsPress
  *
- * @package   AnsPress
- * @author    Rahul Aryan <admin@rahularyan.com>
+ * AnsPress - Question and answer plugin for WordPress
+ *
+ * @package   Categories for AnsPress
+ * @author    Rahul Aryan <support@rahularyan.com>
  * @license   GPL-2.0+
- * @link      http://rahularyan.com
- * @copyright 2014 Rahul Aryan
+ * @link      http://wp3.in/categories-for-anspress
+ * @copyright 2014 WP3.in & Rahul Aryan
+ *
+ * @wordpress-plugin
+ * Plugin Name:       Categories for AnsPress
+ * Plugin URI:        http://wp3.in/categories-for-anspress
+ * Description:       The most advance community question and answer system for WordPress
+ * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
+ * Version:           1.0
+ * Author:            Rahul Aryan
+ * Author URI:        http://wp3.in
+ * Text Domain:       ap
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Domain Path:       /languages
  */
 
 // If this file is called directly, abort.
@@ -14,13 +29,34 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-/**
- * AnsPress category class
- * @since 2.0
- */
-class AnsPress_Category
+
+class Categories_For_AnsPress
 {
 
+    /**
+     * Class instance
+     * @var object
+     * @since 1.0
+     */
+    private static $instance;
+
+
+    /**
+     * Get active object instance
+     *
+     * @since 1.0
+     *
+     * @access public
+     * @static
+     * @return object
+     */
+    public static function get_instance() {
+
+        if ( ! self::$instance )
+            self::$instance = new Categories_For_AnsPress();
+
+        return self::$instance;
+    }
     /**
      * Initialize the class
      * @since 2.0
@@ -114,6 +150,21 @@ class AnsPress_Category
     }
 
 }
+
+/**
+ * Get everything running
+ *
+ * @since 1.0
+ *
+ * @access private
+ * @return void
+ */
+
+function categories_for_anspress() {
+    $discounts = new Categories_For_AnsPress();
+}
+add_action( 'plugins_loaded', 'categories_for_anspress' );
+
 
 function ap_question_categories_html($post_id = false, $list = true, $label = false){
     if(!ap_opt('enable_categories'))
