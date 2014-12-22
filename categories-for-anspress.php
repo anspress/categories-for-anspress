@@ -74,6 +74,9 @@ class Categories_For_AnsPress
         add_filter('term_link', array($this, 'custom_category_link'), 10, 3);
         add_action('ap_admin_menu', array($this, 'admin_category_menu'));
 
+        add_action('ap_option_navigation', array($this, 'option_navigation' ));
+        add_action('ap_option_fields', array($this, 'option_fields' ));
+
     }
 
     /**
@@ -172,6 +175,44 @@ class Categories_For_AnsPress
     public function admin_category_menu(){
         if(ap_opt('enable_categories'))
             add_submenu_page('anspress', 'Questions Category', 'Category', 'manage_options', 'edit-tags.php?taxonomy=question_category');
+    }
+
+    /**
+     * Register categories option tab in AnsPress options
+     * @param  array $navs Default navigation array
+     * @return array
+     * @since 1.0
+     */
+    public function option_navigation($navs){
+        $navs['categories'] =  __('Categories', 'categories_for_anspress');
+        return $navs;
+    }
+
+    /**
+     * Option fields
+     * @param  array  $settings
+     * @return string
+     * @since 1.0
+     */
+    public function option_fields($settings){
+        $active = (isset($_REQUEST['option_page'])) ? $_REQUEST['option_page'] : 'general' ;
+        if ($active == 'categories') {
+            ?>
+                <div class="tab-pane" id="ap-categories">       
+                    <table class="form-table">
+                        <tr valign="top">
+                            <th scope="row"><label for="enable_categories"><?php _e('Enable categories', 'ap'); ?></label></th>
+                            <td>
+                                <input type="checkbox" id="enable_categories" name="anspress_opt[enable_categories]" value="1" <?php checked( true, $settings['enable_categories'] ); ?> />
+                                <p class="description"><?php _e('Enable or disable categories system', 'ap'); ?></p>
+                            </td>
+                        </tr>
+                        
+                    </table>
+                </div>
+            <?php
+        }
+        
     }
 
 }
