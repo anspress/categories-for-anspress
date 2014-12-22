@@ -5,7 +5,7 @@
  * AnsPress - Question and answer plugin for WordPress
  *
  * @package   Categories for AnsPress
- * @author    Rahul Aryan <support@rahularyan.com>
+ * @author    Rahul Aryan <wp3@rahularyan.com>
  * @license   GPL-2.0+
  * @link      http://wp3.in/categories-for-anspress
  * @copyright 2014 WP3.in & Rahul Aryan
@@ -13,7 +13,7 @@
  * @wordpress-plugin
  * Plugin Name:       Categories for AnsPress
  * Plugin URI:        http://wp3.in/categories-for-anspress
- * Description:       The most advance community question and answer system for WordPress
+ * Description:       Extension for AnsPress. Add categories in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
  * Version:           1.0
  * Author:            Rahul Aryan
@@ -63,10 +63,35 @@ class Categories_For_AnsPress
      */
     public function __construct()
     {
+        if( ! class_exists( 'AnsPress' ) )
+            return; // AnsPress not installed
+
+        // internationalization
+        add_action( 'init', array( $this, 'textdomain' ) );
+
         //Register question categories
         add_action('init', array($this, 'register_question_categories'), 1);
         add_filter('term_link', array($this, 'custom_category_link'), 10, 3);
         add_action('ap_admin_menu', array($this, 'admin_category_menu'));
+
+    }
+
+    /**
+     * Load plugin text domain
+     *
+     * @since 1.0
+     *
+     * @access public
+     * @return void
+     */
+    public static function textdomain() {
+
+        // Set filter for plugin's languages directory
+        $lang_dir = dirname( plugin_basename( __FILE__ ) ) . '/languages/';
+
+        // Load the translations
+        load_plugin_textdomain( 'categories_foranspress', false, $lang_dir );
+
     }
     
     /**
@@ -82,16 +107,16 @@ class Categories_For_AnsPress
              * @var array
              */
             $categories_labels = array(
-                'name' => __('Question Categories', 'ap'),
-                'singular_name' => _x('Category', 'ap'),
-                'all_items' => __('All Categories', 'ap'),
-                'add_new_item' => _x('Add New Category', 'ap'),
-                'edit_item' => __('Edit Category', 'ap'),
-                'new_item' => __('New Category', 'ap'),
-                'view_item' => __('View Category', 'ap'),
-                'search_items' => __('Search Category', 'ap'),
-                'not_found' => __('Nothing Found', 'ap'),
-                'not_found_in_trash' => __('Nothing found in Trash', 'ap'),
+                'name' => __('Question Categories', 'categories_for_anspress'),
+                'singular_name' => _x('Category', 'categories_for_anspress'),
+                'all_items' => __('All Categories', 'categories_for_anspress'),
+                'add_new_item' => _x('Add New Category', 'categories_for_anspress'),
+                'edit_item' => __('Edit Category', 'categories_for_anspress'),
+                'new_item' => __('New Category', 'categories_for_anspress'),
+                'view_item' => __('View Category', 'categories_for_anspress'),
+                'search_items' => __('Search Category', 'categories_for_anspress'),
+                'not_found' => __('Nothing Found', 'categories_for_anspress'),
+                'not_found_in_trash' => __('Nothing found in Trash', 'categories_for_anspress'),
                 'parent_item_colon' => ''
             );
 
@@ -211,7 +236,7 @@ function ap_category_details(){
     echo '<div class="clearfix">';
     echo '<h3><a href="'.get_category_link( $category ).'">'. $category->name .'</a></h3>';
     echo '<div class="ap-taxo-meta">';
-    echo '<span class="count">'. $category->count .' '.__('Questions', 'ap').'</span>'; 
+    echo '<span class="count">'. $category->count .' '.__('Questions', 'categories_for_anspress').'</span>'; 
     echo '<a class="aicon-rss feed-link" href="' . get_term_feed_link($category->term_id, 'question_category') . '" title="Subscribe to '. $category->name .'" rel="nofollow"></a>';
     echo '</div>';
     echo '</div>';
