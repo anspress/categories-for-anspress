@@ -13,7 +13,7 @@ Extension for AnsPress. Add categories in AnsPress.
 == Description ==
 Support forum: http://wp3.in/questions/
 
-AnsPress is a question adn answer plugin for WordPress
+AnsPress is a question and answer plugin for WordPress
 Visit AnsPress: http://wp3.in/anspress
 
 == Installation ==
