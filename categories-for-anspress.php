@@ -76,6 +76,7 @@ class Categories_For_AnsPress
         add_action('ap_option_navigation', array($this, 'option_navigation' ));
         add_action('ap_option_fields', array($this, 'option_fields' ));
         add_action('ap_display_question_metas', array($this, 'ap_display_question_metas' ), 10, 2);
+        add_action('ap_after_post_user_meta', array($this, 'ap_after_post_user_meta' ));
 
     }
 
@@ -93,7 +94,7 @@ class Categories_For_AnsPress
         $lang_dir = dirname( plugin_basename( __FILE__ ) ) . '/languages/';
 
         // Load the translations
-        load_plugin_textdomain( 'categories_foranspress', false, $lang_dir );
+        load_plugin_textdomain( 'categories_for_anspress', false, $lang_dir );
 
     }
     
@@ -219,7 +220,7 @@ class Categories_For_AnsPress
      * @param  array $metas
      * @param array $question_id        
      * @return array
-     * @since 2.0
+     * @since 1.0
      */
     public function ap_display_question_metas($metas, $question_id)
     {   
@@ -227,6 +228,18 @@ class Categories_For_AnsPress
             $metas['categories'] = ap_question_categories_html(array('label' => __('Posted in ', 'categories_for_anspress')));
 
         return $metas;
+    }
+
+    /**
+     * Append question category after user meta
+     * @param  object $post
+     * @return string
+     * @since 1.0
+     */
+    public function ap_after_post_user_meta($post)
+    {
+        if(ap_question_have_category())
+            echo '<div class="ap-posted-in">' . ap_question_categories_html(array('label' => __('Posted in ', 'categories_for_anspress'))) .'</div>';
     }
 
 }
@@ -264,10 +277,14 @@ function ap_question_categories_html($args = array()){
         'echo'          => false
     );
 
-    $args = wp_parse_args( $args, $defaults );
-    
 
-        
+    if(!is_array($args)){
+        $defaults['question_id'] = $args;
+        $args = $defaults;
+    }else{
+        $args = wp_parse_args( $args, $defaults );
+    }
+    
     $cats = get_the_terms( $args['question_id'], 'question_category' );
     
     if($cats){
