@@ -71,9 +71,8 @@ class Categories_For_AnsPress
 
         //Register question categories
         add_action('init', array($this, 'register_question_categories'), 1);
-        add_filter('term_link', array($this, 'custom_category_link'), 10, 3);
         add_action('ap_admin_menu', array($this, 'admin_category_menu'));
-
+        add_filter('ap_default_options', array($this, 'ap_default_options') );
         add_action('ap_option_navigation', array($this, 'option_navigation' ));
         add_action('ap_option_fields', array($this, 'option_fields' ));
         add_action('ap_display_question_metas', array($this, 'ap_display_question_metas' ), 10, 2);
@@ -153,19 +152,18 @@ class Categories_For_AnsPress
             register_taxonomy('question_category', array('question'), $category_args);
         }
     }
-    
-    //TODO: check if this is needed
-    public function custom_category_link($url, $term, $taxonomy){
-        if(ap_opt('enable_categories')){
-            /* change category link if permalink not enabled */
-            if ( 'question_category' == $term->taxonomy && !get_option('permalink_structure')) {
-                return add_query_arg( array('question_category' => false, 'page_id' => ap_opt('base_page'), 'qcat_id' =>$term->term_id), $url );
-                
-            }elseif('question_category' == $term->taxonomy && get_option('permalink_structure')){
-                return ap_get_link_to('category/'.$term->slug);
-            }
-        }
-        return $url;
+
+    /**
+     * Apppend default options
+     * @param   array $defaults
+     * @return  array           
+     * @since   1.0
+     */             
+    public function ap_default_options($defaults)
+    {
+        $defaults['enable_categories']  = true;
+
+        return $defaults;
     }
 
     /**
