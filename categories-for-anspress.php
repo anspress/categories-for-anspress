@@ -66,6 +66,14 @@ class Categories_For_AnsPress
         if( ! class_exists( 'AnsPress' ) )
             return; // AnsPress not installed
 
+        if (!defined('CATEGORIES_FOR_ANSPRESS_DIR'))    
+            define('CATEGORIES_FOR_ANSPRESS_DIR', plugin_dir_path( __FILE__ ));
+
+        if (!defined('CATEGORIES_FOR_ANSPRESS_URL'))   
+                define('CATEGORIES_FOR_ANSPRESS_URL', plugin_dir_url( __FILE__ ));
+
+        $this->includes();
+
         // internationalization
         add_action( 'init', array( $this, 'textdomain' ) );
 
@@ -76,8 +84,14 @@ class Categories_For_AnsPress
         add_action('ap_option_navigation', array($this, 'option_navigation' ));
         add_action('ap_option_fields', array($this, 'option_fields' ));
         add_action('ap_display_question_metas', array($this, 'ap_display_question_metas' ), 10, 2);
-        add_action('ap_after_post_user_meta', array($this, 'ap_after_post_user_meta' ));
+        add_action('ap_before_question_title', array($this, 'ap_before_question_title' ));
+        add_shortcode( 'anspress_question_categories', array( 'AnsPress_Categories_Shortcode', 'anspress_categories' ) );
+        add_action( 'ap_enqueue', array( $this, 'ap_enqueue' ) );
 
+    }
+
+    public function includes(){
+        require_once( CATEGORIES_FOR_ANSPRESS_DIR . 'shortcode-categories.php' );
     }
 
     /**
@@ -224,22 +238,31 @@ class Categories_For_AnsPress
      */
     public function ap_display_question_metas($metas, $question_id)
     {   
-        if(ap_opt('enable_categories') &&  ap_question_have_category($question_id))
+        if(ap_opt('enable_categories') &&  ap_question_have_category($question_id) && !is_singular('question'))
             $metas['categories'] = ap_question_categories_html(array('label' => __('Posted in ', 'categories_for_anspress')));
 
         return $metas;
     }
 
     /**
-     * Append question category after user meta
+     * Append question category after question title
      * @param  object $post
      * @return string
      * @since 1.0
      */
-    public function ap_after_post_user_meta($post)
+    public function ap_before_question_title($post)
     {
         if(ap_question_have_category())
             echo '<div class="ap-posted-in">' . ap_question_categories_html(array('label' => __('Posted in ', 'categories_for_anspress'))) .'</div>';
+    }
+    /**
+     * Enqueue scripts
+     * @since 1.0
+     */
+    public function ap_enqueue()
+    {
+        wp_enqueue_style( 'categories_for_anspress_css', ap_get_theme_url('css/categories.css', CATEGORIES_FOR_ANSPRESS_URL));
+        
     }
 
 }

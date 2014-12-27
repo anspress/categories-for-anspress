@@ -1,0 +1,109 @@
+@import "../../../anspress-question-answer/theme/default/less/variables.less";
+@import "../../../anspress-question-answer/theme/default/less/lesshat.less";
+//--------------------------
+// Categories styles
+//-------------------------
+
+.ap-term-category-box{
+	.ap-term-list-inner {
+	    border-bottom: 1px solid @default-border-color;
+	    padding: 20px 0;
+	}
+	.ap-term-info{
+	    float: left;
+	    padding-right: 30px;
+	    width: 40%;
+
+		.term-title{
+		    display: block;
+		    font-size: 27px;
+		    font-weight: 600;
+		    margin-bottom: 20px;
+		    text-decoration: none;
+		}
+		.term-post-count{
+			color: @light-color;
+		    display: table;
+		    float: right;
+		    font-size: 20px;
+		    font-weight: 300;
+		    margin-top: 10px;
+		}
+		.term-detail {
+		    color: @light-color;
+		    height: 88px;
+		    line-height: 30px;
+		    overflow: hidden;
+		    position: relative;
+
+		    .term-description{
+		    	
+		    }
+		    
+		}
+		.ap-expand-content{
+		    color: #aaa;
+		    display: none;
+		    cursor: pointer;
+		    font-size: 20px;
+
+		    &:hover{
+		    	color: @light-color;
+		    }
+	    }
+	    .ap-view-all-btn{
+		    display: table;
+		    font-weight: 400;
+		    margin-top: 25px;
+		    text-transform: uppercase;
+	    }
+	}
+	.ap-term-questions-list{
+		width: 60%;
+		float: left;
+
+		article{
+		    border-bottom: 1px solid @default-border-color;
+		    display: table;
+			padding: 15px 0;
+
+		    &:last-child{
+		    	margin-bottom: 0;
+		    	border-bottom: none;
+		    }
+
+			&> *{
+			    display: table-cell;
+			    margin-bottom: 15px;
+			    width: 100%;
+			}
+			.question-hyperlink{
+				color: @default-color;
+			    font-size: 15px;
+			    overflow: hidden;
+			    text-decoration: none;
+			    white-space: nowrap;
+			}
+			.ap-avatar{
+			    margin: 0;
+			    padding-right: 15px;
+			    width: auto;
+			}
+
+			.ans-count{
+			    text-align: right;
+			    white-space: nowrap;
+			    width: auto;
+			    span{
+				    color: #aaa;
+				    display: block;
+				    font-size: 15px;
+				    font-weight: 300;
+				    width: 75px;
+			    }
+			}
+
+
+		}
+	}
+}
