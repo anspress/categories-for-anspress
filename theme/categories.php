@@ -1,4 +1,16 @@
 <?php
+	/**
+	 * Categories page layout
+	 *
+	 * [Long Description.]
+	 *
+	 * @link http://wp3.in
+	 * @since 1.0
+	 *
+	 * @package AnsPress
+	 * @subpackage Categories for AnsPress
+	 */
+
 	global $question_categories;
 ?>
 <?php if(ap_opt('enable_categories')): ?>
@@ -7,19 +19,33 @@
 		<?php foreach($question_categories as $key => $category) : ?>
 			<li>
 				<div class="ap-term-list-inner clearfix">
-					<div class="ap-term-info">
+					<div class="ap-term-head">
 						<span class="term-post-count"><?php echo $category->count; ?> Questions</span>
 						<a class="term-title" href="<?php echo get_category_link( $category );?>">
 							<span><?php echo $category->name; ?></span>
-						</a>					
-						
-						<?php if(strlen($category->description) > 0) : ?>
-							<div class="term-detail" data-action="ap_fold_content">					
-								<div class="term-description ap-fold-inner"><?php echo $category->description; ?></div>							
-							</div>
-						<?php endif; ?>
-						<i data-button="ap_expand_toggle" class="ap-expand-content <?php echo ap_icon('more') ?>"></i>
-						<a class="ap-btn ap-btn-transparent ap-view-all-btn block" href="<?php echo get_category_link( $category );?>"><?php _e('All questions', 'ap') ?></a>
+						</a>
+					</div>
+					<div class="ap-term-info">
+						<div class="term-detail">					
+							<div class="term-description">
+								<?php 
+									if(strlen($category->description) > 0) 
+										echo $category->description;
+									else
+										_e('No discription!', 'categories_for_anspress');
+								?>
+							</div>							
+						</div>
+						<?php
+							/*$sub_cat_count = count(get_term_children( $category->term_id, 'question_category' ));
+							
+							if($sub_cat_count >0){
+								echo '<div class="ap-term-sub">';
+								echo '<div class="sub-taxo-label">' .$sub_cat_count.' '.__('Sub Categories', 'ap') .'</div>';
+								ap_sub_category_list($category->term_id);
+								echo '</div>';
+							}*/
+						?>
 					</div>
 					<div class="ap-term-questions-list">
 						<?php
@@ -38,17 +64,7 @@
 						?>
 					</div>
 				</div>
-				<?php
-					$sub_cat_count = count(get_term_children( $category->term_id, 'question_category' ));
-					
-					if($sub_cat_count >0){
-						echo '<div class="ap-term-sub">';
-						echo '<div class="sub-cat-count">' .$sub_cat_count.' '.__('Sub Categories', 'ap') .'</div>';
-						
-						ap_child_cat_list($category->term_id);
-						echo '</div>';
-					}
-				?>
+
 			</li>
 		<?php endforeach; ?>
 	</ul>

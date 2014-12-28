@@ -1,4 +1,3 @@
-<div class="ap-terms-questions-list clearfix">
 	<?php if ( $questions->have_posts() ) :
 		/* Start the Loop */
 		while ( $questions->have_posts() ) : $questions->the_post();
@@ -20,6 +19,4 @@
 		endwhile;
 		endif; 
 	?>	
-</div>
-
-
+<a class="ap-btn ap-btn-blue ap-view-all-btn block" href="<?php echo get_category_link( $category );?>"><?php _e('View all questions', 'ap') ?></a>

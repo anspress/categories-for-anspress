@@ -86,12 +86,15 @@ class Categories_For_AnsPress
         add_action('ap_display_question_metas', array($this, 'ap_display_question_metas' ), 10, 2);
         add_action('ap_before_question_title', array($this, 'ap_before_question_title' ));
         add_shortcode( 'anspress_question_categories', array( 'AnsPress_Categories_Shortcode', 'anspress_categories' ) );
+        add_shortcode( 'anspress_question_category', array( 'AnsPress_Category_Shortcode', 'anspress_category' ) );
         add_action( 'ap_enqueue', array( $this, 'ap_enqueue' ) );
+        add_filter('term_link', array($this, 'term_link_filter'), 10, 3);
 
     }
 
     public function includes(){
         require_once( CATEGORIES_FOR_ANSPRESS_DIR . 'shortcode-categories.php' );
+        require_once( CATEGORIES_FOR_ANSPRESS_DIR . 'shortcode-category.php' );
     }
 
     /**
@@ -265,6 +268,14 @@ class Categories_For_AnsPress
         
     }
 
+    public function term_link_filter( $url, $term, $taxonomy ) {
+        if($taxonomy == 'question_category'){
+            $url = add_query_arg(array('question_category' => $term->term_id), get_permalink(ap_opt('question_category_page_id')));
+        }
+        return $url;
+       
+    }
+
 }
 
 /**
@@ -280,6 +291,46 @@ function categories_for_anspress() {
     $discounts = new Categories_For_AnsPress();
 }
 add_action( 'plugins_loaded', 'categories_for_anspress' );
+
+/**
+ * Register activatin hook
+ * @return void
+ * @since  1.0
+ */
+function activate_categories_for_anspress(){
+    // create and check for categories base page
+    
+    $page_to_create = array('question_categories' => __('Categories', 'categories_for_anspress'), 'question_category' => __('Category', 'categories_for_anspress'));
+
+    foreach($page_to_create as $k => $page_title){
+        // create page
+        
+        // check if page already exists
+        $page_id = ap_opt("{$k}_page_id");
+        
+        $post = get_post($page_id);
+
+        if(!$post){
+            
+            $args['post_type']          = "page";
+            $args['post_content']       = "[anspress_{$k}]";
+            $args['post_status']        = "publish";
+            $args['post_title']         = $page_title;
+            $args['comment_status']     = 'closed';
+            $args['post_parent']        = ap_opt('questions_page_id');
+            
+            // now create post
+            $new_page_id = wp_insert_post ($args);
+        
+            if($new_page_id){
+                $page = get_post($new_page_id);
+                ap_opt("{$k}_page_slug", $page->post_name);
+                ap_opt("{$k}_page_id", $page->ID);
+            }
+        }
+    }
+}
+register_activation_hook( __FILE__, 'activate_categories_for_anspress'  );
 
 /**
  * Output question categories
@@ -365,11 +416,11 @@ function ap_category_details(){
         echo'</ul>';
     endif;  
 }
-function ap_child_cat_list($parent){
+function ap_sub_category_list($parent){
     $categories = get_terms( array('taxonomy' => 'question_category'), array( 'parent' => $parent, 'hide_empty' => false ));
     
     if($categories){
-        echo '<ul class="child clearfix">'; 
+        echo '<ul class="ap-sub-taxo ap-ul-inline clearfix">'; 
         foreach ($categories as $cat){
             echo '<li><a href="'.get_category_link( $cat ).'">' .$cat->name.'<span>'.$cat->count.'</span></a></li>';
         }
@@ -390,3 +441,16 @@ function ap_question_have_category($post_id = false){
     
     return false;
 }
+
+/**
+ * Check if anspress categories page
+ * @return boolean
+ * @since  1.0
+ */
+function is_question_categories(){
+    if(get_the_ID() == ap_opt('question_categories_page_id'))
+        return true;
+        
+    return false;
+}
+
