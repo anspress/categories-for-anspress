@@ -53,6 +53,7 @@
 		<?php endforeach; ?>
 	</ul>
 </div>
+<?php ap_pagination(); ?>
 <?php else: ?>
 	<div class="ap-tax-disabled">
 		<?php _e('Categories are disabled', 'ap'); ?>

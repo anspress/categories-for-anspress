@@ -23,12 +23,13 @@ class AnsPress_Categories_Shortcode {
 	 * @param  string $content
 	 */
 	public static function anspress_categories($atts, $content = ''){
-		global $question_categories;
-		
+		global $question_categories, $ap_max_num_pages, $ap_per_page;
+
 		$paged = get_query_var('paged') ? get_query_var('paged') : 1;
-		$per_page    	= ap_opt('categories_per_page');
-		$total_terms 	= wp_count_terms('question_category'); 	
-		$offset      	= $per_page * ( $paged - 1) ;
+		$per_page    		= ap_opt('categories_per_page');
+		$total_terms 		= wp_count_terms('question_category'); 	
+		$offset      		= $per_page * ( $paged - 1) ;
+		$ap_max_num_pages 	= $total_terms / $per_page ;
 
 		$cat_args = array(
 			'parent' 		=> 0,
