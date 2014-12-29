@@ -6,18 +6,19 @@
 		<?php else: ?>
 			<p class="ap-taxo-description"><?php _e('-- No description --', 'ap'); ?></p>
 		<?php endif; ?>
-	</div>
+	
 
-	<?php
-		$sub_cat_count = count(get_term_children( $question_category->term_id, 'question_category' ));
-		
-		if($sub_cat_count >0){
-			echo '<div class="ap-term-sub">';
-			echo '<div class="sub-taxo-label">' .$sub_cat_count.' '.__('Sub Categories', 'ap') .'</div>';
-			ap_sub_category_list($question_category->term_id);
-			echo '</div>';
-		}
-	?>
+		<?php
+			$sub_cat_count = count(get_term_children( $question_category->term_id, 'question_category' ));
+			
+			if($sub_cat_count >0){
+				echo '<div class="ap-term-sub">';
+				echo '<div class="sub-taxo-label">' .$sub_cat_count.' '.__('Sub Categories', 'ap') .'</div>';
+				ap_sub_category_list($question_category->term_id);
+				echo '</div>';
+			}
+		?>
+	</div>
 
 	<?php if ( $questions->have_posts() ) : ?>
 		<?php ap_questions_tab(); ?>

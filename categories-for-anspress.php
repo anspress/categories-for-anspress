@@ -454,3 +454,10 @@ function is_question_categories(){
     return false;
 }
 
+function is_question_category(){
+    if(get_the_ID() == ap_opt('question_category_page_id'))
+        return true;
+        
+    return false;
+}
+

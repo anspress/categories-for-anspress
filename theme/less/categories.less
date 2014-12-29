@@ -5,147 +5,99 @@
 //-------------------------
 
 .ap-term-category-box{
-	.ap-term-list-inner {
-	    border: 2px solid #eee;
-	    .border-radius(3px);
-	    margin-bottom: 50px;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	>li{
+	    border-bottom: 1px solid #f8f8f8;
+	    display: table;
+	    padding: 10px 0;
+	    width: 100%;
 
-	    .ap-term-head {
-		    background: none repeat scroll 0 0 #f8f8f8;
-		    border-bottom: 1px solid #eee;
-		    padding: 15px;
-
-		    .term-title {
-			    font-size: 28px;
-			}
-			.term-post-count {
-			    float: right;
-			    font-size: 20px;
-			    font-weight: 300;
-			    padding: 5px;
-			}
-		}
-	}
-	.ap-term-info{
-	    float: left;
-	    padding: 0 15px;
-	    width: 40%;
-
-		.term-detail {
-		    line-height: 30px;
-		    padding-top: 20px;
-
-		    .term-description{
-		    	
-		    }
-		    
-		}
-		.ap-expand-content{
-		    color: #aaa;
-		    display: none;
-		    cursor: pointer;
-		    font-size: 20px;
-
-		    &:hover{
-		    	color: @light-color;
-		    }
-	    }	    
-	}
-	.ap-term-questions-list{
-	    border-left: 1px solid @default-border-color;
-	    float: left;
-	    width: 60%;
-
-		article{
-		    border-bottom: 1px solid @default-border-color;
-		    display: table;
-		    padding: 15px;
-		    width: 100%;
-
-		    &:last-child{
-		    	margin-bottom: 0;
-		    	border-bottom: none;
-		    }
-
-			&> *{
-			    display: table-cell;
-			    margin-bottom: 15px;
-			    width: 100%;
-			}
-			.question-hyperlink{
-				color: @default-color;
-			    overflow: hidden;
-			    text-decoration: none;
-			}
-			.ap-avatar{
-			    margin: 0;
-			    padding-right: 15px;
-			    width: auto;
-			}
-
-			.ans-count{
-			    text-align: right;
-			    white-space: nowrap;
-			    width: auto;
-			    span{
-				    color: #aaa;
-				    display: block;
-				    font-size: 15px;
-				    font-weight: 300;
-				    width: 75px;
-			    }
-			}
-
-		}
-		.ap-view-all-btn{
-		    display: block;
-		    font-weight: @bold;
-		    margin: 10px;
-		    padding: 15px;
-		    text-align: center;
-		    text-transform: uppercase;
+	    > *{
+		    display: table-cell;
+		    vertical-align: top;
 	    }
-	}
-}
-.ap-taxo-detail{
-	margin-bottom: 30px;
-	.entry-title{
-		font-size: 27px;
-	    font-weight: 600;
-	    .ap-tax-item-count{
-	    	color: @light-color;
-		    display: table;
-		    float: right;
-		    font-size: 20px;
-		    font-weight: 300;
+
+	    .ap-term-title{
+	    	width: 150px;
+	    	i{
+			    color: @light-color;
+			    margin-right: 10px;
+	    	}
 	    }
+	    .ap-term-count{
+		    color: @light-color;
+		    font-style: italic;
+		    line-height: 28px;
+		    text-align: right;
+		    width: 140px;
+	    }
+
+		.term-title{
+		    color: @default-color;
+		    font-size: 18px;
+		    text-decoration: none;
+		}
+		.ap-taxo-description {
+		    font-size: 13px;
+		    line-height: 27px;
+		}
 	}
-	.ap-taxo-description{
-		color: @light-color;
-   		line-height: 30px;
-	}
+	
 }
+
 .sub-taxo-label{
-    font-size: 20px;
+    font-size: 14px;
+    font-weight: bold;
     margin-bottom: 15px;
+    margin-top: 10px;
 }
 .ap-sub-taxo{
-    border: 1px solid #eee;
-    border-radius: 2px;
     margin-bottom: 30px;
 	li{
-	    margin: 0;
-	    width: 20%;
+	    margin: 0 10px 15px 0;
+	    min-width: 145px;
 	    a{
-		    border-right: 1px solid @default-border-color;
+		    background: @white;
+		    border: 1px solid @default-border-color;
+		    .border-radius(2px);
 		    color: @light-color;
 		    display: block;
 		    font-size: 15px;
-		    padding: 15px 20px;
+		    padding: 7px 12px;
+		    text-decoration: none;
 
 		    span{
 		    	float: right;
 		    }
+
+		    &:hover{
+		    	border-color: @blue-color;
+		    }
 	    }
+	}
+}
+.ap-taxo-detail {
+    background: none repeat scroll 0 0 #f8f8f8;
+    .border-radius(5px);
+    margin-bottom: 25px;
+    padding: 15px 20px;
+    .ap-tax-item-count {
+	    background: @blue-color;
+	    color: @white;
+	    float: right;
+	    font-size: 17px;
+	    padding: 5px 10px;
+	    .border-radius(2px);
+	}
+	.ap-taxo-description {
+	    line-height: 28px;
+	}
+	.ap-term-sub {
+	    margin-top: 20px;
+	}
+	.ap-sub-taxo{
+		margin:0;
 	}
 }
