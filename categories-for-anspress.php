@@ -15,7 +15,7 @@
  * Plugin URI:        http://wp3.in/categories-for-anspress
  * Description:       Extension for AnsPress. Add categories in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           1.0
+ * Version:           1.1
  * Author:            Rahul Aryan
  * Author URI:        http://wp3.in
  * Text Domain:       ap
@@ -89,7 +89,10 @@ class Categories_For_AnsPress
         add_shortcode( 'anspress_question_category', array( 'AnsPress_Category_Shortcode', 'anspress_category' ) );
         add_action( 'ap_enqueue', array( $this, 'ap_enqueue' ) );
         add_filter('term_link', array($this, 'term_link_filter'), 10, 3);
-
+        add_action('ap_ask_form_fields', array($this, 'ask_from_category_field'), 10, 2);
+        add_action('ap_ask_fields_validation', array($this, 'ap_ask_fields_validation'));
+        add_action( 'ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
+        add_action( 'ap_after_update_question', array($this, 'after_new_question'), 10, 2 );
     }
 
     public function includes(){
@@ -274,6 +277,64 @@ class Categories_For_AnsPress
         }
         return $url;
        
+    }
+
+    /**
+     * add category field in ask form
+     * @param  array $validate
+     * @return void
+     * @since 2.0
+     */
+    public function ask_from_category_field($args, $editing){
+        global $editing_post;
+
+        if($editing){
+            $category = get_the_terms( $editing_post->ID, 'question_category' );
+            $catgeory = $category[0]->term_id;
+        }
+
+        $args['fields'][] = array(
+            'name' => 'category',
+            'label' => __('Category', 'ap'),
+            'type'  => 'taxonomy_select',
+            'value' => ( $editing ? $catgeory :  sanitize_text_field(@$_POST['category'] ))  ,
+            'taxonomy' => 'question_category',
+            'desc' => __('Select a topic that best fits your question', 'ap'),
+            'order' => 6
+        );
+
+        return $args;
+    }
+
+    /**
+     * add category in validation field
+     * @param  array $fields
+     * @return array
+     * @since  1.0
+     */
+    public function ap_ask_fields_validation($args){
+        $args['category'] = array(
+            'sanitize' => array('only_int'),
+            'validate' => array('required'),
+        );
+
+        return $args;
+    }
+    
+    /**
+     * Things to do after creating a question
+     * @param  int $post_id
+     * @param  object $post
+     * @return void
+     * @since 1.0
+     */
+    public function after_new_question($post_id, $post)
+    {
+        global $validate;
+        $fields = $validate->get_sanitized_fields();
+
+        if(isset($fields['category']))
+            wp_set_post_terms( $post_id, $fields['category'], 'question_category' );
     }
 
 }
