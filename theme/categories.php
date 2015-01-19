@@ -13,7 +13,7 @@
 
 	global $question_categories;
 ?>
-<?php if(ap_opt('enable_categories')): ?>
+
 <div id="ap-categories" class="clearfix">
 	<ul class="ap-term-category-box">
 		<?php foreach($question_categories as $key => $category) : ?>
@@ -51,8 +51,3 @@
 	</ul>
 </div>
 <?php ap_pagination(); ?>
-<?php else: ?>
-	<div class="ap-tax-disabled">
-		<?php _e('Categories are disabled', 'ap'); ?>
-	</div>
-<?php endif; ?>

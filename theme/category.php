@@ -3,8 +3,6 @@
 		<h2 class="entry-title"><?php echo $question_category->name; ?> <span class="ap-tax-item-count"><?php printf( _n('1 Question', '%s Questions', $question_category->count, 'ap'),  $question_category->count); ?></span></h2>
 		<?php if($question_category->description !=''): ?>
 			<p class="ap-taxo-description"><?php echo $question_category->description; ?></p>
-		<?php else: ?>
-			<p class="ap-taxo-description"><?php _e('-- No description --', 'ap'); ?></p>
 		<?php endif; ?>
 	
 
@@ -21,7 +19,7 @@
 	</div>
 
 	<?php if ( $questions->have_posts() ) : ?>
-		<?php ap_questions_tab(); ?>
+		<?php ap_questions_tab(get_term_link($question_category)); ?>
 		<div class="questions-list">
 			<?php				
 				/* Start the Loop */

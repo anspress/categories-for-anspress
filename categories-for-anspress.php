@@ -81,8 +81,8 @@ class Categories_For_AnsPress
         add_action('init', array($this, 'register_question_categories'), 1);
         add_action('ap_admin_menu', array($this, 'admin_category_menu'));
         add_filter('ap_default_options', array($this, 'ap_default_options') );
-        add_action('ap_option_navigation', array($this, 'option_navigation' ));
-        add_action('ap_option_fields', array($this, 'option_fields' ));
+        //add_action('ap_option_navigation', array($this, 'option_navigation' ));
+        //add_action('ap_option_fields', array($this, 'option_fields' ));
         add_action('ap_display_question_metas', array($this, 'ap_display_question_metas' ), 10, 2);
         add_action('ap_before_question_title', array($this, 'ap_before_question_title' ));
         add_shortcode( 'anspress_question_categories', array( 'AnsPress_Categories_Shortcode', 'anspress_categories' ) );
@@ -93,6 +93,7 @@ class Categories_For_AnsPress
         add_action('ap_ask_fields_validation', array($this, 'ap_ask_fields_validation'));
         add_action( 'ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
         add_action( 'ap_after_update_question', array($this, 'after_new_question'), 10, 2 );
+        add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1); 
     }
 
     public function includes(){
@@ -124,54 +125,54 @@ class Categories_For_AnsPress
      * @since 2.0
      */
     public function register_question_categories(){
-        if(ap_opt('enable_categories')){
 
-            /**
-             * Labesl for category taxonomy
-             * @var array
-             */
-            $categories_labels = array(
-                'name' => __('Question Categories', 'categories_for_anspress'),
-                'singular_name' => _x('Category', 'categories_for_anspress'),
-                'all_items' => __('All Categories', 'categories_for_anspress'),
-                'add_new_item' => _x('Add New Category', 'categories_for_anspress'),
-                'edit_item' => __('Edit Category', 'categories_for_anspress'),
-                'new_item' => __('New Category', 'categories_for_anspress'),
-                'view_item' => __('View Category', 'categories_for_anspress'),
-                'search_items' => __('Search Category', 'categories_for_anspress'),
-                'not_found' => __('Nothing Found', 'categories_for_anspress'),
-                'not_found_in_trash' => __('Nothing found in Trash', 'categories_for_anspress'),
-                'parent_item_colon' => ''
-            );
 
-            /**
-             * FILTER: ap_question_category_labels
-             * Filter ic called before registering question_category taxonomy
-             */
-           $categories_labels = apply_filters( 'ap_question_category_labels',  $categories_labels);
+        /**
+         * Labesl for category taxonomy
+         * @var array
+         */
+        $categories_labels = array(
+            'name' => __('Question Categories', 'categories_for_anspress'),
+            'singular_name' => _x('Category', 'categories_for_anspress'),
+            'all_items' => __('All Categories', 'categories_for_anspress'),
+            'add_new_item' => _x('Add New Category', 'categories_for_anspress'),
+            'edit_item' => __('Edit Category', 'categories_for_anspress'),
+            'new_item' => __('New Category', 'categories_for_anspress'),
+            'view_item' => __('View Category', 'categories_for_anspress'),
+            'search_items' => __('Search Category', 'categories_for_anspress'),
+            'not_found' => __('Nothing Found', 'categories_for_anspress'),
+            'not_found_in_trash' => __('Nothing found in Trash', 'categories_for_anspress'),
+            'parent_item_colon' => ''
+        );
 
-            /**
-             * Arguments for category taxonomy
-             * @var array
-             * @since 2.0
-             */
-            $category_args = array(
-                'hierarchical' => true,
-                'labels' => $categories_labels,
-                'rewrite' => false
-            );
+        /**
+         * FILTER: ap_question_category_labels
+         * Filter ic called before registering question_category taxonomy
+         */
+       $categories_labels = apply_filters( 'ap_question_category_labels',  $categories_labels);
 
-            /**
-             * FILTER: ap_question_category_args
-             * Filter ic called before registering question_category taxonomy
-             */
-            $category_args = apply_filters( 'ap_question_category_args',  $category_args);
+        /**
+         * Arguments for category taxonomy
+         * @var array
+         * @since 2.0
+         */
+        $category_args = array(
+            'hierarchical' => true,
+            'labels' => $categories_labels,
+            'rewrite' => true
+        );
 
-            /**
-             * Now let WordPress know about our taxonomy
-             */
-            register_taxonomy('question_category', array('question'), $category_args);
-        }
+        /**
+         * FILTER: ap_question_category_args
+         * Filter ic called before registering question_category taxonomy
+         */
+        $category_args = apply_filters( 'ap_question_category_args',  $category_args);
+
+        /**
+         * Now let WordPress know about our taxonomy
+         */
+        register_taxonomy('question_category', array('question'), $category_args);
+
     }
 
     /**
@@ -193,7 +194,6 @@ class Categories_For_AnsPress
      * @since 2.0
      */
     public function admin_category_menu(){
-        if(ap_opt('enable_categories'))
             add_submenu_page('anspress', 'Questions Category', 'Category', 'manage_options', 'edit-tags.php?taxonomy=question_category');
     }
 
@@ -244,7 +244,7 @@ class Categories_For_AnsPress
      */
     public function ap_display_question_metas($metas, $question_id)
     {   
-        if(ap_opt('enable_categories') &&  ap_question_have_category($question_id) && !is_singular('question'))
+        if(ap_question_have_category($question_id) && !is_singular('question'))
             $metas['categories'] = ap_question_categories_html(array('label' => __('Posted in ', 'categories_for_anspress')));
 
         return $metas;
@@ -273,7 +273,10 @@ class Categories_For_AnsPress
 
     public function term_link_filter( $url, $term, $taxonomy ) {
         if($taxonomy == 'question_category'){
-            $url = add_query_arg(array('question_category' => $term->term_id), get_permalink(ap_opt('question_category_page_id')));
+            if(get_option('permalink_structure') != '')
+                $url = get_permalink(ap_opt('question_category_page_id')).$term->slug;                
+            else
+                $url = add_query_arg(array('q_cat' => $term->term_id), get_permalink(ap_opt('question_category_page_id')));
         }
         return $url;
        
@@ -335,6 +338,18 @@ class Categories_For_AnsPress
 
         if(isset($fields['category']))
             wp_set_post_terms( $post_id, $fields['category'], 'question_category' );
+    }
+
+    public function rewrites() {  
+        global $wp_rewrite;  
+        
+        $new_rules = array(  
+            
+            "qcategory/([^/]+)/?" => "index.php?page_id=".ap_opt('question_category_page_id')."&q_cat=".$wp_rewrite->preg_index(1),
+        );
+
+        return $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
+        return $wp_rewrite->rules;
     }
 
 }
@@ -399,9 +414,6 @@ register_activation_hook( __FILE__, 'activate_categories_for_anspress'  );
  * @return string
  */
 function ap_question_categories_html($args = array()){
-    
-    if(!ap_opt('enable_categories'))
-        return;
 
     $defaults  = array(
         'question_id'   => get_the_ID(),
@@ -449,8 +461,6 @@ function ap_question_categories_html($args = array()){
 
 
 function ap_category_details(){
-    if(!ap_opt('enable_categories'))
-        return;
         
     $var = get_query_var('question_category');
 
@@ -492,9 +502,7 @@ function ap_sub_category_list($parent){
 function ap_question_have_category($post_id = false){
     if(!$post_id)
         $post_id = get_the_ID();
-        
-    if(!ap_opt('enable_categories'))
-        return false;
+
     
     $categories = wp_get_post_terms( $post_id, 'question_category');
     if(!empty($categories))

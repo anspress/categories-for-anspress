@@ -23,7 +23,7 @@ class AnsPress_Category_Shortcode {
 	 * @param  string $content
 	 */
 	public static function anspress_category($atts, $content = ''){
-		$category_id = get_query_var( 'question_category');
+		$category_id = sanitize_text_field( get_query_var( 'q_cat'));
 		
 		if(empty( $category_id )){
 			echo '<div class="anspress-container">';
@@ -44,8 +44,8 @@ class AnsPress_Category_Shortcode {
 		$question_args['tax_query'] = array(		
 			array(
 				'taxonomy' => 'question_category',
-				'field' => 'id',
-				'terms' => array( get_query_var( 'question_category') )
+				'field' => is_integer($category_id) ? 'id' : 'slug',
+				'terms' => array( $category_id )
 			)
 		);
 
@@ -58,7 +58,7 @@ class AnsPress_Category_Shortcode {
 		$question_args = apply_filters('ap_category_shortcode_args', $question_args );
 
 		$questions = new Question_Query( $question_args );
-		$question_category = $questions->get_queried_object();
+		$question_category = get_term_by( is_integer($category_id) ? 'id' : 'slug', $category_id, 'question_category');
 		echo '<div class="anspress-container">';
 			/**
 			 * ACTION: ap_before
