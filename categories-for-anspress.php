@@ -15,7 +15,7 @@
  * Plugin URI:        http://wp3.in/categories-for-anspress
  * Description:       Extension for AnsPress. Add categories in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           1.1
+ * Version:           1.2
  * Author:            Rahul Aryan
  * Author URI:        http://wp3.in
  * Text Domain:       ap
@@ -334,6 +334,10 @@ class Categories_For_AnsPress
     public function after_new_question($post_id, $post)
     {
         global $validate;
+
+        if(empty($validate))
+            return;
+
         $fields = $validate->get_sanitized_fields();
 
         if(isset($fields['category']))
