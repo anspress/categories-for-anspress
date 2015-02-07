@@ -92,7 +92,7 @@ class Categories_For_AnsPress
         add_action('ap_ask_fields_validation', array($this, 'ap_ask_fields_validation'));
         add_action('ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
         add_action('ap_after_update_question', array($this, 'after_new_question'), 10, 2 );
-        add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1); 
+        //add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1); 
     }
 
     public function includes(){
@@ -366,18 +366,6 @@ class Categories_For_AnsPress
 
         if(isset($fields['category']))
             wp_set_post_terms( $post_id, $fields['category'], 'question_category' );
-    }
-
-    public function rewrites() {  
-        global $wp_rewrite;  
-        
-        $new_rules = array(  
-            
-            "qcategory/([^/]+)/?" => "index.php?page_id=".ap_opt('question_category_page_id')."&q_cat=".$wp_rewrite->preg_index(1),
-        );
-
-        return $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
-        return $wp_rewrite->rules;
     }
 
 }
