@@ -72,8 +72,11 @@ class Categories_For_AnsPress
         if (!defined('CATEGORIES_FOR_ANSPRESS_URL'))   
                 define('CATEGORIES_FOR_ANSPRESS_URL', plugin_dir_url( __FILE__ ));
 
-        $this->includes();
+        //$this->includes();
 
+        ap_register_page('category', __('Category', 'ap'), array($this, 'category_page'));
+        ap_register_page('categories', __('Categories', 'ap'), array($this, 'categories_page'));
+        
         // internationalization
         add_action( 'init', array( $this, 'textdomain' ) );
 
@@ -81,24 +84,72 @@ class Categories_For_AnsPress
         add_action('init', array($this, 'register_question_categories'), 1);
         add_action('ap_admin_menu', array($this, 'admin_category_menu'));
         add_filter('ap_default_options', array($this, 'ap_default_options') );
-        //add_action('ap_option_navigation', array($this, 'option_navigation' ));
-        //add_action('ap_option_fields', array($this, 'option_fields' ));
         add_action('ap_display_question_metas', array($this, 'ap_display_question_metas' ), 10, 2);
         add_action('ap_before_question_title', array($this, 'ap_before_question_title' ));
-        add_shortcode( 'anspress_question_categories', array( 'AnsPress_Categories_Shortcode', 'anspress_categories' ) );
-        add_shortcode( 'anspress_question_category', array( 'AnsPress_Category_Shortcode', 'anspress_category' ) );
-        add_action( 'ap_enqueue', array( $this, 'ap_enqueue' ) );
+        add_action('ap_enqueue', array( $this, 'ap_enqueue' ) );
         add_filter('term_link', array($this, 'term_link_filter'), 10, 3);
         add_action('ap_ask_form_fields', array($this, 'ask_from_category_field'), 10, 2);
         add_action('ap_ask_fields_validation', array($this, 'ap_ask_fields_validation'));
-        add_action( 'ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
-        add_action( 'ap_after_update_question', array($this, 'after_new_question'), 10, 2 );
+        add_action('ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
+        add_action('ap_after_update_question', array($this, 'after_new_question'), 10, 2 );
         add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1); 
     }
 
     public function includes(){
         require_once( CATEGORIES_FOR_ANSPRESS_DIR . 'shortcode-categories.php' );
         require_once( CATEGORIES_FOR_ANSPRESS_DIR . 'shortcode-category.php' );
+    }
+
+    public function category_page()
+    {
+        global $questions, $question_category;
+
+        $category_id = sanitize_text_field( get_query_var( 'q_cat'));
+
+        $question_args= array('tax_query' => array(        
+            array(
+                'taxonomy' => 'question_category',
+                'field' => is_numeric($category_id) ? 'id' : 'slug',
+                'terms' => array( $category_id )
+            )
+        ));
+
+        $questions          = new Question_Query($question_args);
+        $question_category = get_term_by( is_numeric($category_id) ? 'id' : 'slug', $category_id, 'question_category');
+        
+        include ap_get_theme_location('category.php', CATEGORIES_FOR_ANSPRESS_DIR);
+    }
+
+    public function categories_page()
+    {
+        global $question_categories, $ap_max_num_pages, $ap_per_page;
+
+        $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+        $per_page           = ap_opt('categories_per_page');
+        $total_terms        = wp_count_terms('question_category');  
+        $offset             = $per_page * ( $paged - 1) ;
+        $ap_max_num_pages   = $total_terms / $per_page ;
+
+        $cat_args = array(
+            'parent'        => 0,
+            'number'        => $per_page,
+            'offset'        => $offset,
+            'hide_empty'    => false,
+            'orderby'       => 'count',
+            'order'         => 'DESC',
+        );
+
+        /**
+         * FILTER: ap_categories_shortcode_args
+         * Filter applied before getting categories.
+         * @var array
+         * @since 1.0
+         */
+        $cat_args = apply_filters('ap_categories_shortcode_args', $cat_args );
+
+        $question_categories = get_terms( 'question_category' , $cat_args);
+        
+        include ap_get_theme_location('categories.php', CATEGORIES_FOR_ANSPRESS_DIR);
     }
 
     /**
@@ -209,33 +260,6 @@ class Categories_For_AnsPress
     }
 
     /**
-     * Option fields
-     * @param  array  $settings
-     * @return string
-     * @since 1.0
-     */
-    public function option_fields($settings){
-        $active = (isset($_REQUEST['option_page'])) ? $_REQUEST['option_page'] : 'general' ;
-        if ($active == 'categories') {
-            ?>
-                <div class="tab-pane" id="ap-categories">       
-                    <table class="form-table">
-                        <tr valign="top">
-                            <th scope="row"><label for="enable_categories"><?php _e('Enable categories', 'ap'); ?></label></th>
-                            <td>
-                                <input type="checkbox" id="enable_categories" name="anspress_opt[enable_categories]" value="1" <?php checked( true, $settings['enable_categories'] ); ?> />
-                                <p class="description"><?php _e('Enable or disable categories system', 'ap'); ?></p>
-                            </td>
-                        </tr>
-                        
-                    </table>
-                </div>
-            <?php
-        }
-        
-    }
-
-    /**
      * Append meta display
      * @param  array $metas
      * @param array $question_id        
@@ -272,11 +296,11 @@ class Categories_For_AnsPress
     }
 
     public function term_link_filter( $url, $term, $taxonomy ) {
-        if($taxonomy == 'question_category'){
+        if($taxonomy == 'question_category'){           
             if(get_option('permalink_structure') != '')
-                $url = get_permalink(ap_opt('question_category_page_id')).$term->slug;                
+                 return ap_get_link_to(array('ap_page' => 'category', 'q_cat' => $term->slug));               
             else
-                $url = add_query_arg(array('q_cat' => $term->term_id), get_permalink(ap_opt('question_category_page_id')));
+                return ap_get_link_to(array('ap_page' => 'category', 'q_cat' => $term->term_id));
         }
         return $url;
        
