@@ -15,12 +15,12 @@
  * Plugin URI:        http://wp3.in/categories-for-anspress
  * Description:       Extension for AnsPress. Add categories in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           1.2
+ * Version:           1.3.1
  * Author:            Rahul Aryan
  * Author URI:        http://wp3.in
- * Text Domain:       ap
- * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:       categories_for_anspress
+ * License:           GPL-3.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-3.0.txt
  * Domain Path:       /languages
  */
 
@@ -74,8 +74,8 @@ class Categories_For_AnsPress
 
         //$this->includes();
 
-        ap_register_page('category', __('Category', 'ap'), array($this, 'category_page'));
-        ap_register_page('categories', __('Categories', 'ap'), array($this, 'categories_page'));
+        ap_register_page('category', __('Category', 'categories_for_anspress'), array($this, 'category_page'));
+        ap_register_page('categories', __('Categories', 'categories_for_anspress'), array($this, 'categories_page'));
         
         // internationalization
         add_action( 'init', array( $this, 'textdomain' ) );
@@ -92,7 +92,6 @@ class Categories_For_AnsPress
         add_action('ap_ask_fields_validation', array($this, 'ap_ask_fields_validation'));
         add_action('ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
         add_action('ap_after_update_question', array($this, 'after_new_question'), 10, 2 );
-        //add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1); 
     }
 
     public function includes(){
@@ -176,7 +175,7 @@ class Categories_For_AnsPress
      * @since 2.0
      */
     public function register_question_categories(){
-
+        ap_register_menu('ANSPRESS_CATEGORIES_PAGE_URL', __('Categories', 'categories_for_anspress'), ap_get_link_to('categories'));
 
         /**
          * Labesl for category taxonomy
@@ -313,6 +312,9 @@ class Categories_For_AnsPress
      * @since 2.0
      */
     public function ask_from_category_field($args, $editing){
+        if(wp_count_terms('question_category') == 0)
+            return $args;
+
         global $editing_post;
 
         if($editing){
@@ -322,11 +324,11 @@ class Categories_For_AnsPress
 
         $args['fields'][] = array(
             'name' => 'category',
-            'label' => __('Category', 'ap'),
+            'label' => __('Category', 'categories_for_anspress'),
             'type'  => 'taxonomy_select',
             'value' => ( $editing ? $catgeory :  sanitize_text_field(@$_POST['category'] ))  ,
             'taxonomy' => 'question_category',
-            'desc' => __('Select a topic that best fits your question', 'ap'),
+            'desc' => __('Select a topic that best fits your question', 'categories_for_anspress'),
             'order' => 6
         );
 
@@ -340,6 +342,10 @@ class Categories_For_AnsPress
      * @since  1.0
      */
     public function ap_ask_fields_validation($args){
+
+        if(wp_count_terms('question_category') == 0)
+            return $args;
+
         $args['category'] = array(
             'sanitize' => array('only_int'),
             'validate' => array('required'),
@@ -367,6 +373,7 @@ class Categories_For_AnsPress
         if(isset($fields['category']))
             wp_set_post_terms( $post_id, $fields['category'], 'question_category' );
     }
+
 
 }
 

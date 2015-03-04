@@ -30,7 +30,7 @@
 						if($category->description != '')
 							echo $category->description;
 						else
-							_e('No dscription.', 'categories_for_anspress');
+							_e('No description.', 'categories_for_anspress');
 					?>
 					<?php
 						$sub_cat_count = count(get_term_children( $category->term_id, 'question_category' ));
