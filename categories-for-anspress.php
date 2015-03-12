@@ -85,7 +85,7 @@ class Categories_For_AnsPress
         add_action('ap_admin_menu', array($this, 'admin_category_menu'));
         add_filter('ap_default_options', array($this, 'ap_default_options') );
         add_action('ap_display_question_metas', array($this, 'ap_display_question_metas' ), 10, 2);
-        add_action('ap_before_question_title', array($this, 'ap_before_question_title' ));
+        //add_action('ap_before_question_title', array($this, 'ap_before_question_title' ));
         add_action('ap_enqueue', array( $this, 'ap_enqueue' ) );
         add_filter('term_link', array($this, 'term_link_filter'), 10, 3);
         add_action('ap_ask_form_fields', array($this, 'ask_from_category_field'), 10, 2);
