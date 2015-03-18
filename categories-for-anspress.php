@@ -80,6 +80,7 @@ class Categories_For_AnsPress
         // internationalization
         add_action( 'init', array( $this, 'textdomain' ) );
 
+
         //Register question categories
         add_action('init', array($this, 'register_question_categories'), 1);
         add_action('ap_admin_menu', array($this, 'admin_category_menu'));
@@ -92,6 +93,8 @@ class Categories_For_AnsPress
         add_action('ap_ask_fields_validation', array($this, 'ap_ask_fields_validation'));
         add_action('ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
         add_action('ap_after_update_question', array($this, 'after_new_question'), 10, 2 );
+        add_filter('ap_page_title', array($this, 'page_title'));        
+        add_filter('ap_option_group_layout', array($this, 'option'));        
     }
 
     public function includes(){
@@ -166,7 +169,6 @@ class Categories_For_AnsPress
 
         // Load the translations
         load_plugin_textdomain( 'categories_for_anspress', false, $lang_dir );
-
     }
     
     /**
@@ -233,7 +235,7 @@ class Categories_For_AnsPress
      */             
     public function ap_default_options($defaults)
     {
-        $defaults['enable_categories']  = true;
+        $defaults['categories_page_title']  = __('Question categories', 'categories_for_anspress');
 
         return $defaults;
     }
@@ -245,17 +247,6 @@ class Categories_For_AnsPress
      */
     public function admin_category_menu(){
             add_submenu_page('anspress', 'Questions Category', 'Category', 'manage_options', 'edit-tags.php?taxonomy=question_category');
-    }
-
-    /**
-     * Register categories option tab in AnsPress options
-     * @param  array $navs Default navigation array
-     * @return array
-     * @since 1.0
-     */
-    public function option_navigation($navs){
-        $navs['categories'] =  __('Categories', 'categories_for_anspress');
-        return $navs;
     }
 
     /**
@@ -374,6 +365,34 @@ class Categories_For_AnsPress
             wp_set_post_terms( $post_id, $fields['category'], 'question_category' );
     }
 
+    public function page_title($title){
+        if(is_question_categories()){
+            $title = ap_opt('categories_page_title');
+        }
+        elseif(is_question_category()){
+            $category_id = sanitize_text_field( get_query_var( 'q_cat'));
+            $category = get_term_by(is_numeric($category_id) ? 'id' : 'slug', $category_id, 'question_category');
+            $title = sprintf(__('Question category: %s', 'ap'), $category->name);
+        }
+
+        return $title;
+    }
+
+    public function option($fields){
+        $settings = ap_opt();
+        
+        $fields[] = array(
+            'name' => 'anspress_opt[categories_page_title]',
+            'label' => __('Categories title', 'ap') ,
+            'desc' => __('Title of the categories page', 'ap') ,
+            'type' => 'text',
+            'value' => $settings['categories_page_title'],
+            'show_desc_tip' => false,
+        );
+
+        return $fields;
+    }
+
 
 }
 
@@ -390,46 +409,6 @@ function categories_for_anspress() {
     $discounts = new Categories_For_AnsPress();
 }
 add_action( 'plugins_loaded', 'categories_for_anspress' );
-
-/**
- * Register activatin hook
- * @return void
- * @since  1.0
- */
-function activate_categories_for_anspress(){
-    // create and check for categories base page
-    
-    $page_to_create = array('question_categories' => __('Categories', 'categories_for_anspress'), 'question_category' => __('Category', 'categories_for_anspress'));
-
-    foreach($page_to_create as $k => $page_title){
-        // create page
-        
-        // check if page already exists
-        $page_id = ap_opt("{$k}_page_id");
-        
-        $post = get_post($page_id);
-
-        if(!$post){
-            
-            $args['post_type']          = "page";
-            $args['post_content']       = "[anspress_{$k}]";
-            $args['post_status']        = "publish";
-            $args['post_title']         = $page_title;
-            $args['comment_status']     = 'closed';
-            $args['post_parent']        = ap_opt('questions_page_id');
-            
-            // now create post
-            $new_page_id = wp_insert_post ($args);
-        
-            if($new_page_id){
-                $page = get_post($new_page_id);
-                ap_opt("{$k}_page_slug", $page->post_name);
-                ap_opt("{$k}_page_id", $page->ID);
-            }
-        }
-    }
-}
-register_activation_hook( __FILE__, 'activate_categories_for_anspress'  );
 
 /**
  * Output question categories
@@ -540,14 +519,14 @@ function ap_question_have_category($post_id = false){
  * @since  1.0
  */
 function is_question_categories(){
-    if(get_the_ID() == ap_opt('question_categories_page_id'))
+    if('categories' == get_query_var( 'ap_page' ))
         return true;
         
     return false;
 }
 
 function is_question_category(){
-    if(get_the_ID() == ap_opt('question_category_page_id'))
+    if('category' == get_query_var( 'ap_page' ))
         return true;
         
     return false;
