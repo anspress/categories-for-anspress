@@ -115,11 +115,14 @@ class Categories_For_AnsPress
                 'terms' => array( $category_id )
             )
         ));
-
-        $questions          = new Question_Query($question_args);
-        $question_category = get_term_by( is_numeric($category_id) ? 'id' : 'slug', $category_id, 'question_category');
         
-        include ap_get_theme_location('category.php', CATEGORIES_FOR_ANSPRESS_DIR);
+        $question_category = get_term_by( is_numeric($category_id) ? 'id' : 'slug', $category_id, 'question_category');
+        $questions = ap_get_questions($question_args);
+
+        if(ap_have_questions())
+            include(ap_get_theme_location('category.php', CATEGORIES_FOR_ANSPRESS_DIR));
+        else
+            include(ap_get_theme_location('not-found.php'));
     }
 
     public function categories_page()

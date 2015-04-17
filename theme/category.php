@@ -18,17 +18,18 @@
 		?>
 	</div>
 
-	<?php if ( $questions->have_posts() ) : ?>
-		<?php ap_questions_tab(get_term_link($question_category)); ?>
-		<div class="questions-list">
-			<?php				
+	<?php if ( ap_have_questions() ) : ?>
+		<div class="ap-questions">
+			<?php
+				
 				/* Start the Loop */
-				while ( $questions->have_posts() ) : $questions->the_post();
+				while ( ap_questions() ) : ap_the_question();
+					global $post;
 					include(ap_get_theme_location('content-list.php'));
 				endwhile;
 			?>
 		</div>
-		<?php ap_pagination(); ?>
+		<?php ap_questions_the_pagination(); ?>
 	<?php
 		else : 
 			include(ap_get_theme_location('content-none.php'));
