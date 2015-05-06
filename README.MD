@@ -1,4 +1,4 @@
-AnsPress - The most advance community question and answer system for WordPress.
+﻿AnsPress - The most advance community question and answer system for WordPress.
 =========
 
 Extension for AnsPress. Add categories in AnsPress.
