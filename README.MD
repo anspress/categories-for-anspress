@@ -1,9 +1,11 @@
-﻿Categories for AnsPress is an extension for AnsPress, which add category (taxonomy) support for questions. This extensions will add two pages in AnsPress:
+﻿# Categories for AnsPress
+
+Categories for AnsPress is an extension for AnsPress, which add category (taxonomy) support for questions. This extensions will add two pages in AnsPress:
 
   - Categories page (list all categories of AnsPress)
   - Category page (Single category page, list questions of a specfic category)
 
-This extension will also add categories widget, which you can use to to show AnsPress categories anywhere in WordPress.
+This extension will also add categories widget, which can be used to to show questions categories anywhere in WordPress.
 
 ### Installation
 

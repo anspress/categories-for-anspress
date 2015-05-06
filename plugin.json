@@ -8,6 +8,7 @@
 	"licence_link": "http://www.gnu.org/licenses/gpl.txt",
 	"text_domain": "categories_for_anspress",
 	"languages": [],
+	"author": "AnsPress Team",
 	"download": {
 		"stable":{
 			"wp" : "https://downloads.wordpress.org/plugin/categories-for-anspress.zip",
