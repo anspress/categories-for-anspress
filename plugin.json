@@ -1,5 +1,6 @@
 {
 	"name": "Categories for AnsPress",
+	"description": "Add category support in AnsPress",
 	"version": "1.3.2",
 	"tested_up_to": "4.2",
 	"updated": "",
