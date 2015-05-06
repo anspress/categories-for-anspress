@@ -262,7 +262,7 @@ class Categories_For_AnsPress
     public function ap_display_question_metas($metas, $question_id)
     {   
         if(ap_question_have_category($question_id) && !is_singular('question'))
-            $metas['categories'] = ap_question_categories_html(array('label' => __('Posted in ', 'categories_for_anspress')));
+            $metas['categories'] = ap_question_categories_html(array('label' => ap_icon('category', true)));
 
         return $metas;
     }

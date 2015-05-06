@@ -1,0 +1,20 @@
+{
+	"name": "Categories for AnsPress",
+	"version": "1.3.2",
+	"tested_up_to": "4.2",
+	"updated": "",
+	"licence": "GPL-3.0+",
+	"licence_link": "http://www.gnu.org/licenses/gpl.txt",
+	"text_domain": "categories_for_anspress",
+	"languages": [],
+	"download": {
+		"stable":{
+			"wp" : "https://downloads.wordpress.org/plugin/categories-for-anspress.zip",
+			"github" : "https://github.com/anspress/anspress/archive/master.zip"
+		},
+		"dev":{
+			"wp" : "https://downloads.wordpress.org/plugin/categories-for-anspress.zip",
+			"github" : "https://github.com/anspress/anspress/archive/master.zip"
+		}
+	}
+}
