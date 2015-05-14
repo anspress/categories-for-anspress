@@ -83,8 +83,10 @@ class Categories_For_AnsPress
 
         //Register question categories
         add_action('init', array($this, 'register_question_categories'), 1);
+        add_action( 'admin_init', array( $this, 'load_options' ) );
         add_action('ap_admin_menu', array($this, 'admin_category_menu'));
         add_filter('ap_default_options', array($this, 'ap_default_options') );
+
         add_action('ap_display_question_metas', array($this, 'ap_display_question_metas' ), 10, 2);
         //add_action('ap_before_question_title', array($this, 'ap_before_question_title' ));
         add_action('ap_enqueue', array( $this, 'ap_enqueue' ) );
@@ -230,6 +232,27 @@ class Categories_For_AnsPress
 
     }
 
+    public function load_options()
+    {
+        $settings = ap_opt();
+        ap_register_option_group( 'categories', __('Categories', 'categories_for_anspress'), array(
+            array(
+                'name'              => 'anspress_opt[form_category_orderby]',
+                'label'             => __('Category order by', 'categories_for_anspress'),
+                'description'       => __('Set how you want to order categories in form.', 'categories_for_anspress'),
+                'type'              => 'select',
+                'options'			=>array(
+                	'ID' 			=> __('ID', 'categories_for_anspress'),
+                	'name' 			=> __('Name', 'categories_for_anspress'),
+                	'slug' 			=> __('Slug', 'categories_for_anspress'),
+                	'count' 		=> __('Count', 'categories_for_anspress'),
+                	'term_group' 	=> __('Group', 'categories_for_anspress'),
+                	),
+                'value'             => $settings['form_category_orderby'],
+            )
+        ));
+    }
+
     /**
      * Apppend default options
      * @param   array $defaults
@@ -238,7 +261,7 @@ class Categories_For_AnsPress
      */             
     public function ap_default_options($defaults)
     {
-        $defaults['categories_page_title']  = __('Question categories', 'categories_for_anspress');
+        $defaults['form_category_orderby']  = 'count';
 
         return $defaults;
     }
@@ -322,6 +345,7 @@ class Categories_For_AnsPress
             'type'  => 'taxonomy_select',
             'value' => ( $editing ? $catgeory :  sanitize_text_field(@$_POST['category'] ))  ,
             'taxonomy' => 'question_category',
+            'orderby' => ap_opt('form_category_orderby'),
             'desc' => __('Select a topic that best fits your question', 'categories_for_anspress'),
             'order' => 6
         );
