@@ -96,6 +96,7 @@ class Categories_For_AnsPress
         add_action('ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
         add_action('ap_after_update_question', array($this, 'after_new_question'), 10, 2 );
         add_filter('ap_page_title', array($this, 'page_title'));        
+        add_filter('ap_breadcrumbs', array($this, 'ap_breadcrumbs'));        
         add_filter('ap_option_group_layout', array($this, 'option'));        
     }
 
@@ -403,6 +404,20 @@ class Categories_For_AnsPress
         }
 
         return $title;
+    }
+
+    public function ap_breadcrumbs($navs){
+        if( is_question_category()){
+            $category_id = sanitize_text_field( get_query_var( 'q_cat'));
+            $category = get_term_by(is_numeric($category_id) ? 'id' : 'slug', $category_id, 'question_category');
+            $navs['page'] = array( 'title' => __('Categories', 'ap'), 'link' => ap_get_link_to('categories'), 'order' => 8 );
+            $navs['category'] = array( 'title' => $category->name, 'link' => get_term_link( $category, 'question_category' ), 'order' => 8 );
+        }elseif( is_question_categories()){
+            $navs['page'] = array( 'title' => __('Categories', 'ap'), 'link' => ap_get_link_to('categories'), 'order' => 8 );
+ 
+        }
+
+        return $navs;
     }
 
     public function option($fields){
