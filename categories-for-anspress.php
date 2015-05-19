@@ -15,7 +15,7 @@
  * Plugin URI:        http://wp3.in/categories-for-anspress
  * Description:       Extension for AnsPress. Add categories in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           1.3.4
+ * Version:           1.3.5
  * Author:            Rahul Aryan
  * Author URI:        http://wp3.in
  * Text Domain:       categories_for_anspress
@@ -93,8 +93,8 @@ class Categories_For_AnsPress
         add_filter('term_link', array($this, 'term_link_filter'), 10, 3);
         add_action('ap_ask_form_fields', array($this, 'ask_from_category_field'), 10, 2);
         add_action('ap_ask_fields_validation', array($this, 'ap_ask_fields_validation'));
-        add_action('ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
-        add_action('ap_after_update_question', array($this, 'after_new_question'), 10, 2 );
+        add_action('ap_processed_new_question', array($this, 'after_new_question'), 0, 2 );
+        add_action('ap_processed_update_question', array($this, 'after_new_question'), 0, 2 );
         add_filter('ap_page_title', array($this, 'page_title'));        
         add_filter('ap_breadcrumbs', array($this, 'ap_breadcrumbs'));        
         add_filter('ap_option_group_layout', array($this, 'option'));        
@@ -390,7 +390,8 @@ class Categories_For_AnsPress
         $fields = $validate->get_sanitized_fields();
 
         if(isset($fields['category']))
-            wp_set_post_terms( $post_id, $fields['category'], 'question_category' );
+            $category = wp_set_post_terms( $post_id, $fields['category'], 'question_category' );
+        
     }
 
     public function page_title($title){
@@ -555,22 +556,26 @@ function ap_question_have_category($post_id = false){
     return false;
 }
 
+
 /**
  * Check if anspress categories page
  * @return boolean
  * @since  1.0
  */
-function is_question_categories(){
-    if('categories' == get_query_var( 'ap_page' ))
-        return true;
-        
-    return false;
+if(!function_exists('is_question_categories')){
+    function is_question_categories(){
+        if('categories' == get_query_var( 'ap_page' ))
+            return true;
+            
+        return false;
+    }
 }
 
-function is_question_category(){
-    if('category' == get_query_var( 'ap_page' ))
-        return true;
-        
-    return false;
+if(!function_exists('is_question_category')){
+    function is_question_category(){
+        if('category' == get_query_var( 'ap_page' ))
+            return true;
+            
+        return false;
+    }
 }
-
