@@ -8,15 +8,25 @@ Stable tag: 1.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Extension for AnsPress. Add categories in AnsPress. Extension will work with AnsPress 2.0 or later.
+Add category support in AnsPress.
 
 == Description ==
-Support forum: http://wp3.in/questions/
 
-AnsPress is a question and answer plugin for WordPress
-Visit AnsPress: http://wp3.in/anspress
+Support forum: http://anspress.io/questions/
 
-Download the AnsPress 2.0.0-alpha from here: https://github.com/wp3/anspress/archive/2.0.0-alpha.zip
+Categories for AnsPress is an extension for AnsPress, which add category (taxonomy) support for questions. This extensions will add two pages in AnsPress:
+
+    * Categories page (list all categories of AnsPress)
+    * Category page (Single category page, list questions of a specfic category)
+
+This extension will also add categories widget, which can be used to to show questions categories anywhere in WordPress.
 
 == Installation ==
-Install from WordPress plugin manager.
+
+Simply go to WordPress plugin installer and search for categories for anspress and click on install button and then activate it.
+
+Or if you want to install it manually simple follow this:
+
+    * Download the extension zip file, uncompress it.
+    * Upload categories-for-anspress folder to the /wp-content/plugins/ directory
+    * Activate the plugin through the 'Plugins' menu in WordPress
