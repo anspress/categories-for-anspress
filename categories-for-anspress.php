@@ -12,12 +12,12 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Categories for AnsPress
- * Plugin URI:        http://wp3.in/categories-for-anspress
+ * Plugin URI:        http://anspress.io/downloads/categories-for-anspress
  * Description:       Extension for AnsPress. Add categories in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
  * Version:           1.3.5
  * Author:            Rahul Aryan
- * Author URI:        http://wp3.in
+ * Author URI:        http://anspress.io
  * Text Domain:       categories_for_anspress
  * License:           GPL-3.0+
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.txt
@@ -97,7 +97,12 @@ class Categories_For_AnsPress
         add_action('ap_processed_update_question', array($this, 'after_new_question'), 0, 2 );
         add_filter('ap_page_title', array($this, 'page_title'));        
         add_filter('ap_breadcrumbs', array($this, 'ap_breadcrumbs'));        
-        add_filter('ap_option_group_layout', array($this, 'option'));        
+        add_filter('ap_option_group_layout', array($this, 'option')); 
+
+        add_action('ap_user_subscription_tab', array($this, 'subscription_tab'));
+        add_action('ap_user_subscription_page', array($this, 'subscription_page'));
+        add_action('terms_clauses', array($this, 'terms_clauses'), 10, 3);
+
     }
 
     public function includes(){
@@ -436,6 +441,54 @@ class Categories_For_AnsPress
         return $fields;
     }
 
+    public function subscription_tab($active)
+    {
+        echo '<li class="'.($active == 'category' ? 'active' : '').'"><a href="?tab=category">'.__('Category', 'ap').'</a></li>';
+    }
+
+    public function subscription_page($active)
+    {
+        $active = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'question';
+
+        if($active != 'category')
+            return;
+
+        global $question_categories, $ap_max_num_pages, $ap_per_page;
+
+        $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+        $per_page           = ap_opt('categories_per_page');
+        $total_terms        = wp_count_terms('question_category');  
+        $offset             = $per_page * ( $paged - 1) ;
+        $ap_max_num_pages   = $total_terms / $per_page ;
+
+        $cat_args = array(
+            'user_id'       => get_current_user_id(),
+            'ap_query'      => 'subscription',
+            'parent'        => 0,
+            'number'        => $per_page,
+            'offset'        => $offset,
+            'hide_empty'    => false,
+            'orderby'       => 'count',
+            'order'         => 'DESC',
+        );
+
+        $question_categories = get_terms( 'question_category' , $cat_args);
+        
+        include ap_get_theme_location('categories.php', CATEGORIES_FOR_ANSPRESS_DIR);
+    }
+
+    public function terms_clauses($pieces, $taxonomies, $args)
+    {
+        if(!isset($args['ap_query']) && $args['ap_query'] != 'subscription')
+            return $pieces;
+
+        global $wpdb;
+
+        $pieces['join']     = $pieces['join']." INNER JOIN ".$wpdb->prefix."ap_meta apmeta ON t.term_id = apmeta.apmeta_actionid";
+        $pieces['where']    = $pieces['where']." AND apmeta.apmeta_type='subscriber' AND apmeta.apmeta_param='category' AND apmeta.apmeta_userid='".$args['user_id']."'";
+
+        return $pieces;
+    }
 
 }
 
