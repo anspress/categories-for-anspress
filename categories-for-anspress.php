@@ -126,11 +126,7 @@ class Categories_For_AnsPress
         
         $question_category = get_term_by( is_numeric($category_id) ? 'id' : 'slug', $category_id, 'question_category');
         $questions = ap_get_questions($question_args);
-
-        if(ap_have_questions())
-            include(ap_get_theme_location('category.php', CATEGORIES_FOR_ANSPRESS_DIR));
-        else
-            include(ap_get_theme_location('not-found.php'));
+        include(ap_get_theme_location('category.php', CATEGORIES_FOR_ANSPRESS_DIR));
     }
 
     public function categories_page()
@@ -479,7 +475,7 @@ class Categories_For_AnsPress
 
     public function terms_clauses($pieces, $taxonomies, $args)
     {
-        if(!isset($args['ap_query']) && $args['ap_query'] != 'subscription')
+        if(!isset($args['ap_query']) || $args['ap_query'] != 'subscription')
             return $pieces;
 
         global $wpdb;
