@@ -102,6 +102,7 @@ class Categories_For_AnsPress
         add_action('ap_user_subscription_tab', array($this, 'subscription_tab'));
         add_action('ap_user_subscription_page', array($this, 'subscription_page'));
         add_action('terms_clauses', array($this, 'terms_clauses'), 10, 3);
+        add_action('ap_list_head', array($this, 'ap_list_head'));
 
     }
 
@@ -486,6 +487,10 @@ class Categories_For_AnsPress
         return $pieces;
     }
 
+    public function ap_list_head()
+    {
+        ap_category_sorting();
+    }
 }
 
 /**
@@ -627,4 +632,16 @@ if(!function_exists('is_question_category')){
             
         return false;
     }
+}
+
+function ap_category_sorting(){
+    $args = array( 
+        'show_option_all'   => __('All categories', 'ap'),
+        'taxonomy'          => 'question_category',
+        'hierarchical'      => true,
+        'hide_if_empty'     => true,
+        'name'              => 'question_cat',
+        'selected'          => sanitize_text_field($_GET['question_cat']),
+    );
+    wp_dropdown_categories( $args );
 }
