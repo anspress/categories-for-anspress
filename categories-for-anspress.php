@@ -476,7 +476,7 @@ class Categories_For_AnsPress
 
     public function terms_clauses($pieces, $taxonomies, $args)
     {
-        if(!isset($args['ap_query']) || $args['ap_query'] != 'subscription')
+        if(!in_array('question_category', $taxonomies) || !isset($args['ap_query']) || $args['ap_query'] != 'subscription' )
             return $pieces;
 
         global $wpdb;
