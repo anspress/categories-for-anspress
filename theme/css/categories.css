@@ -1,7 +1,7 @@
 #anspress .ap-term-category-box {
-  list-style: none;
+  list-style: outside none none;
+  margin: -10px;
   padding: 0;
-  margin: 0;
 }
 #anspress .ap-term-category-box > li {
   float: left;
@@ -24,13 +24,18 @@
   padding: 15px;
   text-align: center;
 }
+#anspress .ap-term-category-box > li .ap-cat-img-c {
+  position: relative;
+}
 #anspress .ap-term-category-box > li .ap-term-count {
   background: none repeat scroll 0 0 rgba(0, 0, 0, 0.69);
   border-radius: 3px;
+  bottom: 0;
   color: #fff;
   display: block;
-  padding: 3px 12px;
+  padding: 1px 7px;
   position: absolute;
+  right: 0;
 }
 #anspress .ap-term-category-box > li .ap-sub-category {
   color: #888;

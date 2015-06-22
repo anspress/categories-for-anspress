@@ -84,6 +84,7 @@ class Categories_For_AnsPress
         //Register question categories
         add_action('init', array($this, 'register_question_categories'), 1);
         add_action( 'admin_init', array( $this, 'load_options' ) );
+        add_action( 'admin_enqueue_scripts', array($this, 'admin_enqueue_scripts') );
         add_action('ap_admin_menu', array($this, 'admin_category_menu'));
         add_filter('ap_default_options', array($this, 'ap_default_options') );
 
@@ -242,8 +243,7 @@ class Categories_For_AnsPress
     }
 
     public function load_options()
-    {
-        wp_enqueue_media();
+    {        
         $settings = ap_opt();
         ap_register_option_group( 'categories', __('Categories', 'categories_for_anspress'), array(
             array(
@@ -261,6 +261,12 @@ class Categories_For_AnsPress
                 'value'             => $settings['form_category_orderby'],
             )
         ));
+    }
+
+    public function admin_enqueue_scripts(){
+        wp_enqueue_media();
+        wp_enqueue_style( 'wp-color-picker' );
+        wp_enqueue_script('wp-color-picker');
     }
 
     /**
@@ -503,13 +509,20 @@ class Categories_For_AnsPress
         echo "<div class='form-field term-image-wrap'>";
         echo "<label for='ap_image'>".__('Image', 'categories_for_anspress')."</label>";
         echo '<a href="#" id="ap-category-upload">'.__('Upload image', 'categories_for_anspress').'</a>';
-        
-        if(isset($ap_image['url']))
-            echo '<img id="ap-category-image" src="'.$ap_image['url'].'" />';
 
         echo '<input id="ap_category_media_url" type="hidden" name="ap_category_image_url" value="'.$ap_image['url'].'">';
         echo '<input id="ap_category_media_id" type="hidden" name="ap_category_image_id" value="'.$ap_image['id'].'">';
         echo '<p class="description">'.__('Category image', 'categories_for_anspress').'</p>';
+        echo "<div>";
+        echo "<div class='form-field term-image-wrap'>";
+        echo "<label for='ap_icon'>".__('Category icon class', 'categories_for_anspress')."</label>";
+        echo '<input id="ap_icon" type="text" name="ap_icon" value="">';
+        echo '<p class="description">'.__('Font icon class, if image not set', 'categories_for_anspress').'</p>';
+        echo "<div>";
+        echo "<div class='form-field term-image-wrap'>";
+        echo "<label for='ap-category-color'>".__('Category icon color', 'categories_for_anspress')."</label>";
+        echo '<input id="ap-category-color" type="text" name="ap_color" value="">';
+        echo '<p class="description">'.__('Icon color', 'categories_for_anspress').'</p>';
         echo "<div>";
     }
 
@@ -518,24 +531,41 @@ class Categories_For_AnsPress
         $option_name    = 'ap_cat_'.$term->term_id;
         $termMeta       = get_option( $option_name );    
         $ap_image       = $termMeta['ap_image'];
+        $ap_icon        = $termMeta['ap_icon'];
+        $ap_color        = $termMeta['ap_color'];
 
         echo "<tr class='form-field form-required term-name-wrap'>";
         echo "<th scope='row'><label for='custom-field'>".__('Image', 'categories_for_anspress')."</label></th>";
         echo '<td>';        
-        echo '<a href="#" id="ap-category-upload">'.__('Upload image', 'categories_for_anspress').'</a>';
+        echo '<a href="#" id="ap-category-upload">'.__('Upload image', 'categories_for_anspress').'</a>';        
         
-        if(isset($ap_image['url']))
-            echo '<img id="ap-category-image" src="'.$ap_image['url'].'" />';
+        if(isset($ap_image['url']) && $ap_image['url'] != '')
+            echo '<img id="ap_category_media_preview" src="'.$ap_image['url'].'" />';
 
         echo '<input id="ap_category_media_url" type="hidden" name="ap_category_image_url" value="'.$ap_image['url'].'">';
         echo '<input id="ap_category_media_id" type="hidden" name="ap_category_image_id" value="'.$ap_image['id'].'">';
         echo "<p class='description'>".__('Featured image for category', 'categories_for_anspress')."</p>";
+        echo '<a href="#" id="ap-category-upload-remove">'.__('Remove image', 'categories_for_anspress').'</a>';
+        echo "</td></tr>";
+
+        echo "<tr class='form-field form-required term-name-wrap'>";
+        echo "<th scope='row'><label for='custom-field'>".__('Category icon class', 'categories_for_anspress')."</label></th>";
+        echo '<td>';
+        echo '<input id="ap_icon" type="text" name="ap_icon" value="'.$ap_icon.'">';
+        echo '<p class="description">'.__('Font icon class, if image not set', 'categories_for_anspress').'</p>';
+        echo "</td></tr>";
+
+        echo "<tr class='form-field form-required term-name-wrap'>";
+        echo "<th scope='row'><label for='ap-category-color'>".__('Category icon color', 'categories_for_anspress')."</label></th>";
+        echo '<td>';
+        echo '<input id="ap-category-color" type="text" name="ap_color" value="'.$ap_color.'">';
+        echo '<p class="description">'.__('Font icon class, if image not set', 'categories_for_anspress').'</p>';
         echo "</td></tr>";
     }
 
     public function save_image_field($termID)
     {
-        if ( isset( $_POST['ap_category_image_url'] ) && isset( $_POST['ap_category_image_id'] ) ) {
+        if ( (isset( $_POST['ap_category_image_url'] ) && isset( $_POST['ap_category_image_id'] )) || isset( $_POST['ap_icon'] ) ) {
         
             // get options from database - if not a array create a new one
             $termMeta = get_option( 'ap_cat_'.$termID );
@@ -543,13 +573,22 @@ class Categories_For_AnsPress
             if ( !is_array( $termMeta ))
                 $termMeta = array();
 
-            if ( !is_array( $termMeta['ap_image'] ))
-                $termMeta['ap_image'] = array();
+            if(isset( $_POST['ap_category_image_url'] ) && isset( $_POST['ap_category_image_id'] )){
+               
+                if ( !is_array( $termMeta['ap_image'] ))
+                    $termMeta['ap_image'] = array();
 
-            // get value and save it into the database            
-            $termMeta['ap_image']['url'] = isset( $_POST['ap_category_image_url'] ) ? sanitize_text_field($_POST['ap_category_image_url']) : '';
+                // get value and save it into the database            
+                $termMeta['ap_image']['url'] = isset( $_POST['ap_category_image_url'] ) ? sanitize_text_field($_POST['ap_category_image_url']) : '';
 
-            $termMeta['ap_image']['id'] = isset( $_POST['ap_category_image_id'] ) ? (int)$_POST['ap_category_image_id'] : '';
+                $termMeta['ap_image']['id'] = isset( $_POST['ap_category_image_id'] ) ? (int)$_POST['ap_category_image_id'] : '';
+            }
+
+            if(isset( $_POST['ap_icon'] ))
+                $termMeta['ap_icon'] = sanitize_text_field( $_POST['ap_icon'] );
+
+            if(isset( $_POST['ap_color'] ))
+                $termMeta['ap_color'] = sanitize_text_field( $_POST['ap_color'] );
 
             update_option( 'ap_cat_'.$termID, $termMeta );
         }
@@ -711,9 +750,13 @@ function ap_category_sorting(){
 
 function ap_get_category_image($term_id){
     $option = get_option( 'ap_cat_'.$term_id );
-    
-    if(isset($option['ap_image']['url']))
-        return $option['ap_image']['url'];
+    $color = isset($option['ap_color']) && $option['ap_color'] != '' ? ' style="background:'.$option['ap_color'].'"' : ' style="background:#333"';
+    if(isset($option['ap_image']['url']) && $option['ap_image']['url'] != ''){
+        echo '<img class="ap-category-image" src="'.$option['ap_image']['url'].'" />';
+    }elseif(isset($option['ap_icon']) && $option['ap_icon'] != ''){
+        echo '<span class="ap-category-icon '.$option['ap_icon'].'"'.$color.'></span>';
+    }else{
+        echo '<span class="ap-category-icon apicon-category"'.$color.'></span>';
+    }
 
-    return false;
 }

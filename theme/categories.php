@@ -15,7 +15,7 @@
 ?>
 
 <div id="ap-categories" class="clearfix">
-	<ul class="ap-term-category-box">
+	<ul class="ap-term-category-box clearfix">
 		<?php foreach($question_categories as $key => $category) : ?>
 			<li class="clearfix">
 				<div class="ap-category-item">
@@ -23,11 +23,7 @@
 						<span class="ap-term-count">
 							<?php printf(_n('%d Question', '%d Questions', 'categories_for_anspress', $category->count), $category->count) ?>
 						</span>
-						<?php if(ap_get_category_image($category->term_id)!== false): ?>
-							<img class="ap-category-image" src="<?php echo ap_get_category_image($category->term_id); ?>" />
-						<?php else: ?>
-							<div class="ap-category-icon <?php echo ap_icon('category') ?>"></div>
-						<?php endif; ?>
+						<?php echo ap_get_category_image($category->term_id); ?>
 					</div>
 					
 					<div class="ap-term-title">						
