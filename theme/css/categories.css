@@ -1,1 +1,121 @@
-.ap-term-category-box{list-style:none;padding:0;margin:0}.ap-term-category-box>li{border-bottom:1px solid #f8f8f8;display:table;padding:10px 0;width:100%}.ap-term-category-box>li>*{display:table-cell;vertical-align:top}.ap-term-category-box>li .ap-term-title{width:150px}.ap-term-category-box>li .ap-term-title i{color:#888;margin-right:10px}.ap-term-category-box>li .ap-term-count{color:#888;font-style:italic;line-height:28px;text-align:right;width:140px}.ap-term-category-box>li .term-title{color:#555;font-size:18px;text-decoration:none}.ap-term-category-box>li .ap-taxo-description{font-size:13px;line-height:27px}.sub-taxo-label{font-size:14px;font-weight:bold;margin-bottom:15px;margin-top:10px}.ap-sub-taxo{margin-bottom:30px}.ap-sub-taxo li{margin:0 10px 15px 0;min-width:145px}.ap-sub-taxo li a{background:#fff;border:1px solid #eee;-webkit-border-radius:2px;-webkit-background-clip:padding-box;-moz-border-radius:2px;-moz-background-clip:padding;border-radius:2px;background-clip:padding-box;color:#888;display:block;font-size:15px;padding:7px 12px;text-decoration:none}.ap-sub-taxo li a span{float:right}.ap-sub-taxo li a:hover{border-color:#11a7db}.ap-taxo-detail{background:none repeat scroll 0 0 #f8f8f8;-webkit-border-radius:5px;-webkit-background-clip:padding-box;-moz-border-radius:5px;-moz-background-clip:padding;border-radius:5px;background-clip:padding-box;margin-bottom:25px;padding:15px 20px}.ap-taxo-detail .ap-tax-item-count{background:#11a7db;color:#fff;float:right;font-size:17px;padding:5px 10px;-webkit-border-radius:2px;-webkit-background-clip:padding-box;-moz-border-radius:2px;-moz-background-clip:padding;border-radius:2px;background-clip:padding-box}.ap-taxo-detail .ap-taxo-description{line-height:28px}.ap-taxo-detail .ap-term-sub{margin-top:20px}.ap-taxo-detail .ap-sub-taxo{margin:0}
+#anspress .ap-term-category-box {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#anspress .ap-term-category-box > li {
+  float: left;
+  margin: 0;
+  padding: 10px;
+  width: 33.33%;
+}
+#anspress .ap-term-category-box > li .ap-category-item {
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 7px;
+}
+#anspress .ap-term-category-box > li .ap-category-icon {
+  background: none repeat scroll 0 0 #b5a493;
+  border-radius: 3px;
+  color: rgba(255, 255, 255, 0.79);
+  display: block;
+  font-size: 55px;
+  margin-bottom: 12px;
+  padding: 15px;
+  text-align: center;
+}
+#anspress .ap-term-category-box > li .ap-term-count {
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.69);
+  border-radius: 3px;
+  color: #fff;
+  display: block;
+  padding: 3px 12px;
+  position: absolute;
+}
+#anspress .ap-term-category-box > li .ap-sub-category {
+  color: #888;
+  float: right;
+  font-size: 13px;
+  text-align: right;
+}
+#anspress .ap-term-category-box > li .ap-term-title {
+  color: #333333;
+  font-size: 18px;
+  text-decoration: none;
+  margin-bottom: 5px;
+}
+#anspress .ap-term-category-box > li .ap-taxo-description {
+  font-size: 14px;
+  line-height: 1.6;
+}
+#anspress .ap-term-category-box > li .ap-category-image {
+  box-shadow: none;
+  max-height: 114px;
+}
+#anspress .sub-taxo-label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  margin-top: 10px;
+}
+#anspress .ap-sub-taxo {
+  margin-bottom: 30px;
+}
+#anspress .ap-sub-taxo li {
+  margin: 0 10px 15px 0;
+  min-width: 145px;
+}
+#anspress .ap-sub-taxo li a {
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  -webkit-border-radius: 2px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 2px;
+  -moz-background-clip: padding;
+  border-radius: 2px;
+  background-clip: padding-box;
+  color: #888888;
+  display: block;
+  font-size: 15px;
+  padding: 7px 12px;
+  text-decoration: none;
+}
+#anspress .ap-sub-taxo li a span {
+  float: right;
+}
+#anspress .ap-sub-taxo li a:hover {
+  border-color: #11a7db;
+}
+#anspress .ap-taxo-detail {
+  background: none repeat scroll 0 0 #f8f8f8;
+  -webkit-border-radius: 5px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 5px;
+  -moz-background-clip: padding;
+  border-radius: 5px;
+  background-clip: padding-box;
+  margin-bottom: 25px;
+  padding: 15px 20px;
+}
+#anspress .ap-taxo-detail .ap-tax-item-count {
+  background: #11a7db;
+  color: #ffffff;
+  float: right;
+  font-size: 17px;
+  padding: 5px 10px;
+  -webkit-border-radius: 2px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 2px;
+  -moz-background-clip: padding;
+  border-radius: 2px;
+  background-clip: padding-box;
+}
+#anspress .ap-taxo-detail .ap-taxo-description {
+  line-height: 28px;
+}
+#anspress .ap-taxo-detail .ap-term-sub {
+  margin-top: 20px;
+}
+#anspress .ap-taxo-detail .ap-sub-taxo {
+  margin: 0;
+}

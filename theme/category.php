@@ -8,7 +8,7 @@
 			<?php endif; ?>
 
 			<?php ap_subscribe_btn_html($question_category->term_id, 'category'); ?>
-			<?php ap_question_subscribers(); ?>
+			<?php ap_question_subscribers($question_category->term_id, 'category'); ?>
 			<?php
 			$sub_cat_count = count(get_term_children( $question_category->term_id, 'question_category' ));
 

@@ -104,6 +104,12 @@ class Categories_For_AnsPress
         add_action('terms_clauses', array($this, 'terms_clauses'), 10, 3);
         add_action('ap_list_head', array($this, 'ap_list_head'));
 
+        add_action( 'question_category_add_form_fields', array($this, 'image_field_new') );
+        add_action( 'question_category_edit_form_fields', array($this, 'image_field_edit' ) );
+
+        add_action( 'create_question_category', array($this, 'save_image_field') );
+        add_action( 'edited_question_category', array($this, 'save_image_field') );
+
     }
 
     public function includes(){
@@ -237,6 +243,7 @@ class Categories_For_AnsPress
 
     public function load_options()
     {
+        wp_enqueue_media();
         $settings = ap_opt();
         ap_register_option_group( 'categories', __('Categories', 'categories_for_anspress'), array(
             array(
@@ -491,6 +498,62 @@ class Categories_For_AnsPress
     {
         ap_category_sorting();
     }
+
+    public function image_field_new( $term ){        
+        echo "<div class='form-field term-image-wrap'>";
+        echo "<label for='ap_image'>".__('Image', 'categories_for_anspress')."</label>";
+        echo '<a href="#" id="ap-category-upload">'.__('Upload image', 'categories_for_anspress').'</a>';
+        
+        if(isset($ap_image['url']))
+            echo '<img id="ap-category-image" src="'.$ap_image['url'].'" />';
+
+        echo '<input id="ap_category_media_url" type="hidden" name="ap_category_image_url" value="'.$ap_image['url'].'">';
+        echo '<input id="ap_category_media_id" type="hidden" name="ap_category_image_id" value="'.$ap_image['id'].'">';
+        echo '<p class="description">'.__('Category image', 'categories_for_anspress').'</p>';
+        echo "<div>";
+    }
+
+    public function image_field_edit( $term ){
+        $termID         = $term->term_id;
+        $option_name    = 'ap_cat_'.$term->term_id;
+        $termMeta       = get_option( $option_name );    
+        $ap_image       = $termMeta['ap_image'];
+
+        echo "<tr class='form-field form-required term-name-wrap'>";
+        echo "<th scope='row'><label for='custom-field'>".__('Image', 'categories_for_anspress')."</label></th>";
+        echo '<td>';        
+        echo '<a href="#" id="ap-category-upload">'.__('Upload image', 'categories_for_anspress').'</a>';
+        
+        if(isset($ap_image['url']))
+            echo '<img id="ap-category-image" src="'.$ap_image['url'].'" />';
+
+        echo '<input id="ap_category_media_url" type="hidden" name="ap_category_image_url" value="'.$ap_image['url'].'">';
+        echo '<input id="ap_category_media_id" type="hidden" name="ap_category_image_id" value="'.$ap_image['id'].'">';
+        echo "<p class='description'>".__('Featured image for category', 'categories_for_anspress')."</p>";
+        echo "</td></tr>";
+    }
+
+    public function save_image_field($termID)
+    {
+        if ( isset( $_POST['ap_category_image_url'] ) && isset( $_POST['ap_category_image_id'] ) ) {
+        
+            // get options from database - if not a array create a new one
+            $termMeta = get_option( 'ap_cat_'.$termID );
+            
+            if ( !is_array( $termMeta ))
+                $termMeta = array();
+
+            if ( !is_array( $termMeta['ap_image'] ))
+                $termMeta['ap_image'] = array();
+
+            // get value and save it into the database            
+            $termMeta['ap_image']['url'] = isset( $_POST['ap_category_image_url'] ) ? sanitize_text_field($_POST['ap_category_image_url']) : '';
+
+            $termMeta['ap_image']['id'] = isset( $_POST['ap_category_image_id'] ) ? (int)$_POST['ap_category_image_id'] : '';
+
+            update_option( 'ap_cat_'.$termID, $termMeta );
+        }
+    }
 }
 
 /**
@@ -644,4 +707,13 @@ function ap_category_sorting(){
         'selected'          => sanitize_text_field($_GET['question_cat']),
     );
     wp_dropdown_categories( $args );
+}
+
+function ap_get_category_image($term_id){
+    $option = get_option( 'ap_cat_'.$term_id );
+    
+    if(isset($option['ap_image']['url']))
+        return $option['ap_image']['url'];
+
+    return false;
 }
