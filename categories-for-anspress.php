@@ -743,8 +743,11 @@ function ap_category_sorting(){
         'hierarchical'      => true,
         'hide_if_empty'     => true,
         'name'              => 'question_cat',
-        'selected'          => sanitize_text_field($_GET['question_cat']),
     );
+    
+    if(isset($_GET['question_cat']))
+        $args['selected'] = sanitize_text_field($_GET['question_cat']);
+    
     wp_dropdown_categories( $args );
 }
 
