@@ -124,3 +124,44 @@
 #anspress .ap-taxo-detail .ap-sub-taxo {
   margin: 0;
 }
+#ap-categories-widget.ap-cat-wid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#ap-categories-widget.ap-cat-wid > li {
+  border-bottom: 1px solid #f1f1f1;
+  margin: 0;
+  padding: 7px 0;
+}
+#ap-categories-widget.ap-cat-wid > li:last-child {
+  border-bottom: none;
+}
+#ap-categories-widget.ap-cat-wid > li a {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 2px;
+  padding: 0;
+}
+#ap-categories-widget.ap-cat-wid > li .ap-cat-count {
+  color: #888;
+  font-size: 12px;
+}
+#ap-categories-widget.ap-cat-wid > li .ap-cat-count span:first-child {
+  margin-right: 5px;
+}
+#ap-categories-widget.ap-cat-wid > li .ap-cat-image {
+  float: right;
+}
+#ap-categories-widget.ap-cat-wid > li .ap-cat-image .ap-category-icon {
+  border-radius: 2px;
+  color: rgba(255, 255, 255, 0.97);
+  display: block;
+  font-size: 16px;
+  height: 30px;
+  line-height: 33px;
+  margin-top: 3px;
+  text-align: center;
+  width: 30px;
+}

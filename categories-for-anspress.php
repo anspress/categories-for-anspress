@@ -72,7 +72,7 @@ class Categories_For_AnsPress
         if (!defined('CATEGORIES_FOR_ANSPRESS_URL'))   
                 define('CATEGORIES_FOR_ANSPRESS_URL', plugin_dir_url( __FILE__ ));
 
-        //$this->includes();
+        $this->includes();
 
         ap_register_page('category', __('Category', 'categories_for_anspress'), array($this, 'category_page'), false);
         ap_register_page('categories', __('Categories', 'categories_for_anspress'), array($this, 'categories_page'));
@@ -111,11 +111,11 @@ class Categories_For_AnsPress
         add_action( 'create_question_category', array($this, 'save_image_field') );
         add_action( 'edited_question_category', array($this, 'save_image_field') );
 
+        add_action( 'widgets_init', array($this, 'register_widget') );
     }
 
     public function includes(){
-        require_once( CATEGORIES_FOR_ANSPRESS_DIR . 'shortcode-categories.php' );
-        require_once( CATEGORIES_FOR_ANSPRESS_DIR . 'shortcode-category.php' );
+        require_once( CATEGORIES_FOR_ANSPRESS_DIR . 'categories-widget.php' );
     }
 
     public function category_page()
@@ -502,7 +502,10 @@ class Categories_For_AnsPress
 
     public function ap_list_head()
     {
-        ap_category_sorting();
+        global $wp;
+
+        if(!isset($wp->query_vars['ap_sc_atts_categories']))
+            ap_category_sorting();
     }
 
     public function image_field_new( $term ){        
@@ -592,6 +595,10 @@ class Categories_For_AnsPress
 
             update_option( 'ap_cat_'.$termID, $termMeta );
         }
+    }
+
+    public function register_widget() {
+        register_widget( 'AnsPress_Category_Widget' );
     }
 }
 
@@ -742,11 +749,11 @@ function ap_category_sorting(){
         'taxonomy'          => 'question_category',
         'hierarchical'      => true,
         'hide_if_empty'     => true,
-        'name'              => 'question_cat',
+        'name'              => 'ap_cat_sort',
     );
     
-    if(isset($_GET['question_cat']))
-        $args['selected'] = sanitize_text_field($_GET['question_cat']);
+    if(isset($_GET['ap_cat_sort']))
+        $args['selected'] = sanitize_text_field($_GET['ap_cat_sort']);
     
     wp_dropdown_categories( $args );
 }
