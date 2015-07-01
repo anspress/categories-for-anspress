@@ -750,6 +750,7 @@ function ap_category_sorting(){
         'hierarchical'      => true,
         'hide_if_empty'     => true,
         'name'              => 'ap_cat_sort',
+        'class'             => 'ap-form-control ap-category-sorting',
     );
     
     if(isset($_GET['ap_cat_sort']))

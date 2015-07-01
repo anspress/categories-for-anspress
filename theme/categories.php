@@ -13,39 +13,48 @@
 
 	global $question_categories;
 ?>
+<?php dynamic_sidebar( 'ap-top' ); ?>
+<div class="row">
+	<div id="ap-lists" class="<?php echo is_active_sidebar( 'ap-category' ) && is_anspress() ? 'col-md-9' : 'col-md-12' ?>">
+		<div id="ap-categories" class="clearfix">
+			<ul class="ap-term-category-box clearfix">
+				<?php foreach($question_categories as $key => $category) : ?>
+					<li class="clearfix">
+						<div class="ap-category-item">
+							<div class="ap-cat-img-c">
+								<span class="ap-term-count">
+									<?php printf(_n('%d Question', '%d Questions', 'categories_for_anspress', $category->count), $category->count) ?>
+								</span>
+								<?php echo ap_get_category_image($category->term_id); ?>
+							</div>
+							
+							<div class="ap-term-title">						
+								<a class="term-title" href="<?php echo get_category_link( $category );?>">
+									<?php echo $category->name; ?>
+								</a>						
+								<?php $sub_cat_count = count(get_term_children( $category->term_id, 'question_category' )); ?>
+								<?php if($sub_cat_count > 0): ?>
+									<span class="ap-sub-category">
+									<?php printf(_n('%d Sub category', '%d Sub categories', 'categories_for_anspress', $sub_cat_count), $sub_cat_count) ?>
+									</span>
+								<?php endif; ?>
+							</div>
 
-<div id="ap-categories" class="clearfix">
-	<ul class="ap-term-category-box clearfix">
-		<?php foreach($question_categories as $key => $category) : ?>
-			<li class="clearfix">
-				<div class="ap-category-item">
-					<div class="ap-cat-img-c">
-						<span class="ap-term-count">
-							<?php printf(_n('%d Question', '%d Questions', 'categories_for_anspress', $category->count), $category->count) ?>
-						</span>
-						<?php echo ap_get_category_image($category->term_id); ?>
-					</div>
-					
-					<div class="ap-term-title">						
-						<a class="term-title" href="<?php echo get_category_link( $category );?>">
-							<?php echo $category->name; ?>
-						</a>						
-						<?php $sub_cat_count = count(get_term_children( $category->term_id, 'question_category' )); ?>
-						<?php if($sub_cat_count > 0): ?>
-							<span class="ap-sub-category">
-							<?php printf(_n('%d Sub category', '%d Sub categories', 'categories_for_anspress', $sub_cat_count), $sub_cat_count) ?>
-							</span>
-						<?php endif; ?>
-					</div>
-
-					<?php if($category->description != ''): ?>
-						<div class="ap-taxo-description">
-							<?php echo ap_truncate_chars($category->description, 70); ?>
+							<?php if($category->description != ''): ?>
+								<div class="ap-taxo-description">
+									<?php echo ap_truncate_chars($category->description, 70); ?>
+								</div>
+							<?php endif; ?>
 						</div>
-					<?php endif; ?>
-				</div>
-			</li>
-		<?php endforeach; ?>
-	</ul>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+		<?php ap_pagination(); ?>
+	</div>
+	<?php if ( is_active_sidebar( 'ap-category' ) && is_anspress()){ ?>
+	<div class="ap-question-right col-md-3">
+		<?php dynamic_sidebar( 'ap-category' ); ?>
+	</div>
+	<?php } ?>
 </div>
-<?php ap_pagination(); ?>
