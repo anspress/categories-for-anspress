@@ -614,7 +614,7 @@ class Categories_For_AnsPress
 function categories_for_anspress() {
     $discounts = new Categories_For_AnsPress();
 }
-add_action( 'plugins_loaded', 'ap' );
+add_action( 'plugins_loaded', 'categories_for_anspress' );
 
 /**
  * Output question categories
