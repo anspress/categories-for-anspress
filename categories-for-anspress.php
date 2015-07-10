@@ -15,7 +15,7 @@
  * Plugin URI:        http://anspress.io/downloads/categories-for-anspress
  * Description:       Extension for AnsPress. Add categories in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           1.3.7
+ * Version:           1.3.8
  * Author:            Rahul Aryan
  * Author URI:        http://anspress.io
  * Text Domain:       categories_for_anspress
@@ -66,17 +66,17 @@ class Categories_For_AnsPress
         if( ! class_exists( 'AnsPress' ) )
             return; // AnsPress not installed
 
-        if (!defined('CATEGORIES_FOR_ANSPRESS_DIR'))    
+        if (!defined('CATEGORIES_FOR_ANSPRESS_DIR'))
             define('CATEGORIES_FOR_ANSPRESS_DIR', plugin_dir_path( __FILE__ ));
 
-        if (!defined('CATEGORIES_FOR_ANSPRESS_URL'))   
+        if (!defined('CATEGORIES_FOR_ANSPRESS_URL'))
                 define('CATEGORIES_FOR_ANSPRESS_URL', plugin_dir_url( __FILE__ ));
 
         $this->includes();
 
-        ap_register_page('category', __('Category', 'categories_for_anspress'), array($this, 'category_page'), false);
-        ap_register_page('categories', __('Categories', 'categories_for_anspress'), array($this, 'categories_page'));
-        
+        ap_register_page('category', __('Category', 'ap'), array($this, 'category_page'), false);
+        ap_register_page('categories', __('Categories', 'ap'), array($this, 'categories_page'));
+
         // internationalization
         add_action( 'init', array( $this, 'textdomain' ) );
 
@@ -96,9 +96,9 @@ class Categories_For_AnsPress
         add_action('ap_ask_fields_validation', array($this, 'ap_ask_fields_validation'));
         add_action('ap_processed_new_question', array($this, 'after_new_question'), 0, 2 );
         add_action('ap_processed_update_question', array($this, 'after_new_question'), 0, 2 );
-        add_filter('ap_page_title', array($this, 'page_title'));        
-        add_filter('ap_breadcrumbs', array($this, 'ap_breadcrumbs'));        
-        add_filter('ap_option_group_layout', array($this, 'option')); 
+        add_filter('ap_page_title', array($this, 'page_title'));
+        add_filter('ap_breadcrumbs', array($this, 'ap_breadcrumbs'));
+        add_filter('ap_option_group_layout', array($this, 'option'));
 
         add_action('ap_user_subscription_tab', array($this, 'subscription_tab'));
         add_action('ap_user_subscription_page', array($this, 'subscription_page'));
@@ -124,14 +124,14 @@ class Categories_For_AnsPress
 
         $category_id = sanitize_text_field( get_query_var( 'q_cat'));
 
-        $question_args= array('tax_query' => array(        
+        $question_args= array('tax_query' => array(
             array(
                 'taxonomy' => 'question_category',
                 'field' => is_numeric($category_id) ? 'id' : 'slug',
                 'terms' => array( $category_id )
             )
         ));
-        
+
         $question_category = get_term_by( is_numeric($category_id) ? 'id' : 'slug', $category_id, 'question_category');
         $questions = ap_get_questions($question_args);
         include(ap_get_theme_location('category.php', CATEGORIES_FOR_ANSPRESS_DIR));
@@ -143,7 +143,7 @@ class Categories_For_AnsPress
 
         $paged = get_query_var('paged') ? get_query_var('paged') : 1;
         $per_page           = ap_opt('categories_per_page');
-        $total_terms        = wp_count_terms('question_category');  
+        $total_terms        = wp_count_terms('question_category');
         $offset             = $per_page * ( $paged - 1) ;
         $ap_max_num_pages   = $total_terms / $per_page ;
 
@@ -165,7 +165,7 @@ class Categories_For_AnsPress
         $cat_args = apply_filters('ap_categories_shortcode_args', $cat_args );
 
         $question_categories = get_terms( 'question_category' , $cat_args);
-        
+
         include ap_get_theme_location('categories.php', CATEGORIES_FOR_ANSPRESS_DIR);
     }
 
@@ -183,32 +183,32 @@ class Categories_For_AnsPress
         $lang_dir = dirname( plugin_basename( __FILE__ ) ) . '/languages/';
 
         // Load the translations
-        load_plugin_textdomain( 'categories_for_anspress', false, $lang_dir );
+        load_plugin_textdomain( 'ap', false, $lang_dir );
     }
-    
+
     /**
      * Register category taxonomy for question cpt
      * @return void
      * @since 2.0
      */
     public function register_question_categories(){
-        ap_register_menu('ANSPRESS_CATEGORIES_PAGE_URL', __('Categories', 'categories_for_anspress'), ap_get_link_to('categories'));
+        ap_register_menu('ANSPRESS_CATEGORIES_PAGE_URL', __('Categories', 'ap'), ap_get_link_to('categories'));
 
         /**
          * Labesl for category taxonomy
          * @var array
          */
         $categories_labels = array(
-            'name' => __('Question Categories', 'categories_for_anspress'),
-            'singular_name' => _x('Category', 'categories_for_anspress'),
-            'all_items' => __('All Categories', 'categories_for_anspress'),
-            'add_new_item' => _x('Add New Category', 'categories_for_anspress'),
-            'edit_item' => __('Edit Category', 'categories_for_anspress'),
-            'new_item' => __('New Category', 'categories_for_anspress'),
-            'view_item' => __('View Category', 'categories_for_anspress'),
-            'search_items' => __('Search Category', 'categories_for_anspress'),
-            'not_found' => __('Nothing Found', 'categories_for_anspress'),
-            'not_found_in_trash' => __('Nothing found in Trash', 'categories_for_anspress'),
+            'name' => __('Question Categories', 'ap'),
+            'singular_name' => _x('Category', 'ap'),
+            'all_items' => __('All Categories', 'ap'),
+            'add_new_item' => _x('Add New Category', 'ap'),
+            'edit_item' => __('Edit Category', 'ap'),
+            'new_item' => __('New Category', 'ap'),
+            'view_item' => __('View Category', 'ap'),
+            'search_items' => __('Search Category', 'ap'),
+            'not_found' => __('Nothing Found', 'ap'),
+            'not_found_in_trash' => __('Nothing found in Trash', 'ap'),
             'parent_item_colon' => ''
         );
 
@@ -243,20 +243,20 @@ class Categories_For_AnsPress
     }
 
     public function load_options()
-    {        
+    {
         $settings = ap_opt();
-        ap_register_option_group( 'categories', __('Categories', 'categories_for_anspress'), array(
+        ap_register_option_group( 'categories', __('Categories', 'ap'), array(
             array(
                 'name'              => 'anspress_opt[form_category_orderby]',
-                'label'             => __('Category order by', 'categories_for_anspress'),
-                'description'       => __('Set how you want to order categories in form.', 'categories_for_anspress'),
+                'label'             => __('Category order by', 'ap'),
+                'description'       => __('Set how you want to order categories in form.', 'ap'),
                 'type'              => 'select',
                 'options'			=>array(
-                	'ID' 			=> __('ID', 'categories_for_anspress'),
-                	'name' 			=> __('Name', 'categories_for_anspress'),
-                	'slug' 			=> __('Slug', 'categories_for_anspress'),
-                	'count' 		=> __('Count', 'categories_for_anspress'),
-                	'term_group' 	=> __('Group', 'categories_for_anspress'),
+                	'ID' 			=> __('ID', 'ap'),
+                	'name' 			=> __('Name', 'ap'),
+                	'slug' 			=> __('Slug', 'ap'),
+                	'count' 		=> __('Count', 'ap'),
+                	'term_group' 	=> __('Group', 'ap'),
                 	),
                 'value'             => $settings['form_category_orderby'],
             )
@@ -272,9 +272,9 @@ class Categories_For_AnsPress
     /**
      * Apppend default options
      * @param   array $defaults
-     * @return  array           
+     * @return  array
      * @since   1.0
-     */             
+     */
     public function ap_default_options($defaults)
     {
         $defaults['form_category_orderby']  = 'count';
@@ -294,12 +294,12 @@ class Categories_For_AnsPress
     /**
      * Append meta display
      * @param  array $metas
-     * @param array $question_id        
+     * @param array $question_id
      * @return array
      * @since 1.0
      */
     public function ap_display_question_metas($metas, $question_id)
-    {   
+    {
         if(ap_question_have_category($question_id) && !is_singular('question'))
             $metas['categories'] = ap_question_categories_html(array('label' => ap_icon('category', true)));
 
@@ -315,7 +315,7 @@ class Categories_For_AnsPress
     public function ap_before_question_title($post)
     {
         if(ap_question_have_category())
-            echo '<div class="ap-posted-in">' . ap_question_categories_html(array('label' => __('Posted in ', 'categories_for_anspress'))) .'</div>';
+            echo '<div class="ap-posted-in">' . ap_question_categories_html(array('label' => __('Posted in ', 'ap'))) .'</div>';
     }
     /**
      * Enqueue scripts
@@ -324,18 +324,18 @@ class Categories_For_AnsPress
     public function ap_enqueue()
     {
         wp_enqueue_style( 'categories_for_anspress_css', ap_get_theme_url('css/categories.css', CATEGORIES_FOR_ANSPRESS_URL));
-        
+
     }
 
     public function term_link_filter( $url, $term, $taxonomy ) {
-        if($taxonomy == 'question_category'){           
+        if($taxonomy == 'question_category'){
             if(get_option('permalink_structure') != '')
-                 return ap_get_link_to(array('ap_page' => 'category', 'q_cat' => $term->slug));               
+                 return ap_get_link_to(array('ap_page' => 'category', 'q_cat' => $term->slug));
             else
                 return ap_get_link_to(array('ap_page' => 'category', 'q_cat' => $term->term_id));
         }
         return $url;
-       
+
     }
 
     /**
@@ -357,12 +357,12 @@ class Categories_For_AnsPress
 
         $args['fields'][] = array(
             'name' => 'category',
-            'label' => __('Category', 'categories_for_anspress'),
+            'label' => __('Category', 'ap'),
             'type'  => 'taxonomy_select',
             'value' => ( $editing ? $catgeory :  sanitize_text_field(@$_POST['category'] ))  ,
             'taxonomy' => 'question_category',
             'orderby' => ap_opt('form_category_orderby'),
-            'desc' => __('Select a topic that best fits your question', 'categories_for_anspress'),
+            'desc' => __('Select a topic that best fits your question', 'ap'),
             'order' => 6
         );
 
@@ -387,7 +387,7 @@ class Categories_For_AnsPress
 
         return $args;
     }
-    
+
     /**
      * Things to do after creating a question
      * @param  int $post_id
@@ -406,7 +406,7 @@ class Categories_For_AnsPress
 
         if(isset($fields['category']))
             $category = wp_set_post_terms( $post_id, $fields['category'], 'question_category' );
-        
+
     }
 
     public function page_title($title){
@@ -430,7 +430,7 @@ class Categories_For_AnsPress
             $navs['category'] = array( 'title' => $category->name, 'link' => get_term_link( $category, 'question_category' ), 'order' => 8 );
         }elseif( is_question_categories()){
             $navs['page'] = array( 'title' => __('Categories', 'ap'), 'link' => ap_get_link_to('categories'), 'order' => 8 );
- 
+
         }
 
         return $navs;
@@ -438,7 +438,7 @@ class Categories_For_AnsPress
 
     public function option($fields){
         $settings = ap_opt();
-        
+
         $fields[] = array(
             'name' => 'anspress_opt[categories_page_title]',
             'label' => __('Categories title', 'ap') ,
@@ -467,7 +467,7 @@ class Categories_For_AnsPress
 
         $paged = get_query_var('paged') ? get_query_var('paged') : 1;
         $per_page           = ap_opt('categories_per_page');
-        $total_terms        = wp_count_terms('question_category');  
+        $total_terms        = wp_count_terms('question_category');
         $offset             = $per_page * ( $paged - 1) ;
         $ap_max_num_pages   = $total_terms / $per_page ;
 
@@ -483,7 +483,7 @@ class Categories_For_AnsPress
         );
 
         $question_categories = get_terms( 'question_category' , $cat_args);
-        
+
         include ap_get_theme_location('categories.php', CATEGORIES_FOR_ANSPRESS_DIR);
     }
 
@@ -508,80 +508,80 @@ class Categories_For_AnsPress
             ap_category_sorting();
     }
 
-    public function image_field_new( $term ){        
+    public function image_field_new( $term ){
         echo "<div class='form-field term-image-wrap'>";
-        echo "<label for='ap_image'>".__('Image', 'categories_for_anspress')."</label>";
-        echo '<a href="#" id="ap-category-upload">'.__('Upload image', 'categories_for_anspress').'</a>';
+        echo "<label for='ap_image'>".__('Image', 'ap')."</label>";
+        echo '<a href="#" id="ap-category-upload">'.__('Upload image', 'ap').'</a>';
 
         echo '<input id="ap_category_media_url" type="hidden" name="ap_category_image_url" value="'.$ap_image['url'].'">';
         echo '<input id="ap_category_media_id" type="hidden" name="ap_category_image_id" value="'.$ap_image['id'].'">';
-        echo '<p class="description">'.__('Category image', 'categories_for_anspress').'</p>';
+        echo '<p class="description">'.__('Category image', 'ap').'</p>';
         echo "<div>";
         echo "<div class='form-field term-image-wrap'>";
-        echo "<label for='ap_icon'>".__('Category icon class', 'categories_for_anspress')."</label>";
+        echo "<label for='ap_icon'>".__('Category icon class', 'ap')."</label>";
         echo '<input id="ap_icon" type="text" name="ap_icon" value="">';
-        echo '<p class="description">'.__('Font icon class, if image not set', 'categories_for_anspress').'</p>';
+        echo '<p class="description">'.__('Font icon class, if image not set', 'ap').'</p>';
         echo "<div>";
         echo "<div class='form-field term-image-wrap'>";
-        echo "<label for='ap-category-color'>".__('Category icon color', 'categories_for_anspress')."</label>";
+        echo "<label for='ap-category-color'>".__('Category icon color', 'ap')."</label>";
         echo '<input id="ap-category-color" type="text" name="ap_color" value="">';
-        echo '<p class="description">'.__('Icon color', 'categories_for_anspress').'</p>';
+        echo '<p class="description">'.__('Icon color', 'ap').'</p>';
         echo "<div>";
     }
 
     public function image_field_edit( $term ){
         $termID         = $term->term_id;
         $option_name    = 'ap_cat_'.$term->term_id;
-        $termMeta       = get_option( $option_name );    
+        $termMeta       = get_option( $option_name );
         $ap_image       = $termMeta['ap_image'];
         $ap_icon        = $termMeta['ap_icon'];
         $ap_color        = $termMeta['ap_color'];
 
         echo "<tr class='form-field form-required term-name-wrap'>";
-        echo "<th scope='row'><label for='custom-field'>".__('Image', 'categories_for_anspress')."</label></th>";
-        echo '<td>';        
-        echo '<a href="#" id="ap-category-upload">'.__('Upload image', 'categories_for_anspress').'</a>';        
-        
+        echo "<th scope='row'><label for='custom-field'>".__('Image', 'ap')."</label></th>";
+        echo '<td>';
+        echo '<a href="#" id="ap-category-upload">'.__('Upload image', 'ap').'</a>';
+
         if(isset($ap_image['url']) && $ap_image['url'] != '')
             echo '<img id="ap_category_media_preview" src="'.$ap_image['url'].'" />';
 
         echo '<input id="ap_category_media_url" type="hidden" name="ap_category_image_url" value="'.$ap_image['url'].'">';
         echo '<input id="ap_category_media_id" type="hidden" name="ap_category_image_id" value="'.$ap_image['id'].'">';
-        echo "<p class='description'>".__('Featured image for category', 'categories_for_anspress')."</p>";
-        echo '<a href="#" id="ap-category-upload-remove">'.__('Remove image', 'categories_for_anspress').'</a>';
+        echo "<p class='description'>".__('Featured image for category', 'ap')."</p>";
+        echo '<a href="#" id="ap-category-upload-remove">'.__('Remove image', 'ap').'</a>';
         echo "</td></tr>";
 
         echo "<tr class='form-field form-required term-name-wrap'>";
-        echo "<th scope='row'><label for='custom-field'>".__('Category icon class', 'categories_for_anspress')."</label></th>";
+        echo "<th scope='row'><label for='custom-field'>".__('Category icon class', 'ap')."</label></th>";
         echo '<td>';
         echo '<input id="ap_icon" type="text" name="ap_icon" value="'.$ap_icon.'">';
-        echo '<p class="description">'.__('Font icon class, if image not set', 'categories_for_anspress').'</p>';
+        echo '<p class="description">'.__('Font icon class, if image not set', 'ap').'</p>';
         echo "</td></tr>";
 
         echo "<tr class='form-field form-required term-name-wrap'>";
-        echo "<th scope='row'><label for='ap-category-color'>".__('Category icon color', 'categories_for_anspress')."</label></th>";
+        echo "<th scope='row'><label for='ap-category-color'>".__('Category icon color', 'ap')."</label></th>";
         echo '<td>';
         echo '<input id="ap-category-color" type="text" name="ap_color" value="'.$ap_color.'">';
-        echo '<p class="description">'.__('Font icon class, if image not set', 'categories_for_anspress').'</p>';
+        echo '<p class="description">'.__('Font icon class, if image not set', 'ap').'</p>';
         echo "</td></tr>";
     }
 
     public function save_image_field($termID)
     {
         if ( (isset( $_POST['ap_category_image_url'] ) && isset( $_POST['ap_category_image_id'] )) || isset( $_POST['ap_icon'] ) ) {
-        
+
             // get options from database - if not a array create a new one
             $termMeta = get_option( 'ap_cat_'.$termID );
-            
+
             if ( !is_array( $termMeta ))
                 $termMeta = array();
 
             if(isset( $_POST['ap_category_image_url'] ) && isset( $_POST['ap_category_image_id'] )){
-               
+
                 if ( !is_array( $termMeta['ap_image'] ))
                     $termMeta['ap_image'] = array();
 
-                // get value and save it into the database            
+                // get value and save it into the database
                 $termMeta['ap_image']['url'] = isset( $_POST['ap_category_image_url'] ) ? sanitize_text_field($_POST['ap_category_image_url']) : '';
 
                 $termMeta['ap_image']['id'] = isset( $_POST['ap_category_image_id'] ) ? (int)$_POST['ap_category_image_id'] : '';
@@ -614,11 +614,11 @@ class Categories_For_AnsPress
 function categories_for_anspress() {
     $discounts = new Categories_For_AnsPress();
 }
-add_action( 'plugins_loaded', 'categories_for_anspress' );
+add_action( 'plugins_loaded', 'ap' );
 
 /**
  * Output question categories
- * @param  array  $args 
+ * @param  array  $args
  * @return string
  */
 function ap_question_categories_html($args = array()){
@@ -628,7 +628,7 @@ function ap_question_categories_html($args = array()){
         'list'           => false,
         'tag'           => 'span',
         'class'         => 'question-categories',
-        'label'         => __('Categories', 'categories_for_anspress'),
+        'label'         => __('Categories', 'ap'),
         'echo'          => false
     );
 
@@ -639,9 +639,9 @@ function ap_question_categories_html($args = array()){
     }else{
         $args = wp_parse_args( $args, $defaults );
     }
-    
+
     $cats = get_the_terms( $args['question_id'], 'question_category' );
-    
+
     if($cats){
         $o = '';
         if($args['list']){
@@ -650,7 +650,7 @@ function ap_question_categories_html($args = array()){
                 $o .= '<li><a href="'.esc_url( get_term_link($c)).'" title="'.$c->description.'">'. $c->name .'</a></li>';
             }
             $o .= '</ul>';
-            
+
         }else{
             $o = $args['label'];
             $o .= '<'.$args['tag'].' class="'.$args['class'].'">';
@@ -669,7 +669,7 @@ function ap_question_categories_html($args = array()){
 
 
 function ap_category_details(){
-        
+
     $var = get_query_var('question_category');
 
     $category = get_term_by('slug', $var, 'question_category');
@@ -677,29 +677,29 @@ function ap_category_details(){
     echo '<div class="clearfix">';
     echo '<h3><a href="'.get_category_link( $category ).'">'. $category->name .'</a></h3>';
     echo '<div class="ap-taxo-meta">';
-    echo '<span class="count">'. $category->count .' '.__('Questions', 'categories_for_anspress').'</span>'; 
+    echo '<span class="count">'. $category->count .' '.__('Questions', 'ap').'</span>';
     echo '<a class="aicon-rss feed-link" href="' . get_term_feed_link($category->term_id, 'question_category') . '" title="Subscribe to '. $category->name .'" rel="nofollow"></a>';
     echo '</div>';
     echo '</div>';
-    
+
     echo '<p class="desc clearfix">'. $category->description .'</p>';
-    
-    $child = get_terms( array('taxonomy' => 'question_category'), array( 'parent' => $category->term_id, 'hierarchical' => false, 'hide_empty' => false )); 
-                   
-    if($child) : 
+
+    $child = get_terms( array('taxonomy' => 'question_category'), array( 'parent' => $category->term_id, 'hierarchical' => false, 'hide_empty' => false ));
+
+    if($child) :
         echo '<ul class="ap-child-list clearfix">';
             foreach($child as $key => $c) :
                 echo '<li><a class="taxo-title" href="'.get_category_link( $c ).'">'.$c->name.'<span>'.$c->count.'</span></a>';
                 echo '</li>';
             endforeach;
         echo'</ul>';
-    endif;  
+    endif;
 }
 function ap_sub_category_list($parent){
     $categories = get_terms( array('taxonomy' => 'question_category'), array( 'parent' => $parent, 'hide_empty' => false ));
-    
+
     if($categories){
-        echo '<ul class="ap-sub-taxo ap-ul-inline clearfix">'; 
+        echo '<ul class="ap-sub-taxo ap-ul-inline clearfix">';
         foreach ($categories as $cat){
             echo '<li><a href="'.get_category_link( $cat ).'">' .$cat->name.'<span>'.$cat->count.'</span></a></li>';
         }
@@ -711,11 +711,11 @@ function ap_question_have_category($post_id = false){
     if(!$post_id)
         $post_id = get_the_ID();
 
-    
+
     $categories = wp_get_post_terms( $post_id, 'question_category');
     if(!empty($categories))
         return true;
-    
+
     return false;
 }
 
@@ -729,7 +729,7 @@ if(!function_exists('is_question_categories')){
     function is_question_categories(){
         if('categories' == get_query_var( 'ap_page' ))
             return true;
-            
+
         return false;
     }
 }
@@ -738,25 +738,31 @@ if(!function_exists('is_question_category')){
     function is_question_category(){
         if('category' == get_query_var( 'ap_page' ))
             return true;
-            
+
         return false;
     }
 }
 
 function ap_category_sorting(){
-    $args = array( 
-        'show_option_all'   => __('All categories', 'ap'),
-        'taxonomy'          => 'question_category',
+    $args = array(
         'hierarchical'      => true,
         'hide_if_empty'     => true,
-        'name'              => 'ap_cat_sort',
-        'class'             => 'ap-form-control ap-category-sorting',
+        'number'            => 10,
     );
-    
-    if(isset($_GET['ap_cat_sort']))
-        $args['selected'] = sanitize_text_field($_GET['ap_cat_sort']);
-    
-    wp_dropdown_categories( $args );
+
+    $terms = get_terms('question_category', $args);
+    $selected = isset($_GET['ap_cat_sort']) ? (int) $_GET['ap_cat_sort'] : '';
+    if($terms){
+        echo '<div class="ap-dropdown">';
+            echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle'.($selected != '' ? ' active' : '').'" href="#">'.__('Category', 'ap').'</a>';
+            echo '<div class="ap-dropdown-menu">';
+            foreach ($terms as $t) {
+                echo '<li '.($selected == $t->term_id ? 'class="active" ' : '').'><a href="#" data-value="'.$t->term_id.'">'. $t->name .'</a></li>';
+            }
+            echo '<input name="ap_cat_sort" type="hidden" value="'.$selected.'" />';
+            echo '</div>';
+        echo '</div>';
+    }
 }
 
 function ap_get_category_image($term_id){
