@@ -416,7 +416,7 @@ class Categories_For_AnsPress
         elseif(is_question_category()){
             $category_id = sanitize_text_field( get_query_var( 'q_cat'));
             $category = get_term_by(is_numeric($category_id) ? 'id' : 'slug', $category_id, 'question_category');
-            $title = sprintf(__('Question category: %s', 'ap'), $category->name);
+            $title = $category->name;
         }
 
         return $title;
@@ -500,6 +500,10 @@ class Categories_For_AnsPress
         return $pieces;
     }
 
+    /**
+     * Add category sorting in list head
+     * @return void
+     */
     public function ap_list_head()
     {
         global $wp;
@@ -508,6 +512,11 @@ class Categories_For_AnsPress
             ap_category_sorting();
     }
 
+    /**
+     * Custom question category fields
+     * @param  array $term
+     * @return void
+     */
     public function image_field_new( $term ){
         echo "<div class='form-field term-image-wrap'>";
         echo "<label for='ap_image'>".__('Image', 'ap')."</label>";
@@ -597,6 +606,10 @@ class Categories_For_AnsPress
         }
     }
 
+    /**
+     * Register category widget
+     * @return void
+     */
     public function register_widget() {
         register_widget( 'AnsPress_Category_Widget' );
     }
