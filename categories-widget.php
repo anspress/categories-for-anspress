@@ -8,9 +8,9 @@ class AnsPress_Category_Widget extends WP_Widget {
 
 	public function widget( $args, $instance ) {
 		$title = apply_filters( 'widget_title', $instance['title'] );
-		
+
 		echo $args['before_widget'];
-		
+
 		if ( ! empty( $title ) ) {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
@@ -22,18 +22,19 @@ class AnsPress_Category_Widget extends WP_Widget {
 			'orderby'       => $instance['orderby'],
 			'order'         => $instance['order'],
 		);
-		
+
 		$categories = get_terms( 'question_category' , $cat_args);
 		?>
+		<div class="ap-widget-inner">
 			<ul id="ap-categories-widget" class="ap-cat-wid">
-				<?php 
-				foreach($categories as $key => $category) : 
+				<?php
+				foreach($categories as $key => $category) :
 					$sub_cat_count = count(get_term_children( $category->term_id, 'question_category' ));
 				?>
 					<li class="clearfix">
 						<a class="ap-cat-image" href="<?php echo get_category_link( $category );?>"><?php echo ap_get_category_image($category->term_id); ?></a>
 						<a class="ap-cat-wid-title" href="<?php echo get_category_link( $category );?>">
-							<?php echo $category->name; ?>							
+							<?php echo $category->name; ?>
 						</a>
 						<div class="ap-cat-count">
 							<span><?php printf(_n('%d Question', '%d Questions', $category->count), $category->count); ?></span>
@@ -44,8 +45,9 @@ class AnsPress_Category_Widget extends WP_Widget {
 					</li>
 				<?php endforeach; ?>
 			</ul>
+		</div>
 		<?php
-		echo $args['after_widget'];		
+		echo $args['after_widget'];
 	}
 
 	public function form( $instance ) {
@@ -58,41 +60,41 @@ class AnsPress_Category_Widget extends WP_Widget {
 			$hide_empty = $instance[ 'hide_empty' ];
 		else
 			$hide_empty = false;
-			
+
 		if ( isset( $instance[ 'parent' ] ) )
 			$parent = $instance[ 'parent' ];
 		else
 			$parent = 0;
-		
+
 		if ( isset( $instance[ 'number' ] ) )
 			$number = $instance[ 'number' ];
 		else
 			$number = 10;
-		
+
 		if ( isset( $instance[ 'orderby' ] ) )
 			$orderby = $instance[ 'orderby' ];
 		else
 			$orderby = 'count';
-		
+
 		if ( isset( $instance[ 'order' ] ) )
 			$order = $instance[ 'order' ];
 		else
 			$order = 'DESC';
-		
+
 		$cat_args = array(
 			'hide_empty'    => false,
 			'orderby'       => 'count',
 			'order'         => 'DESC',
 		);
 		$categories = get_terms( 'question_category' , $cat_args);
-		
+
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'ap' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'ap' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'hide_empty' ); ?>"><?php _e( 'Hide empty:', 'ap' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'hide_empty' ); ?>"><?php _e( 'Hide empty:', 'ap' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'hide_empty' ); ?>" name="<?php echo $this->get_field_name( 'hide_empty' ); ?>" type="checkbox" value="1" <?php checked( true, $hide_empty);?>>
 		</p>
 		<p>
@@ -103,12 +105,12 @@ class AnsPress_Category_Widget extends WP_Widget {
 					if($categories)
 					foreach($categories as $c)
 						echo '<option value="'.$c->term_id.'" '.selected($parent, $c->term_id ).'>'.$c->name.'</option>';
-					
+
 				?>
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Number:', 'ap' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Number:', 'ap' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'number' ); ?>" name="<?php echo $this->get_field_name( 'number' ); ?>" type="text" value="<?php echo esc_attr( $number ); ?>">
 		</p>
 		<p>
@@ -129,7 +131,7 @@ class AnsPress_Category_Widget extends WP_Widget {
 				<option value="ASC" <?php echo selected($order, 'ASC' ); ?>><?php _e('ASC', 'ap'); ?></option>
 			</select>
 		</p>
-		<?php 
+		<?php
 	}
 
 	/**

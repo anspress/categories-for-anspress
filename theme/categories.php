@@ -27,11 +27,11 @@
 								</span>
 								<?php echo ap_get_category_image($category->term_id); ?>
 							</div>
-							
-							<div class="ap-term-title">						
+
+							<div class="ap-term-title">
 								<a class="term-title" href="<?php echo get_category_link( $category );?>">
 									<?php echo $category->name; ?>
-								</a>						
+								</a>
 								<?php $sub_cat_count = count(get_term_children( $category->term_id, 'question_category' )); ?>
 								<?php if($sub_cat_count > 0): ?>
 									<span class="ap-sub-category">
