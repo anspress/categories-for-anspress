@@ -25,27 +25,27 @@ class AnsPress_Category_Widget extends WP_Widget {
 
 		$categories = get_terms( 'question_category' , $cat_args);
 		?>
-		<div class="ap-widget-inner">
-			<ul id="ap-categories-widget" class="ap-cat-wid">
-				<?php
-				foreach($categories as $key => $category) :
-					$sub_cat_count = count(get_term_children( $category->term_id, 'question_category' ));
-				?>
-					<li class="clearfix">
-						<a class="ap-cat-image" href="<?php echo get_category_link( $category );?>"><?php echo ap_get_category_image($category->term_id); ?></a>
-						<a class="ap-cat-wid-title" href="<?php echo get_category_link( $category );?>">
-							<?php echo $category->name; ?>
-						</a>
-						<div class="ap-cat-count">
-							<span><?php printf(_n('%d Question', '%d Questions', $category->count), $category->count); ?></span>
-							<?php if($sub_cat_count > 0) : ?>
-								<span><?php printf(__('%d Child', 'ap'), $sub_cat_count); ?></span>
-							<?php endif; ?>
-						</div>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-		</div>
+
+		<ul id="ap-categories-widget" class="ap-cat-wid clearfix">
+			<?php
+			foreach($categories as $key => $category) :
+				$sub_cat_count = count(get_term_children( $category->term_id, 'question_category' ));
+			?>
+				<li class="clearfix">
+					<a class="ap-cat-image" href="<?php echo get_category_link( $category );?>"><?php echo ap_get_category_image($category->term_id); ?></a>
+					<a class="ap-cat-wid-title" href="<?php echo get_category_link( $category );?>">
+						<?php echo $category->name; ?>
+					</a>
+					<div class="ap-cat-count">
+						<span><?php printf(_n('%d Question', '%d Questions', $category->count), $category->count); ?></span>
+						<?php if($sub_cat_count > 0) : ?>
+							<span><?php printf(__('%d Child', 'ap'), $sub_cat_count); ?></span>
+						<?php endif; ?>
+					</div>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+
 		<?php
 		echo $args['after_widget'];
 	}
