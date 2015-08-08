@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-08-07 17:57+0100\n"
+"PO-Revision-Date: 2015-08-08 07:50+0530\n"
 "Last-Translator: Benjamin Meghnagi <rhodel@live.it>\n"
 "Language-Team: \n"
 "X-Generator: Poedit 1.7.3\n"
@@ -24,16 +24,14 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: categories-for-anspress.php:77 categories-for-anspress.php:360
-#: categories-for-anspress.php:456
-#: categories-for-anspress.php:770
+#: categories-for-anspress.php:456 categories-for-anspress.php:770
 msgid "Category"
 msgstr "Categoria"
 
 #: categories-for-anspress.php:78 categories-for-anspress.php:195
-#: categories-for-anspress.php:248
-#: categories-for-anspress.php:429
-#: categories-for-anspress.php:432
-#: categories-for-anspress.php:644 categories-widget.php:57
+#: categories-for-anspress.php:248 categories-for-anspress.php:429
+#: categories-for-anspress.php:432 categories-for-anspress.php:644
+#: categories-widget.php:57
 msgid "Categories"
 msgstr "Categorie"
 
@@ -113,13 +111,11 @@ msgstr "Titolo delle Categorie"
 msgid "Title of the categories page"
 msgstr "Titolo della pagina Categorie"
 
-#: categories-for-anspress.php:522
-#: categories-for-anspress.php:550
+#: categories-for-anspress.php:522 categories-for-anspress.php:550
 msgid "Image"
 msgstr "Immagine"
 
-#: categories-for-anspress.php:523
-#: categories-for-anspress.php:552
+#: categories-for-anspress.php:523 categories-for-anspress.php:552
 msgid "Upload image"
 msgstr "Uploada Immagine"
 
@@ -127,19 +123,16 @@ msgstr "Uploada Immagine"
 msgid "Category image"
 msgstr "Immagine Categoria"
 
-#: categories-for-anspress.php:530
-#: categories-for-anspress.php:564
+#: categories-for-anspress.php:530 categories-for-anspress.php:564
 msgid "Category icon class"
 msgstr "Classe della icona della Categoria"
 
-#: categories-for-anspress.php:532
-#: categories-for-anspress.php:567
+#: categories-for-anspress.php:532 categories-for-anspress.php:567
 #: categories-for-anspress.php:574
 msgid "Font icon class, if image not set"
 msgstr "Classe icona del font, se una immagine non è impostata"
 
-#: categories-for-anspress.php:535
-#: categories-for-anspress.php:571
+#: categories-for-anspress.php:535 categories-for-anspress.php:571
 msgid "Category icon color"
 msgstr "Colore icona categoria"
 
