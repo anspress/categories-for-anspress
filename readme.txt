@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_
 Tags: anspress, question, answer, q&a, forum, stackoverflow, quora
 Requires at least: 4.1.1
 Tested up to: 4.1.1
-Stable tag: 1.3.8
+Stable tag: 1.3.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,3 +30,13 @@ Or if you want to install it manually simple follow this:
     * Download the extension zip file, uncompress it.
     * Upload categories-for-anspress folder to the /wp-content/plugins/ directory
     * Activate the plugin through the 'Plugins' menu in WordPress
+
+== Changelog ==
+
+= 1.3.9 =
+
+* Added turkish translation and fixed textdomain
+* Improved category.php
+* added widget wrapper div
+* Removed Question category from title
+* Fixed wrong callback
