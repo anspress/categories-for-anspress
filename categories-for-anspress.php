@@ -78,6 +78,7 @@ class Categories_For_AnsPress
 
 		ap_register_page( 'category', __( 'Category', 'categories-for-anspress' ), array( $this, 'category_page' ), false );
 		ap_register_page( 'categories', __( 'Categories', 'categories-for-anspress' ), array( $this, 'categories_page' ) );
+
 		add_action( 'init', array( $this, 'textdomain' ) );
 		add_action( 'init', array( $this, 'register_question_categories' ), 1 );
 		add_action( 'admin_init', array( $this, 'load_options' ) );
@@ -117,9 +118,9 @@ class Categories_For_AnsPress
 	 */
 	public function category_page() {
 
-		global $questions, $question_category;
+		global $questions, $question_category, $wp;
 
-		$category_id = sanitize_text_field( get_query_var( 'q_cat' ) );
+		$category_id = sanitize_title(get_query_var( 'q_cat' ));
 
 		$question_args = array(
 		'tax_query' => array(
@@ -132,8 +133,16 @@ class Categories_For_AnsPress
 		);
 
 		$question_category = get_term_by( is_numeric( $category_id ) ? 'id' : 'slug', $category_id, 'question_category' );
-		$questions = ap_get_questions( $question_args );
-		include( ap_get_theme_location( 'category.php', CATEGORIES_FOR_ANSPRESS_DIR ) );
+
+		if($question_category){
+			$questions = ap_get_questions( $question_args );
+			include( ap_get_theme_location( 'category.php', CATEGORIES_FOR_ANSPRESS_DIR ) );
+		}else{
+			global $wp_query;
+			$wp_query->set_404();
+			status_header( 404 );
+			include ap_get_theme_location( 'not-found.php' );
+		}
 	}
 
 	/**
@@ -409,12 +418,18 @@ class Categories_For_AnsPress
 	 * @return string
 	 */
 	public function page_title($title) {
+
 		if ( is_question_categories() ) {
 			$title = ap_opt( 'categories_page_title' );
 		} elseif ( is_question_category() ) {
-			$category_id = sanitize_text_field( get_query_var( 'q_cat' ) );
+			$category_id = sanitize_title( get_query_var( 'q_cat' ) );
 			$category = get_term_by( is_numeric( $category_id ) ? 'id' : 'slug', $category_id, 'question_category' );
-			$title = $category->name;
+
+			if($category){
+				$title = $category->name;
+			}else{
+				$title = __('No matching category found', 'ap');
+			}
 		}
 
 		return $title;
