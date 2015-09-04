@@ -15,7 +15,7 @@
  * Plugin URI:        http://anspress.io/downloads/categories-for-anspress
  * Description:       Extension for AnsPress. Add categories in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           1.3.9
+ * Version:           1.4
  * Author:            Rahul Aryan
  * Author URI:        http://anspress.io
  * Text Domain:       categories_for_anspress
@@ -94,7 +94,7 @@ class Categories_For_AnsPress
 		add_action( 'ap_processed_update_question', array( $this, 'after_new_question' ), 0, 2 );
 		add_filter( 'ap_page_title', array( $this, 'page_title' ) );
 		add_filter( 'ap_breadcrumbs', array( $this, 'ap_breadcrumbs' ) );
-		add_filter( 'ap_option_group_layout', array( $this, 'option' ) );
+		add_filter( 'ap_option_group_pages', array( $this, 'option' ) );
 		add_action( 'ap_user_subscription_tab', array( $this, 'subscription_tab' ) );
 		add_action( 'ap_user_subscription_page', array( $this, 'subscription_page' ) );
 		add_action( 'terms_clauses', array( $this, 'terms_clauses' ), 10, 3 );
