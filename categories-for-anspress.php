@@ -76,8 +76,8 @@ class Categories_For_AnsPress
 
 		$this->includes();
 
-		ap_register_page( 'category', __( 'Category', 'categories-for-anspress' ), array( $this, 'category_page' ), false );
-		ap_register_page( 'categories', __( 'Categories', 'categories-for-anspress' ), array( $this, 'categories_page' ) );
+		ap_register_page( ap_get_category_slug(), __( 'Category', 'categories-for-anspress' ), array( $this, 'category_page' ), false );
+		ap_register_page( ap_get_categories_slug(), __( 'Categories', 'categories-for-anspress' ), array( $this, 'categories_page' ) );
 
 		add_action( 'init', array( $this, 'textdomain' ) );
 		add_action( 'init', array( $this, 'register_question_categories' ), 1 );
@@ -94,7 +94,6 @@ class Categories_For_AnsPress
 		add_action( 'ap_processed_update_question', array( $this, 'after_new_question' ), 0, 2 );
 		add_filter( 'ap_page_title', array( $this, 'page_title' ) );
 		add_filter( 'ap_breadcrumbs', array( $this, 'ap_breadcrumbs' ) );
-		add_filter( 'ap_option_group_pages', array( $this, 'option' ) );
 		add_action( 'ap_user_subscription_tab', array( $this, 'subscription_tab' ) );
 		add_action( 'ap_user_subscription_page', array( $this, 'subscription_page' ) );
 		add_action( 'terms_clauses', array( $this, 'terms_clauses' ), 10, 3 );
@@ -104,12 +103,16 @@ class Categories_For_AnsPress
 		add_action( 'create_question_category', array( $this, 'save_image_field' ) );
 		add_action( 'edited_question_category', array( $this, 'save_image_field' ) );
 		add_action( 'widgets_init', array( $this, 'register_widget' ) );
+		add_action( 'ap_rewrite_rules', array( $this, 'rewrite_rules' ), 10, 3 );
+		add_filter( 'ap_default_pages', array( $this, 'category_default_page' ) );
+		add_filter( 'ap_default_page_slugs', array( $this, 'default_page_slugs' ) );
 	}
 
 	/**
 	 * Include required files
 	 */
 	public function includes() {
+		require_once( CATEGORIES_FOR_ANSPRESS_DIR . 'functions.php' );
 		require_once( CATEGORIES_FOR_ANSPRESS_DIR . 'categories-widget.php' );
 	}
 
@@ -120,7 +123,7 @@ class Categories_For_AnsPress
 
 		global $questions, $question_category, $wp;
 
-		$category_id = sanitize_title(get_query_var( 'q_cat' ));
+		$category_id = sanitize_title( get_query_var( 'q_cat' ) );
 
 		$question_args = array(
 		'tax_query' => array(
@@ -134,10 +137,10 @@ class Categories_For_AnsPress
 
 		$question_category = get_term_by( is_numeric( $category_id ) ? 'id' : 'slug', $category_id, 'question_category' );
 
-		if($question_category){
+		if ( $question_category ) {
 			$questions = ap_get_questions( $question_args );
 			include( ap_get_theme_location( 'category.php', CATEGORIES_FOR_ANSPRESS_DIR ) );
-		}else{
+		} else {
 			global $wp_query;
 			$wp_query->set_404();
 			status_header( 404 );
@@ -269,6 +272,32 @@ class Categories_For_AnsPress
 					),
 				'value'             => $settings['form_category_orderby'],
 			),
+			array(
+				'name' 		=> 'anspress_opt[categories_page_slug]',
+				'label' 	=> __( 'Categories page slug', 'categories-for-anspress' ),
+				'desc' 		=> __( 'Slug categories page', 'categories-for-anspress' ),
+				'type' 		=> 'text',
+				'value' 	=> $settings['categories_page_slug'],
+				'show_desc_tip' => false,
+			),
+
+			array(
+				'name' 		=> 'anspress_opt[category_page_slug]',
+				'label' 	=> __( 'Category page slug', 'categories-for-anspress' ),
+				'desc' 		=> __( 'Slug for category page', 'categories-for-anspress' ),
+				'type' 		=> 'text',
+				'value' 	=> $settings['category_page_slug'],
+				'show_desc_tip' => false,
+			),
+
+			array(
+				'name' 		=> 'anspress_opt[categories_page_title]',
+				'label' 	=> __( 'Categories title', 'categories-for-anspress' ),
+				'desc' 		=> __( 'Title of the categories page', 'categories-for-anspress' ),
+				'type' 		=> 'text',
+				'value' 	=> $settings['categories_page_title'],
+				'show_desc_tip' => false,
+			),
 		));
 	}
 
@@ -282,13 +311,15 @@ class Categories_For_AnsPress
 	}
 
 	/**
-	 * Apppend default options
-	 * @param   array $defaults Default AnsPress option
+	 * Append default options
+	 * @param   array $defaults Default AnsPress option.
 	 * @return  array
 	 * @since   1.0
 	 */
 	public function ap_default_options($defaults) {
 		$defaults['form_category_orderby']  = 'count';
+		$defaults['categories_page_slug']  	= 'categories';
+		$defaults['category_page_slug']  	= 'category';
 
 		return $defaults;
 	}
@@ -299,7 +330,7 @@ class Categories_For_AnsPress
 	 * @since 2.0
 	 */
 	public function admin_category_menu() {
-			add_submenu_page( 'anspress', 'Questions Category', 'Category', 'manage_options', 'edit-tags.php?taxonomy=question_category' );
+		add_submenu_page( 'anspress', 'Questions Category', 'Category', 'manage_options', 'edit-tags.php?taxonomy=question_category' );
 	}
 
 	/**
@@ -335,8 +366,10 @@ class Categories_For_AnsPress
 	public function term_link_filter( $url, $term, $taxonomy ) {
 		if ( 'question_category' == $taxonomy ) {
 			if ( get_option( 'permalink_structure' ) != '' ) {
-				 return ap_get_link_to( array( 'ap_page' => 'category', 'q_cat' => $term->slug ) ); } else {
-				return ap_get_link_to( array( 'ap_page' => 'category', 'q_cat' => $term->term_id ) ); }
+				 return ap_get_link_to( array( 'ap_page' => ap_get_category_slug(), 'q_cat' => $term->slug ) );
+			} else {
+				return add_query_arg( array( 'ap_page' => ap_get_category_slug(), 'q_cat' => $term->term_id ), ap_base_page_link() );
+			}
 		}
 		return $url;
 	}
@@ -408,7 +441,8 @@ class Categories_For_AnsPress
 		$fields = $validate->get_sanitized_fields();
 
 		if ( isset( $fields['category'] ) ) {
-			$category = wp_set_post_terms( $post_id, $fields['category'], 'question_category' ); }
+			$category = wp_set_post_terms( $post_id, $fields['category'], 'question_category' );
+		}
 
 	}
 
@@ -418,17 +452,16 @@ class Categories_For_AnsPress
 	 * @return string
 	 */
 	public function page_title($title) {
-
 		if ( is_question_categories() ) {
 			$title = ap_opt( 'categories_page_title' );
 		} elseif ( is_question_category() ) {
 			$category_id = sanitize_title( get_query_var( 'q_cat' ) );
 			$category = get_term_by( is_numeric( $category_id ) ? 'id' : 'slug', $category_id, 'question_category' );
 
-			if($category){
+			if ( $category ) {
 				$title = $category->name;
-			}else{
-				$title = __('No matching category found', 'ap');
+			} else {
+				$title = __( 'No matching category found', 'ap' );
 			}
 		}
 
@@ -454,21 +487,6 @@ class Categories_For_AnsPress
 		return $navs;
 	}
 
-	public function option($fields) {
-		$settings = ap_opt();
-
-		$fields[] = array(
-			'name' => 'anspress_opt[categories_page_title]',
-			'label' => __( 'Categories title', 'categories-for-anspress' ),
-			'desc' => __( 'Title of the categories page', 'categories-for-anspress' ),
-			'type' => 'text',
-			'value' => $settings['categories_page_title'],
-			'show_desc_tip' => false,
-		);
-
-		return $fields;
-	}
-
 	public function subscription_tab($active) {
 
 		echo '<li class="'.($active == 'category' ? 'active' : '').'"><a href="?tab=category">'.__( 'Category', 'categories-for-anspress' ).'</a></li>';
@@ -479,7 +497,8 @@ class Categories_For_AnsPress
 		$active = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'question';
 
 		if ( $active != 'category' ) {
-			return; }
+			return;
+		}
 
 		global $question_categories, $ap_max_num_pages, $ap_per_page;
 
@@ -631,13 +650,54 @@ class Categories_For_AnsPress
 	public function register_widget() {
 		register_widget( 'AnsPress_Category_Widget' );
 	}
+
+	/**
+	 * Add category pages rewrite rule
+	 * @param  array $rules AnsPress rules.
+	 * @return array
+	 */
+	public function rewrite_rules($rules, $slug, $base_page_id) {
+		global $wp_rewrite;
+
+		$cat_rules = array();
+
+		$cat_rules[$slug. ap_get_category_slug() .'/([^/]+)/?'] = 'index.php?page_id='.$base_page_id.'&ap_page='. ap_get_category_slug() .'&q_cat='.$wp_rewrite->preg_index( 1 );
+
+		$cat_rules[$slug. ap_get_category_slug() . '/([^/]+)/page/?([0-9]{1,})/?$'] = 'index.php?page_id='.$base_page_id.'&ap_page='. ap_get_category_slug() .'&q_cat='.$wp_rewrite->preg_index( 1 ).'&paged='.$wp_rewrite->preg_index( 2 );
+
+		$cat_rules[$slug. ap_get_categories_slug(). '/?'] = 'index.php?page_id='.$base_page_id.'&ap_page='.ap_get_categories_slug();
+
+		return $cat_rules + $rules;
+	}
+
+	/**
+	 * Add default categories page, so that categories page should work properly after
+	 * Changing categories page slug.
+	 * @param  array $default_pages AnsPress default pages.
+	 * @return array
+	 */
+	public function category_default_page($default_pages) {
+		$default_pages['categories'] = array();
+		$default_pages['category'] = array();
+
+		return $default_pages;
+	}
+
+	/**
+	 * Add default page slug
+	 * @param  array $default_slugs AnsPress pages slug.
+	 * @return array
+	 */
+	public function default_page_slugs($default_slugs) {
+		$default_slugs['categories'] 	= ap_get_categories_slug();
+		$default_slugs['category'] 		= ap_get_category_slug();
+		return $default_slugs;
+	}
 }
 
 /**
  * Get everything running
- *
  * @since 1.0
- *
  * @access private
  * @return void
  */
@@ -647,162 +707,4 @@ function categories_for_anspress() {
 }
 add_action( 'plugins_loaded', 'categories_for_anspress' );
 
-/**
- * Output question categories
- * @param  array $args
- * @return string
- */
-function ap_question_categories_html($args = array()) {
 
-	$defaults  = array(
-		'question_id'   => get_the_ID(),
-		'list'           => false,
-		'tag'           => 'span',
-		'class'         => 'question-categories',
-		'label'         => __( 'Categories', 'categories-for-anspress' ),
-		'echo'          => false,
-	);
-
-	if ( ! is_array( $args ) ) {
-		$defaults['question_id'] = $args;
-		$args = $defaults;
-	} else {
-		$args = wp_parse_args( $args, $defaults );
-	}
-
-	$cats = get_the_terms( $args['question_id'], 'question_category' );
-
-	if ( $cats ) {
-		$o = '';
-		if ( $args['list'] ) {
-			$o = '<ul class="'.$args['class'].'">';
-			foreach ( $cats as $c ) {
-				$o .= '<li><a href="'.esc_url( get_term_link( $c ) ).'" title="'.$c->description.'">'. $c->name .'</a></li>';
-			}
-			$o .= '</ul>';
-
-		} else {
-			$o = $args['label'];
-			$o .= '<'.$args['tag'].' class="'.$args['class'].'">';
-			foreach ( $cats as $c ) {
-				$o .= '<a href="'.esc_url( get_term_link( $c ) ).'" title="'.$c->description.'">'. $c->name .'</a>';
-			}
-			$o .= '</'.$args['tag'].'>';
-		}
-		if ( $args['echo'] ) {
-			echo $o; }
-
-		return $o;
-	}
-
-}
-
-
-function ap_category_details() {
-
-	$var = get_query_var( 'question_category' );
-
-	$category = get_term_by( 'slug', $var, 'question_category' );
-
-	echo '<div class="clearfix">';
-	echo '<h3><a href="'.get_category_link( $category ).'">'. $category->name .'</a></h3>';
-	echo '<div class="ap-taxo-meta">';
-	echo '<span class="count">'. $category->count .' '.__( 'Questions', 'categories-for-anspress' ).'</span>';
-	echo '<a class="aicon-rss feed-link" href="' . get_term_feed_link( $category->term_id, 'question_category' ) . '" title="Subscribe to '. $category->name .'" rel="nofollow"></a>';
-	echo '</div>';
-	echo '</div>';
-
-	echo '<p class="desc clearfix">'. $category->description .'</p>';
-
-	$child = get_terms( array( 'taxonomy' => 'question_category' ), array( 'parent' => $category->term_id, 'hierarchical' => false, 'hide_empty' => false ) );
-
-	if ( $child ) :
-		echo '<ul class="ap-child-list clearfix">';
-		foreach ( $child as $key => $c ) :
-			echo '<li><a class="taxo-title" href="'.get_category_link( $c ).'">'.$c->name.'<span>'.$c->count.'</span></a>';
-			echo '</li>';
-			endforeach;
-		echo'</ul>';
-	endif;
-}
-function ap_sub_category_list($parent) {
-	$categories = get_terms( array( 'taxonomy' => 'question_category' ), array( 'parent' => $parent, 'hide_empty' => false ) );
-
-	if ( $categories ) {
-		echo '<ul class="ap-sub-taxo ap-ul-inline clearfix">';
-		foreach ( $categories as $cat ) {
-			echo '<li><a href="'.get_category_link( $cat ).'">' .$cat->name.'<span>'.$cat->count.'</span></a></li>';
-		}
-		echo '</ul>';
-	}
-}
-
-function ap_question_have_category($post_id = false) {
-	if ( ! $post_id ) {
-		$post_id = get_the_ID(); }
-
-	$categories = wp_get_post_terms( $post_id, 'question_category' );
-	if ( ! empty( $categories ) ) {
-		return true; }
-
-	return false;
-}
-
-
-/**
- * Check if anspress categories page
- * @return boolean
- * @since  1.0
- */
-if ( ! function_exists( 'is_question_categories' ) ) {
-	function is_question_categories() {
-		if ( 'categories' == get_query_var( 'ap_page' ) ) {
-			return true; }
-
-		return false;
-	}
-}
-
-if ( ! function_exists( 'is_question_category' ) ) {
-	function is_question_category() {
-		if ( 'category' == get_query_var( 'ap_page' ) ) {
-			return true; }
-
-		return false;
-	}
-}
-
-function ap_category_sorting() {
-	$args = array(
-		'hierarchical'      => true,
-		'hide_if_empty'     => true,
-		'number'            => 10,
-	);
-
-	$terms = get_terms( 'question_category', $args );
-	$selected = isset( $_GET['ap_cat_sort'] ) ? (int) $_GET['ap_cat_sort'] : '';
-	if ( $terms ) {
-		echo '<div class="ap-dropdown">';
-			echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle'.($selected != '' ? ' active' : '').'" href="#">'.__( 'Category', 'categories-for-anspress' ).'</a>';
-			echo '<div class="ap-dropdown-menu">';
-		foreach ( $terms as $t ) {
-			echo '<li '.($selected == $t->term_id ? 'class="active" ' : '').'><a href="#" data-value="'.$t->term_id.'">'. $t->name .'</a></li>';
-		}
-			echo '<input name="ap_cat_sort" type="hidden" value="'.$selected.'" />';
-			echo '</div>';
-		echo '</div>';
-	}
-}
-
-function ap_get_category_image($term_id) {
-	$option = get_option( 'ap_cat_'.$term_id );
-	$color = isset( $option['ap_color'] ) && $option['ap_color'] != '' ? ' style="background:'.$option['ap_color'].'"' : ' style="background:#333"';
-	if ( isset( $option['ap_image']['url'] ) && $option['ap_image']['url'] != '' ) {
-		echo '<img class="ap-category-image" src="'.$option['ap_image']['url'].'" />';
-	} elseif ( isset( $option['ap_icon'] ) && $option['ap_icon'] != '' ) {
-		echo '<span class="ap-category-icon '.$option['ap_icon'].'"'.$color.'></span>';
-	} else {
-		echo '<span class="ap-category-icon apicon-category"'.$color.'></span>';
-	}
-
-}
