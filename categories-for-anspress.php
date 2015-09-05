@@ -114,6 +114,7 @@ class Categories_For_AnsPress
 		add_action( 'ap_rewrite_rules', array( $this, 'rewrite_rules' ), 10, 3 );
 		add_filter( 'ap_default_pages', array( $this, 'category_default_page' ) );
 		add_filter( 'ap_default_page_slugs', array( $this, 'default_page_slugs' ) );
+		add_filter( 'ap_subscribe_btn_type', array( $this, 'subscribe_type' ) );
 	}
 
 	/**
@@ -732,6 +733,13 @@ class Categories_For_AnsPress
 		$default_slugs['categories'] 	= ap_get_categories_slug();
 		$default_slugs['category'] 		= ap_get_category_slug();
 		return $default_slugs;
+	}
+
+	public function subscribe_type($type) {
+		if(is_question_category())
+			$subscribe_type =  'category';
+		else
+			return $type;
 	}
 }
 
