@@ -29,6 +29,14 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+if(!version_compare(AP_VERSION, '2.3', '>')){
+	function ap_category_admin_error_notice() {
+	    echo '<div class="update-nag error"> <p>'.sprintf(__('Category extension require AnsPress 2.4-RC or above. Download from Github %shttp://github.com/anspress/anspress%s', 'tags-for-anspress'), '<a target="_blank" href="http://github.com/anspress/anspress">', '</a>').'</p></div>';
+	}
+	add_action( 'admin_notices', 'ap_category_admin_error_notice' );
+	return;
+}
+
 /**
  * Category extension for AnsPress
  */
