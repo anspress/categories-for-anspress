@@ -168,13 +168,15 @@ class Categories_For_AnsPress
 		$offset             = $per_page * ( $paged - 1) ;
 		$ap_max_num_pages   = $total_terms / $per_page ;
 
+		$order = ap_opt('categories_page_order') == 'ASC' ? 'ASC' : 'DESC';
+
 		$cat_args = array(
 			'parent'        => 0,
 			'number'        => $per_page,
 			'offset'        => $offset,
 			'hide_empty'    => false,
-			'orderby'       => 'count',
-			'order'         => 'DESC',
+			'orderby'       => ap_opt('categories_page_orderby'),
+			'order'         => $order,
 		);
 
 		/**
@@ -268,7 +270,7 @@ class Categories_For_AnsPress
 		ap_register_option_group( 'categories', __( 'Categories', 'categories-for-anspress' ), array(
 			array(
 				'name'              => 'anspress_opt[form_category_orderby]',
-				'label'             => __( 'Category order by', 'categories-for-anspress' ),
+				'label'             => __( 'Ask form category order', 'categories-for-anspress' ),
 				'description'       => __( 'Set how you want to order categories in form.', 'categories-for-anspress' ),
 				'type'              => 'select',
 				'options'			=> array(
@@ -280,6 +282,34 @@ class Categories_For_AnsPress
 					),
 				'value'             => $settings['form_category_orderby'],
 			),
+
+			array(
+				'name'              => 'anspress_opt[categories_page_orderby]',
+				'label'             => __( 'Categries page order by', 'categories-for-anspress' ),
+				'description'       => __( 'Set how you want to order categories in categories page.', 'categories-for-anspress' ),
+				'type'              => 'select',
+				'options'			=> array(
+					'ID' 			=> __( 'ID', 'categories-for-anspress' ),
+					'name' 			=> __( 'Name', 'categories-for-anspress' ),
+					'slug' 			=> __( 'Slug', 'categories-for-anspress' ),
+					'count' 		=> __( 'Count', 'categories-for-anspress' ),
+					'term_group' 	=> __( 'Group', 'categories-for-anspress' ),
+					),
+				'value'             => $settings['categories_page_orderby'],
+			),
+
+			array(
+				'name'              => 'anspress_opt[categories_page_order]',
+				'label'             => __( 'Categries page order', 'categories-for-anspress' ),
+				'description'       => __( 'Set how you want to order categories in categories page.', 'categories-for-anspress' ),
+				'type'              => 'select',
+				'options'			=> array(
+					'ASC' 			=> __( 'Ascending', 'categories-for-anspress' ),
+					'DESC' 			=> __( 'Descending', 'categories-for-anspress' ),
+				),
+				'value'             => $settings['categories_page_order'],
+			),
+
 			array(
 				'name' 		=> 'anspress_opt[categories_page_slug]',
 				'label' 	=> __( 'Categories page slug', 'categories-for-anspress' ),
@@ -326,6 +356,8 @@ class Categories_For_AnsPress
 	 */
 	public function ap_default_options($defaults) {
 		$defaults['form_category_orderby']  = 'count';
+		$defaults['categories_page_order']  = 'DESC';
+		$defaults['categories_page_orderby']  = 'count';
 		$defaults['categories_page_slug']  	= 'categories';
 		$defaults['category_page_slug']  	= 'category';
 

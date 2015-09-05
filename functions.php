@@ -120,8 +120,9 @@ if ( ! function_exists( 'is_question_categories' ) ) {
 
 if ( ! function_exists( 'is_question_category' ) ) {
 	function is_question_category() {
-		if ( 'category' == get_query_var( 'ap_page' ) ) {
-			return true; }
+		if ( ap_get_category_slug() == get_query_var( 'ap_page' ) ) {
+			return true;
+		}
 
 		return false;
 	}
