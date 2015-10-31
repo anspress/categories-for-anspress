@@ -29,13 +29,14 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-if(!version_compare(AP_VERSION, '2.3', '>')){
+if ( ! version_compare( AP_VERSION, '2.3', '>' ) ) {
 	function ap_category_admin_error_notice() {
-	    echo '<div class="update-nag error"> <p>'.sprintf(__('Category extension require AnsPress 2.4-RC or above. Download from Github %shttp://github.com/anspress/anspress%s', 'tags-for-anspress'), '<a target="_blank" href="http://github.com/anspress/anspress">', '</a>').'</p></div>';
+	    echo '<div class="update-nag error"> <p>'.sprintf( __( 'Category extension require AnsPress 2.4-RC or above. Download from Github %shttp://github.com/anspress/anspress%s', 'tags-for-anspress' ), '<a target="_blank" href="http://github.com/anspress/anspress">', '</a>' ).'</p></div>';
 	}
 	add_action( 'admin_notices', 'ap_category_admin_error_notice' );
 	return;
 }
+
 
 /**
  * Category extension for AnsPress
@@ -115,6 +116,7 @@ class Categories_For_AnsPress
 		add_filter( 'ap_default_pages', array( $this, 'category_default_page' ) );
 		add_filter( 'ap_default_page_slugs', array( $this, 'default_page_slugs' ) );
 		add_filter( 'ap_subscribe_btn_type', array( $this, 'subscribe_type' ) );
+		add_filter( 'ap_subscribe_btn_action_type', array( $this, 'subscribe_btn_action_type' ) );
 	}
 
 	/**
@@ -163,20 +165,20 @@ class Categories_For_AnsPress
 	public function categories_page() {
 		global $question_categories, $ap_max_num_pages, $ap_per_page;
 
-		$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+		$paged 				= max( 1, get_query_var( 'paged' ) );
 		$per_page           = ap_opt( 'categories_per_page' );
 		$total_terms        = wp_count_terms( 'question_category' );
 		$offset             = $per_page * ( $paged - 1) ;
 		$ap_max_num_pages   = $total_terms / $per_page ;
 
-		$order = ap_opt('categories_page_order') == 'ASC' ? 'ASC' : 'DESC';
+		$order = ap_opt( 'categories_page_order' ) == 'ASC' ? 'ASC' : 'DESC';
 
 		$cat_args = array(
 			'parent'        => 0,
 			'number'        => $per_page,
 			'offset'        => $offset,
 			'hide_empty'    => false,
-			'orderby'       => ap_opt('categories_page_orderby'),
+			'orderby'       => ap_opt( 'categories_page_orderby' ),
 			'order'         => $order,
 		);
 
@@ -337,6 +339,14 @@ class Categories_For_AnsPress
 				'value' 	=> $settings['categories_page_title'],
 				'show_desc_tip' => false,
 			),
+			array(
+				'name' 		=> 'anspress_opt[categories_per_page]',
+				'label' 	=> __( 'Category per page', 'categories-for-anspress' ),
+				'desc' 		=> __( 'Category to show per page', 'categories-for-anspress' ),
+				'type' 		=> 'number',
+				'value' 	=> $settings['categories_per_page'],
+				'show_desc_tip' => false,
+			),
 		));
 	}
 
@@ -356,11 +366,12 @@ class Categories_For_AnsPress
 	 * @since   1.0
 	 */
 	public function ap_default_options($defaults) {
-		$defaults['form_category_orderby']  = 'count';
-		$defaults['categories_page_order']  = 'DESC';
-		$defaults['categories_page_orderby']  = 'count';
-		$defaults['categories_page_slug']  	= 'categories';
-		$defaults['category_page_slug']  	= 'category';
+		$defaults['form_category_orderby']  	= 'count';
+		$defaults['categories_page_order']  	= 'DESC';
+		$defaults['categories_page_orderby']  	= 'count';
+		$defaults['categories_page_slug']  		= 'categories';
+		$defaults['category_page_slug']  		= 'category';
+		$defaults['categories_per_page']  		= 20;
 
 		return $defaults;
 	}
@@ -598,7 +609,7 @@ class Categories_For_AnsPress
 	public function image_field_new( $term ) {
 		echo "<div class='form-field term-image-wrap'>";
 		echo "<label for='ap_image'>".__( 'Image', 'categories-for-anspress' ).'</label>';
-		echo '<a href="#" id="ap-category-upload">'.__( 'Upload image', 'categories-for-anspress' ).'</a>';
+		echo '<a href="#" id="ap-category-upload" data-action="ap_media_uplaod" data-title="'.__( 'Upload image', 'categories-for-anspress' ).'" data-urlc="#ap_category_media_url" data-idc="#ap_category_media_id">'.__( 'Upload image', 'categories-for-anspress' ).'</a>';
 
 		echo '<input id="ap_category_media_url" type="hidden" name="ap_category_image_url" value="'.$ap_image['url'].'">';
 		echo '<input id="ap_category_media_id" type="hidden" name="ap_category_image_id" value="'.$ap_image['id'].'">';
@@ -627,15 +638,18 @@ class Categories_For_AnsPress
 		echo "<tr class='form-field form-required term-name-wrap'>";
 		echo "<th scope='row'><label for='custom-field'>".__( 'Image', 'categories-for-anspress' ).'</label></th>';
 		echo '<td>';
-		echo '<a href="#" id="ap-category-upload">'.__( 'Upload image', 'categories-for-anspress' ).'</a>';
+		echo '<a href="#" id="ap-category-upload" data-action="ap_media_uplaod" data-title="'.__( 'Upload image', 'categories-for-anspress' ).'" data-idc="#ap_category_media_id" data-urlc="#ap_category_media_url">'.__( 'Upload image', 'categories-for-anspress' ).'</a>';
 
 		if ( isset( $ap_image['url'] ) && $ap_image['url'] != '' ) {
-			echo '<img id="ap_category_media_preview" src="'.$ap_image['url'].'" />'; }
+			echo '<img id="ap_category_media_preview" data-action="ap_media_value" src="'.$ap_image['url'].'" />'; }
 
-		echo '<input id="ap_category_media_url" type="hidden" name="ap_category_image_url" value="'.$ap_image['url'].'">';
-		echo '<input id="ap_category_media_id" type="hidden" name="ap_category_image_id" value="'.$ap_image['id'].'">';
+		echo '<input id="ap_category_media_url" type="hidden" data-action="ap_media_value" name="ap_category_image_url" value="'.$ap_image['url'].'">';
+
+		echo '<input id="ap_category_media_id" type="hidden" data-action="ap_media_value" name="ap_category_image_id" value="'.$ap_image['id'].'">';
+
 		echo "<p class='description'>".__( 'Featured image for category', 'categories-for-anspress' ).'</p>';
-		echo '<a href="#" id="ap-category-upload-remove">'.__( 'Remove image', 'categories-for-anspress' ).'</a>';
+
+		echo '<a href="#" id="ap-category-upload-remove" data-action="ap_media_remove">'.__( 'Remove image', 'categories-for-anspress' ).'</a>';
 		echo '</td></tr>';
 
 		echo "<tr class='form-field form-required term-name-wrap'>";
@@ -702,9 +716,11 @@ class Categories_For_AnsPress
 
 		$cat_rules = array();
 
-		$cat_rules[$slug. ap_get_category_slug() .'/([^/]+)/?'] = 'index.php?page_id='.$base_page_id.'&ap_page='. ap_get_category_slug() .'&q_cat='.$wp_rewrite->preg_index( 1 );
+		$cat_rules[$slug. ap_get_categories_slug() . '/page/?([0-9]{1,})/?$'] = 'index.php?page_id='.$base_page_id.'&ap_page='. ap_get_categories_slug() .'&paged='.$wp_rewrite->preg_index( 1 );
 
 		$cat_rules[$slug. ap_get_category_slug() . '/([^/]+)/page/?([0-9]{1,})/?$'] = 'index.php?page_id='.$base_page_id.'&ap_page='. ap_get_category_slug() .'&q_cat='.$wp_rewrite->preg_index( 1 ).'&paged='.$wp_rewrite->preg_index( 2 );
+
+		$cat_rules[$slug. ap_get_category_slug() .'/([^/]+)/?'] = 'index.php?page_id='.$base_page_id.'&ap_page='. ap_get_category_slug() .'&q_cat='.$wp_rewrite->preg_index( 1 );
 
 		$cat_rules[$slug. ap_get_categories_slug(). '/?'] = 'index.php?page_id='.$base_page_id.'&ap_page='.ap_get_categories_slug();
 
@@ -736,10 +752,21 @@ class Categories_For_AnsPress
 	}
 
 	public function subscribe_type($type) {
-		if(is_question_category())
-			$subscribe_type =  'category';
-		else
-			return $type;
+		if ( is_question_category() ) {
+			$subscribe_type = 'category';
+		} else { 			return $type; }
+	}
+
+	public function subscribe_btn_action_type($args) {
+
+		if ( is_question_category() ) {
+			global $question_category;
+			
+			$args['action_id'] 	= $question_category->term_id;
+			$args['type'] 		= 'category';
+		}
+
+		return $args;
 	}
 }
 
