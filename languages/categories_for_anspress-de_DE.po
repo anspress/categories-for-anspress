@@ -1,0 +1,265 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Categories for AnsPress\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: Thu Oct 29 2015 20:21:20 GMT+0100 (Mitteleuropäische Zeit)\n"
+"PO-Revision-Date: 2015-11-02 06:40+0530\n"
+"Last-Translator: &gt;&gt;CoW&lt;&lt; <dennis.wessels@posteo.de>\n"
+"Language-Team: AnsPress Community <support@anspress.io>\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-KeywordsList: _:1;gettext:1;dgettext:2;ngettext:1,2;dngettext:2,3;__:1;"
+"_e:1;_c:1;_n:1,2;_n_noop:1,2;_nc:1,2;__ngettext:1,2;__ngettext_noop:1,2;_x:1,2c;"
+"_ex:1,2c;_nx:1,2,4c;_nx_noop:1,2,3c;_n_js:1,2;_nx_js:1,2,3c;esc_attr__:1;"
+"esc_html__:1;esc_attr_e:1;esc_html_e:1;esc_attr_x:1,2c;esc_html_x:1,2c;"
+"comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
+"X-Loco-Target-Locale: de_DE\n"
+"X-Generator: Poedit 1.7.3\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../categories-for-anspress.php:535 ../categories-for-anspress.php:570 ..
+#: categories-for-anspress.php:577
+#, fuzzy
+msgid "Font icon class, if image not set"
+msgstr "Symbolklasse, sofern kein Bild gesetzt wurde"
+
+#: ../categories-widget.php:42
+#, php-format
+msgid "%d Child"
+msgstr "%d Unterkategorie"
+
+#: ../categories-widget.php:124
+msgid "Term group"
+msgstr "Term group"
+
+#: ../categories-for-anspress.php:252
+msgid "Set how you want to order categories in form."
+msgstr "Wähle aus, wie deine Kategorien aussehen sollen"
+
+#: ../categories-for-anspress.php:360
+msgid "Select a topic that best fits your question"
+msgstr "Wähle eine Kategorie, welche an besten zu deiner Frage passt"
+
+#: ../categories-widget.php:40 ../theme/categories.php:26
+#, php-format
+msgid "%d Question"
+msgid_plural "%d Questions"
+msgstr[0] "%d Frage"
+msgstr[1] "%d Fragen"
+
+#: ../categories-for-anspress.php:79 ../categories-for-anspress.php:355 ..
+#: categories-for-anspress.php:459 ../categories-for-anspress.php:771
+msgid "Category"
+msgstr "Kategorie"
+
+#: ../categories-for-anspress.php:201
+msgctxt "categories-for-anspress"
+msgid "Category"
+msgstr "Kategorie [categories-for-anspress]"
+
+#: ../categories-for-anspress.php:209
+msgid "Nothing found in Trash"
+msgstr "Nichts im Papierkorb gefunden"
+
+#: ../theme/categories.php:38
+#, php-format
+msgid "%d Sub Category"
+msgid_plural "%d Sub Catogories"
+msgstr[0] "%d Unterkategorie"
+msgstr[1] "%d Unterkategorien"
+
+#: ../categories-widget.php:6
+msgid "Display AnsPress categories"
+msgstr "AnsPress Kategorien anzeigen"
+
+#: ../categories-widget.php:57 ../categories-for-anspress.php:80 ../categories-
+#: for-anspress.php:193 ../categories-for-anspress.php:248 ../categories-for-
+#: anspress.php:432 ../categories-for-anspress.php:435
+#: ../categories-for-anspress. php:647
+msgid "Categories"
+msgstr "Kategorien"
+
+#: ../categories-widget.php:93
+msgid "Title:"
+msgstr "Titel:"
+
+#: ../categories-widget.php:97
+msgid "Hide empty:"
+msgstr "Verberge Leere:"
+
+#: ../categories-widget.php:101
+msgid "Parent:"
+msgstr "Eltern:"
+
+#: ../categories-widget.php:103
+msgid "Top level"
+msgstr "Höchste Stufe:"
+
+#: ../categories-widget.php:113
+msgid "Number:"
+msgstr "Nummer:"
+
+#: ../categories-widget.php:117
+msgid "Order By:"
+msgstr "Sortieren nach:"
+
+#: ../categories-widget.php:119
+msgid "None"
+msgstr "Keine"
+
+#: ../categories-widget.php:120 ../categories-for-anspress.php:258
+msgid "Count"
+msgstr "Anzahl"
+
+#: ../categories-widget.php:121 ../categories-for-anspress.php:255
+msgid "ID"
+msgstr "ID"
+
+#: ../categories-widget.php:122 ../categories-for-anspress.php:256
+msgid "Name"
+msgstr "Name"
+
+#: ../categories-widget.php:123 ../categories-for-anspress.php:257
+msgid "Slug"
+msgstr "Slug"
+
+#: ../categories-widget.php:128
+msgid "Order:"
+msgstr "Sortiere:"
+
+#: ../categories-widget.php:130
+msgid "DESC"
+msgstr "DESC:"
+
+#: ../categories-widget.php:131
+msgid "ASC"
+msgstr "ASC"
+
+#. Name of the plugin
+msgid "Categories for AnsPress"
+msgstr "Kategorien für AnsPRess"
+
+#. URI of the plugin
+msgid "http://anspress.io/downloads/categories-for-anspress"
+msgstr "http://anspress.io/downloads/categories-for-anspress"
+
+#. Description of the plugin
+msgid "Extension for AnsPress. Add categories in AnsPress."
+msgstr "Erweiterungen für AnsPress. Füge AnsPress Kategorien hinzu."
+
+#. Author of the plugin
+msgid "Rahul Aryan"
+msgstr "Rahul Aryan"
+
+#. Author URI of the plugin
+msgid "http://anspress.io"
+msgstr "http:anspress.io"
+
+#: ../categories-for-anspress.php:200
+msgid "Question Categories"
+msgstr "Fragen Kategorien"
+
+#: ../categories-for-anspress.php:202
+msgid "All Categories"
+msgstr "Alle KAtegorien"
+
+#: ../categories-for-anspress.php:203
+msgctxt "categories-for-anspress"
+msgid "Add New Category"
+msgstr "Neue Kategorie hinzufügen [Kategorien-für-AnsPress]"
+
+#: ../categories-for-anspress.php:204
+msgid "Edit Category"
+msgstr "Bearbeite Kategorie"
+
+#: ../categories-for-anspress.php:205
+msgid "New Category"
+msgstr "Neue Kategorie"
+
+#: ../categories-for-anspress.php:206
+msgid "View Category"
+msgstr "Betrachte Kategorie"
+
+#: ../categories-for-anspress.php:207
+msgid "Search Category"
+msgstr "Suche Kategorie"
+
+#: ../categories-for-anspress.php:208
+msgid "Nothing Found"
+msgstr "Nichts gefunden"
+
+#: ../categories-for-anspress.php:251
+msgid "Category order by"
+msgstr "Kategorien sortieren nach"
+
+#: ../categories-for-anspress.php:259
+msgid "Group"
+msgstr "Gruppe"
+
+#: ../categories-for-anspress.php:447
+msgid "Categories title"
+msgstr "Kategorien Titel"
+
+#: ../categories-for-anspress.php:448
+msgid "Title of the categories page"
+msgstr "Titel der Kategorienseite "
+
+#: ../categories-for-anspress.php:525 ../categories-for-anspress.php:553
+msgid "Image"
+msgstr "Bild"
+
+#: ../categories-for-anspress.php:526 ../categories-for-anspress.php:555
+msgid "Upload image"
+msgstr "Bild hochladen"
+
+#: ../categories-for-anspress.php:530
+msgid "Category image"
+msgstr "Kategorie Bild"
+
+#: ../categories-for-anspress.php:533 ../categories-for-anspress.php:567
+msgid "Category icon class"
+msgstr "Kategorie Symbolklasse"
+
+#: ../categories-for-anspress.php:538 ../categories-for-anspress.php:574
+msgid "Category icon color"
+msgstr "Kategorie Symbolfarbe"
+
+#: ../categories-for-anspress.php:540
+msgid "Icon color"
+msgstr "Symbolfarbe"
+
+#: ../categories-for-anspress.php:562
+msgid "Featured image for category"
+msgstr "Bevorzugtes Bild für die Kategorie"
+
+#: ../categories-for-anspress.php:563
+msgid "Remove image"
+msgstr "Entferne Bild"
+
+#: ../categories-for-anspress.php:695
+msgid "Questions"
+msgstr "Fragen"
+
+#: ../theme/categories-question-list.php:22
+msgid "View all questions"
+msgstr "Zeige alle Fragen"
+
+#: ../theme/no-category-found.php:15
+msgid "No category is set!"
+msgstr "Keine Kategorie gesetzt!"
+
+#: ../theme/category.php:9
+#, php-format
+msgid "1 Question"
+msgid_plural "%s Questions"
+msgstr[0] "1 Frage"
+msgstr[1] "%s Fragen"
+
+#: ../theme/category.php:23
+msgid "Sub Categories"
+msgstr "Unterkategorien"
