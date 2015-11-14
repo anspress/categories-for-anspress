@@ -146,7 +146,7 @@ class Categories_For_AnsPress
 		),
 		);
 
-		$question_category = get_term_by( is_numeric( $category_id ) ? 'id' : 'slug', $category_id, 'question_category' );
+		$question_category = get_term_by( 'slug', $category_id, 'question_category' );
 
 		if ( $question_category ) {
 			$questions = ap_get_questions( $question_args );
