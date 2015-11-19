@@ -33,6 +33,23 @@ Or if you want to install it manually simple follow this:
 
 == Changelog ==
 
+= 1.4 =
+
+* Removed subscription page tab
+* Fix: query var
+* Update language pot
+* Added de_DE
+* Fixed subscribe button
+* Set subscribe button type
+* Added option for categories page order and orderby
+* Add warning message if AnsPress version is lower then 2.4-RC
+* Added option to change category and categories slug
+* Move “Categories title” from “layout” to ”pages”.
+* Updated fr mo
+* Support utf8 in permalink and show 404 if category not found
+* Added trkish translation by nsaral
+
+
 = 1.3.9 =
 
 * Added turkish translation and fixed textdomain
