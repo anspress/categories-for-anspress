@@ -7,16 +7,14 @@
  * @return string
  */
 function ap_question_categories_html($args = array()) {
-
 	$defaults  = array(
 		'question_id'   => get_the_ID(),
 		'list'           => false,
-		'tag'           => 'span',
+		'tag'           => 'span', 
 		'class'         => 'question-categories',
 		'label'         => __( 'Categories', 'categories-for-anspress' ),
 		'echo'          => false,
 	);
-
 	if ( ! is_array( $args ) ) {
 		$defaults['question_id'] = $args;
 		$args = $defaults;
@@ -44,7 +42,8 @@ function ap_question_categories_html($args = array()) {
 			$o .= '</'.$args['tag'].'>';
 		}
 		if ( $args['echo'] ) {
-			echo $o; }
+			echo $o;
+		}
 
 		return $o;
 	}
@@ -141,6 +140,7 @@ function ap_category_sorting() {
 		echo '<div class="ap-dropdown">';
 			echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle'.($selected != '' ? ' active' : '').'" href="#">'.__( 'Category', 'categories-for-anspress' ).'</a>';
 			echo '<div class="ap-dropdown-menu">';
+			// echo '<li class="ap-dropdown-search"><input type="text" name="apcategoryddsearch" placeholder="'.__( 'Search category', 'ap' ).'" class="ap-form-control" /></li>';
 		foreach ( $terms as $t ) {
 			echo '<li '.($selected == $t->term_id ? 'class="active" ' : '').'><a href="#" data-value="'.$t->term_id.'">'. $t->name .'</a></li>';
 		}
@@ -168,10 +168,10 @@ function ap_get_category_image($term_id) {
  * @return string
  */
 function ap_get_categories_slug() {
-	$slug = ap_opt('categories_page_slug');
+	$slug = ap_opt( 'categories_page_slug' );
 	$slug = sanitize_title( $slug );
 
-	if(empty($slug)){
+	if ( empty( $slug ) ) {
 		$slug = 'categories';
 	}
 	/**
@@ -185,10 +185,10 @@ function ap_get_categories_slug() {
  * @return string
  */
 function ap_get_category_slug() {
-	$slug = ap_opt('category_page_slug');
+	$slug = ap_opt( 'category_page_slug' );
 	$slug = sanitize_title( $slug );
 
-	if(empty($slug)){
+	if ( empty( $slug ) ) {
 		$slug = 'category';
 	}
 	/**
