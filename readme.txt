@@ -33,6 +33,10 @@ Or if you want to install it manually simple follow this:
 
 == Changelog ==
 
+= 1.4.1 =
+
+* Minor bug fixes
+
 = 1.4 =
 
 * Removed subscription page tab

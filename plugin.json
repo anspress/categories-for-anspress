@@ -1,8 +1,8 @@
 {
 	"name": "Categories for AnsPress",
 	"description": "Add category support in AnsPress",
-	"version": "1.3.9",
-	"tested_up_to": "4.2",
+	"version": "1.4.1",
+	"tested_up_to": "4.4",
 	"updated": "",
 	"licence": "GPL-3.0+",
 	"licence_link": "http://www.gnu.org/licenses/gpl.txt",

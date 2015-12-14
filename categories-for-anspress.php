@@ -15,7 +15,7 @@
  * Plugin URI:        http://anspress.io/downloads/categories-for-anspress
  * Description:       Extension for AnsPress. Add categories in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           1.4
+ * Version:           1.4.1
  * Author:            Rahul Aryan
  * Author URI:        http://anspress.io
  * Text Domain:       categories_for_anspress
@@ -64,7 +64,8 @@ class Categories_For_AnsPress
 	public static function get_instance() {
 
 		if ( ! self::$instance ) {
-			self::$instance = new Categories_For_AnsPress(); }
+			self::$instance = new Categories_For_AnsPress();
+		}
 
 		return self::$instance;
 	}
@@ -78,14 +79,17 @@ class Categories_For_AnsPress
 			return; // AnsPress not installed.
 		}
 		if ( ! defined( 'CATEGORIES_FOR_ANSPRESS_DIR' ) ) {
-			define( 'CATEGORIES_FOR_ANSPRESS_DIR', plugin_dir_path( __FILE__ ) ); }
+			define( 'CATEGORIES_FOR_ANSPRESS_DIR', plugin_dir_path( __FILE__ ) );
+		}
 
 		if ( ! defined( 'CATEGORIES_FOR_ANSPRESS_URL' ) ) {
-				define( 'CATEGORIES_FOR_ANSPRESS_URL', plugin_dir_url( __FILE__ ) ); }
+			define( 'CATEGORIES_FOR_ANSPRESS_URL', plugin_dir_url( __FILE__ ) );
+		}
 
 		$this->includes();
 
 		ap_register_page( ap_get_category_slug(), __( 'Category', 'categories-for-anspress' ), array( $this, 'category_page' ), false );
+
 		ap_register_page( ap_get_categories_slug(), __( 'Categories', 'categories-for-anspress' ), array( $this, 'categories_page' ) );
 
 		add_action( 'init', array( $this, 'textdomain' ) );
@@ -109,7 +113,6 @@ class Categories_For_AnsPress
 		add_action( 'question_category_edit_form_fields', array( $this, 'image_field_edit' ) );
 		add_action( 'create_question_category', array( $this, 'save_image_field' ) );
 		add_action( 'edited_question_category', array( $this, 'save_image_field' ) );
-		add_action( 'widgets_init', array( $this, 'register_widget' ) );
 		add_action( 'ap_rewrite_rules', array( $this, 'rewrite_rules' ), 10, 3 );
 		add_filter( 'ap_default_pages', array( $this, 'category_default_page' ) );
 		add_filter( 'ap_default_page_slugs', array( $this, 'default_page_slugs' ) );
@@ -135,13 +138,13 @@ class Categories_For_AnsPress
 		$category_id = sanitize_title( get_query_var( 'q_cat' ) );
 
 		$question_args = array(
-		'tax_query' => array(
-			array(
-				'taxonomy' => 'question_category',
-				'field' => is_numeric( $category_id ) ? 'id' : 'slug',
-				'terms' => array( $category_id ),
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'question_category',
+					'field' => is_numeric( $category_id ) ? 'id' : 'slug',
+					'terms' => array( $category_id ),
+				),
 			),
-		),
 		);
 
 		$question_category = get_term_by( 'slug', $category_id, 'question_category' );
@@ -638,7 +641,8 @@ class Categories_For_AnsPress
 			$termMeta = get_option( 'ap_cat_'.$termID );
 
 			if ( ! is_array( $termMeta ) ) {
-				$termMeta = array(); }
+				$termMeta = array();
+			}
 
 			if ( isset( $_POST['ap_category_image_url'] ) && isset( $_POST['ap_category_image_id'] ) ) {
 
@@ -659,14 +663,6 @@ class Categories_For_AnsPress
 
 			update_option( 'ap_cat_'.$termID, $termMeta );
 		}
-	}
-
-	/**
-	 * Register category widget
-	 * @return void
-	 */
-	public function register_widget() {
-		register_widget( 'AnsPress_Category_Widget' );
 	}
 
 	/**
