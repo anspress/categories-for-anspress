@@ -15,7 +15,7 @@ class AnsPress_Category_Widget extends WP_Widget {
 		parent::__construct(
 			'AnsPress_Category_Widget',
 			'(AnsPress) Categories',
-		array( 'description', __('Display AnsPress categories', 'ap' ) ) );
+		array( 'description', __('Display AnsPress categories', 'categories-for-anspress' ) ) );
 	}
 
 	public function widget( $args, $instance ) {
@@ -49,9 +49,9 @@ class AnsPress_Category_Widget extends WP_Widget {
 						<?php echo $category->name; ?>
                     </a>
                     <div class="ap-cat-count">
-						<span><?php printf(_n('%d Question', '%d Questions', $category->count ), $category->count ); ?></span>
+						<span><?php printf(_n('%d Question', '%d Questions', $category->count, 'categories-for-anspress' ), $category->count ); ?></span>
 						<?php if ( $sub_cat_count > 0 ) : ?>
-							<span><?php printf(__('%d Child', 'ap' ), $sub_cat_count ); ?></span>
+							<span><?php printf(__('%d Child', 'categories-for-anspress' ), $sub_cat_count ); ?></span>
 						<?php endif; ?>
                     </div>
                 </li>
@@ -65,7 +65,7 @@ class AnsPress_Category_Widget extends WP_Widget {
 	public function form( $instance ) {
 		if ( isset( $instance[ 'title' ] ) ) {
 			$title = $instance[ 'title' ]; } else {
-			$title = __( 'Categories', 'ap' ); }
+			$title = __( 'Categories', 'categories-for-anspress' ); }
 
 			if ( isset( $instance[ 'hide_empty' ] ) ) {
 				$hide_empty = $instance[ 'hide_empty' ]; } else {
@@ -96,17 +96,17 @@ class AnsPress_Category_Widget extends WP_Widget {
 
 		?>
         <p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'ap' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'categories-for-anspress' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
         </p>
         <p>
-			<label for="<?php echo $this->get_field_id( 'hide_empty' ); ?>"><?php _e( 'Hide empty:', 'ap' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'hide_empty' ); ?>"><?php _e( 'Hide empty:', 'categories-for-anspress' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'hide_empty' ); ?>" name="<?php echo $this->get_field_name( 'hide_empty' ); ?>" type="checkbox" value="1" <?php checked( true, $hide_empty );?>>
         </p>
         <p>
-			<label for="<?php echo $this->get_field_id( 'parent' ); ?>"><?php _e( 'Parent:', 'ap' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'parent' ); ?>"><?php _e( 'Parent:', 'categories-for-anspress' ); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id( 'parent' ); ?>" name="<?php echo $this->get_field_name( 'parent' ); ?>">
-				<option value="0"><?php _e('Top level', 'ap' ); ?></option>
+				<option value="0"><?php _e('Top level', 'categories-for-anspress' ); ?></option>
 				<?php
 				if ( $categories ) {
 					foreach ( $categories as $c ) {
@@ -117,25 +117,25 @@ class AnsPress_Category_Widget extends WP_Widget {
             </select>
         </p>
         <p>
-			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Number:', 'ap' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Number:', 'categories-for-anspress' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'number' ); ?>" name="<?php echo $this->get_field_name( 'number' ); ?>" type="text" value="<?php echo esc_attr( $number ); ?>">
         </p>
         <p>
-			<label for="<?php echo $this->get_field_id( 'orderby' ); ?>"><?php _e( 'Order By:', 'ap' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'orderby' ); ?>"><?php _e( 'Order By:', 'categories-for-anspress' ); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id( 'orderby' ); ?>" name="<?php echo $this->get_field_name( 'orderby' ); ?>">
-				<option value="none" <?php echo selected($orderby, 'none' ); ?>><?php _e('None', 'ap' ); ?></option>
-				<option value="count" <?php echo selected($orderby, 'count' ); ?>><?php _e('Count', 'ap' ); ?></option>
-				<option value="id" <?php echo selected($orderby, 'id' ); ?>><?php _e('ID', 'ap' ); ?></option>
-				<option value="name" <?php echo selected($orderby, 'name' ); ?>><?php _e('Name', 'ap' ); ?></option>
-				<option value="slug" <?php echo selected($orderby, 'slug' ); ?>><?php _e('Slug', 'ap' ); ?></option>
-				<option value="term_group" <?php echo selected($orderby, 'term_group' ); ?>><?php _e('Term group', 'ap' ); ?></option>
+				<option value="none" <?php echo selected($orderby, 'none' ); ?>><?php _e('None', 'categories-for-anspress' ); ?></option>
+				<option value="count" <?php echo selected($orderby, 'count' ); ?>><?php _e('Count', 'categories-for-anspress' ); ?></option>
+				<option value="id" <?php echo selected($orderby, 'id' ); ?>><?php _e('ID', 'categories-for-anspress' ); ?></option>
+				<option value="name" <?php echo selected($orderby, 'name' ); ?>><?php _e('Name', 'categories-for-anspress' ); ?></option>
+				<option value="slug" <?php echo selected($orderby, 'slug' ); ?>><?php _e('Slug', 'categories-for-anspress' ); ?></option>
+				<option value="term_group" <?php echo selected($orderby, 'term_group' ); ?>><?php _e('Term group', 'categories-for-anspress' ); ?></option>
             </select>
         </p>
         <p>
-			<label for="<?php echo $this->get_field_id( 'order' ); ?>"><?php _e( 'Order:', 'ap' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'order' ); ?>"><?php _e( 'Order:', 'categories-for-anspress' ); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id( 'order' ); ?>" name="<?php echo $this->get_field_name( 'order' ); ?>">
-				<option value="DESC" <?php echo selected($order, 'DESC' ); ?>><?php _e('DESC', 'ap' ); ?></option>
-				<option value="ASC" <?php echo selected($order, 'ASC' ); ?>><?php _e('ASC', 'ap' ); ?></option>
+				<option value="DESC" <?php echo selected($order, 'DESC' ); ?>><?php _e('DESC', 'categories-for-anspress' ); ?></option>
+				<option value="ASC" <?php echo selected($order, 'ASC' ); ?>><?php _e('ASC', 'categories-for-anspress' ); ?></option>
             </select>
         </p>
 		<?php

@@ -19,4 +19,4 @@
 		endwhile;
 		endif; 
 	?>	
-<a class="ap-btn ap-btn-blue ap-view-all-btn block" href="<?php echo get_category_link( $category );?>"><?php _e('View all questions', 'ap') ?></a>
+<a class="ap-btn ap-btn-blue ap-view-all-btn block" href="<?php echo get_category_link( $category );?>"><?php _e('View all questions', 'categories-for-anspress') ?></a>

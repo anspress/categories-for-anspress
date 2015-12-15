@@ -23,7 +23,7 @@
 						<div class="ap-category-item">
 							<div class="ap-cat-img-c">
 								<span class="ap-term-count">
-									<?php printf(_n('%d Question', '%d Questions', 'categories_for_anspress', $category->count), $category->count) ?>
+									<?php printf(_n('%d Question', '%d Questions', 'categories-for-anspress', $category->count), $category->count) ?>
 								</span>
 								<?php echo ap_get_category_image($category->term_id); ?>
 							</div>
@@ -35,7 +35,7 @@
 								<?php $sub_cat_count = count(get_term_children( $category->term_id, 'question_category' )); ?>
 								<?php if($sub_cat_count > 0): ?>
 									<span class="ap-sub-category">
-									<?php printf(_n('%d Sub category', '%d Sub categories', 'categories_for_anspress', $sub_cat_count), $sub_cat_count) ?>
+									<?php printf(_n('%d Sub category', '%d Sub categories', 'categories-for-anspress', $sub_cat_count), $sub_cat_count) ?>
 									</span>
 								<?php endif; ?>
 							</div>

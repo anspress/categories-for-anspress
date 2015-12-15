@@ -31,7 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 if ( ! version_compare( AP_VERSION, '2.3', '>' ) ) {
 	function ap_category_admin_error_notice() {
-	    echo '<div class="update-nag error"> <p>'.sprintf( __( 'Category extension require AnsPress 2.4-RC or above. Download from Github %shttp://github.com/anspress/anspress%s', 'tags-for-anspress' ), '<a target="_blank" href="http://github.com/anspress/anspress">', '</a>' ).'</p></div>';
+	    echo '<div class="update-nag error"> <p>'.sprintf( __( 'Category extension require AnsPress 2.4-RC or above. Download from Github %shttp://github.com/anspress/anspress%s', 'tags-for-anspress', 'categories-for-anspress' ), '<a target="_blank" href="http://github.com/anspress/anspress">', '</a>' ).'</p></div>';
 	}
 	add_action( 'admin_notices', 'ap_category_admin_error_notice' );
 	return;
@@ -514,7 +514,7 @@ class Categories_For_AnsPress
 			if ( $category ) {
 				$title = $category->name;
 			} else {
-				$title = __( 'No matching category found', 'ap' );
+				$title = __( 'No matching category found', 'categories-for-anspress' );
 			}
 		}
 
@@ -540,7 +540,7 @@ class Categories_For_AnsPress
 		return $navs;
 	}
 
-	
+
 	public function terms_clauses($pieces, $taxonomies, $args) {
 
 		if ( ! in_array( 'question_category', $taxonomies ) || ! isset( $args['ap_query'] ) || $args['ap_query'] != 'subscription' ) {
@@ -720,7 +720,7 @@ class Categories_For_AnsPress
 
 		if ( is_question_category() ) {
 			global $question_category;
-			
+
 			$args['action_id'] 	= $question_category->term_id;
 			$args['type'] 		= 'category';
 		}

@@ -12,7 +12,7 @@
 
 ?>
 <div class="ap-no-category-found ap-404">
-	<p class="ap-notice ap-yellow"><?php _e('No category is set!') ?></p>
+	<p class="ap-notice ap-yellow"><?php _e('No category is set!', 'categories-for-anspress') ?></p>
 </div>
 
 
