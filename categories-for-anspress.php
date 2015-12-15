@@ -18,7 +18,7 @@
  * Version:           1.4.1
  * Author:            Rahul Aryan
  * Author URI:        http://anspress.io
- * Text Domain:       categories_for_anspress
+ * Text Domain:       categories-for-anspress
  * License:           GPL-3.0+
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.txt
  * Domain Path:       /languages
