@@ -6,7 +6,14 @@
 
 			<div class="ap-taxo-detail">
 
-				<h2 class="entry-title"><?php echo $question_category->name; ?> <span class="ap-tax-item-count"><?php printf( _n('1 Question', '%s Questions', $question_category->count, 'categories-for-anspress'),  $question_category->count); ?></span></h2>
+				<h2 class="entry-title">
+					<a href="<?php echo get_category_link( $category );?>">
+						<?php echo $question_category->name; ?> 
+					</a>
+					<span class="ap-tax-item-count">
+						<?php printf( _n('1 Question', '%s Questions', $question_category->count, 'categories-for-anspress'),  $question_category->count); ?>
+					</span>
+				</h2>
 
 				<?php if($question_category->description !=''): ?>
 					<p class="ap-taxo-description"><?php echo $question_category->description; ?></p>

@@ -25,7 +25,9 @@
 								<span class="ap-term-count">
 									<?php printf(_n('%d Question', '%d Questions', 'categories-for-anspress', $category->count), $category->count) ?>
 								</span>
-								<?php echo ap_get_category_image($category->term_id); ?>
+								<a href="<?php echo get_category_link( $category );?>">
+									<?php echo ap_get_category_image($category->term_id); ?>
+								</a>
 							</div>
 
 							<div class="ap-term-title">
