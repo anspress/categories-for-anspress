@@ -1,15 +1,15 @@
-# Copyright (C) 2015 
+# Copyright (C) 2016 
 # This file is distributed under the same license as the  package.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: "
 "http://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2015-12-15 05:55:05+00:00\n"
+"POT-Creation-Date: 2016-02-27 06:39:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "X-Generator: grunt-wp-i18n 0.5.0\n"
@@ -31,14 +31,14 @@ msgid ""
 "%shttp://github.com/anspress/anspress%s"
 msgstr ""
 
-#: categories-for-anspress.php:91 categories-for-anspress.php:450
+#: categories-for-anspress.php:91 categories-for-anspress.php:455
 #: functions.php:141
 msgid "Category"
 msgstr ""
 
 #: categories-for-anspress.php:93 categories-for-anspress.php:219
-#: categories-for-anspress.php:274 categories-for-anspress.php:533
-#: categories-for-anspress.php:536 categories-widget.php:68 functions.php:15
+#: categories-for-anspress.php:279 categories-for-anspress.php:538
+#: categories-for-anspress.php:541 categories-widget.php:68 functions.php:15
 msgid "Categories"
 msgstr ""
 
@@ -74,132 +74,132 @@ msgstr ""
 msgid "Nothing found in Trash"
 msgstr ""
 
-#: categories-for-anspress.php:277
+#: categories-for-anspress.php:282
 msgid "Ask form category order"
 msgstr ""
 
-#: categories-for-anspress.php:278
+#: categories-for-anspress.php:283
 msgid "Set how you want to order categories in form."
 msgstr ""
 
-#: categories-for-anspress.php:281 categories-for-anspress.php:296
+#: categories-for-anspress.php:286 categories-for-anspress.php:301
 #: categories-widget.php:128
 msgid "ID"
 msgstr ""
 
-#: categories-for-anspress.php:282 categories-for-anspress.php:297
+#: categories-for-anspress.php:287 categories-for-anspress.php:302
 #: categories-widget.php:129
 msgid "Name"
 msgstr ""
 
-#: categories-for-anspress.php:283 categories-for-anspress.php:298
+#: categories-for-anspress.php:288 categories-for-anspress.php:303
 #: categories-widget.php:130
 msgid "Slug"
 msgstr ""
 
-#: categories-for-anspress.php:284 categories-for-anspress.php:299
+#: categories-for-anspress.php:289 categories-for-anspress.php:304
 #: categories-widget.php:127
 msgid "Count"
 msgstr ""
 
-#: categories-for-anspress.php:285 categories-for-anspress.php:300
+#: categories-for-anspress.php:290 categories-for-anspress.php:305
 msgid "Group"
 msgstr ""
 
-#: categories-for-anspress.php:292
+#: categories-for-anspress.php:297
 msgid "Categries page order by"
 msgstr ""
 
-#: categories-for-anspress.php:293 categories-for-anspress.php:308
+#: categories-for-anspress.php:298 categories-for-anspress.php:313
 msgid "Set how you want to order categories in categories page."
 msgstr ""
 
-#: categories-for-anspress.php:307
+#: categories-for-anspress.php:312
 msgid "Categries page order"
 msgstr ""
 
-#: categories-for-anspress.php:311
+#: categories-for-anspress.php:316
 msgid "Ascending"
 msgstr ""
 
-#: categories-for-anspress.php:312
+#: categories-for-anspress.php:317
 msgid "Descending"
 msgstr ""
 
-#: categories-for-anspress.php:319
+#: categories-for-anspress.php:324
 msgid "Categories page slug"
 msgstr ""
 
-#: categories-for-anspress.php:320
+#: categories-for-anspress.php:325
 msgid "Slug categories page"
 msgstr ""
 
-#: categories-for-anspress.php:328
+#: categories-for-anspress.php:333
 msgid "Category page slug"
 msgstr ""
 
-#: categories-for-anspress.php:329
+#: categories-for-anspress.php:334
 msgid "Slug for category page"
 msgstr ""
 
-#: categories-for-anspress.php:337
+#: categories-for-anspress.php:342
 msgid "Categories title"
 msgstr ""
 
-#: categories-for-anspress.php:338
+#: categories-for-anspress.php:343
 msgid "Title of the categories page"
 msgstr ""
 
-#: categories-for-anspress.php:345
+#: categories-for-anspress.php:350
 msgid "Category per page"
 msgstr ""
 
-#: categories-for-anspress.php:346
+#: categories-for-anspress.php:351
 msgid "Category to show per page"
 msgstr ""
 
-#: categories-for-anspress.php:455
+#: categories-for-anspress.php:460
 msgid "Select a topic that best fits your question"
 msgstr ""
 
-#: categories-for-anspress.php:517
+#: categories-for-anspress.php:522
 msgid "No matching category found"
 msgstr ""
 
-#: categories-for-anspress.php:577 categories-for-anspress.php:605
+#: categories-for-anspress.php:582 categories-for-anspress.php:610
 msgid "Image"
 msgstr ""
 
-#: categories-for-anspress.php:578 categories-for-anspress.php:607
+#: categories-for-anspress.php:583 categories-for-anspress.php:612
 msgid "Upload image"
 msgstr ""
 
-#: categories-for-anspress.php:582
+#: categories-for-anspress.php:587
 msgid "Category image"
 msgstr ""
 
-#: categories-for-anspress.php:585 categories-for-anspress.php:622
+#: categories-for-anspress.php:590 categories-for-anspress.php:627
 msgid "Category icon class"
 msgstr ""
 
-#: categories-for-anspress.php:587 categories-for-anspress.php:625
-#: categories-for-anspress.php:632
+#: categories-for-anspress.php:592 categories-for-anspress.php:630
+#: categories-for-anspress.php:637
 msgid "Font icon class, if image not set"
 msgstr ""
 
-#: categories-for-anspress.php:590 categories-for-anspress.php:629
+#: categories-for-anspress.php:595 categories-for-anspress.php:634
 msgid "Category icon color"
 msgstr ""
 
-#: categories-for-anspress.php:592
+#: categories-for-anspress.php:597
 msgid "Icon color"
 msgstr ""
 
-#: categories-for-anspress.php:616
+#: categories-for-anspress.php:621
 msgid "Featured image for category"
 msgstr ""
 
-#: categories-for-anspress.php:618
+#: categories-for-anspress.php:623
 msgid "Remove image"
 msgstr ""
 
@@ -269,19 +269,19 @@ msgstr ""
 msgid "View all questions"
 msgstr ""
 
-#: theme/categories.php:38
+#: theme/categories.php:40
 msgid "%d Sub category"
 msgid_plural "%d Sub categories"
 msgstr[0] ""
 msgstr[1] ""
 
-#: theme/category.php:9
+#: theme/category.php:14
 msgid "1 Question"
 msgid_plural "%s Questions"
 msgstr[0] ""
 msgstr[1] ""
 
-#: theme/category.php:23
+#: theme/category.php:30
 msgid "Sub Categories"
 msgstr ""
 

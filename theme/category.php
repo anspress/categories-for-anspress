@@ -7,7 +7,7 @@
 			<div class="ap-taxo-detail">
 
 				<h2 class="entry-title">
-					<a href="<?php echo get_category_link( $category );?>">
+					<a href="<?php echo get_category_link( $question_category );?>">
 						<?php echo $question_category->name; ?> 
 					</a>
 					<span class="ap-tax-item-count">

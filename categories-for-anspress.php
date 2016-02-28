@@ -29,7 +29,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-if ( ! version_compare( AP_VERSION, '2.3', '>' ) ) {
+if ( ! defined( 'AP_VERSION' ) || ! version_compare( AP_VERSION, '2.3', '>' ) ) {
 	function ap_category_admin_error_notice() {
 	    echo '<div class="update-nag error"> <p>'.sprintf( __( 'Category extension require AnsPress 2.4-RC or above. Download from Github %shttp://github.com/anspress/anspress%s', 'tags-for-anspress', 'categories-for-anspress' ), '<a target="_blank" href="http://github.com/anspress/anspress">', '</a>' ).'</p></div>';
 	}
@@ -735,9 +735,10 @@ class Categories_For_AnsPress
  * @access private
  * @return void
  */
-
 function categories_for_anspress() {
-	$discounts = new Categories_For_AnsPress();
+	if( apply_filters( 'anspress_load_ext', true, 'categories-for-anspress' ) ){
+		$categories = new Categories_For_AnsPress();
+	}
 }
 add_action( 'plugins_loaded', 'categories_for_anspress' );
 
