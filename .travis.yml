@@ -41,4 +41,13 @@ before_script:
 
 script: codecept run --steps
 
+after_failure:
+  - mkdir $TRAVIS_BUILD_DIR/travis-ci-log
+  - cd $TRAVIS_BUILD_DIR/travis-ci-log
+  - git clone https://github.com/anspress/travis-ci-log
+  - cp -rf $TRAVIS_BUILD_DIR/anspress/categories-for-anspress/tests/_output/* $TRAVIS_BUILD_DIR/travis-ci-log/
+  - git add .
+  - git commit -am "Updated log"
+  - git push origin/master
+
 
