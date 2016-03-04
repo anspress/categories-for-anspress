@@ -151,6 +151,14 @@ class Categories_For_AnsPress
 
 		if ( $question_category ) {
 			$questions = ap_get_questions( $question_args );
+
+			/**
+			 * This action can be used to show custom message before category page.
+			 * @param object $question_category Current question category.
+			 * @since 1.4.2
+			 */
+			do_action( 'ap_before_category_page', $question_category );
+			
 			include( ap_get_theme_location( 'category.php', CATEGORIES_FOR_ANSPRESS_DIR ) );
 		} else {
 			global $wp_query;
