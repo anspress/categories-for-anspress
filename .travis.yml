@@ -14,6 +14,10 @@ php:
 env:
   - WP_VERSION=latest WP_MULTISITE=0
 
+# before_install:
+#   - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+#   - openssl aes-256-cbc -K $encrypted_ffa6df0139c0_key -iv $encrypted_ffa6df0139c0_iv -in git_key.txt.enc -out git_key -d
+
 install:
   - wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
 
@@ -42,12 +46,6 @@ before_script:
 script: codecept run --steps
 
 after_failure:
-  - mkdir $TRAVIS_BUILD_DIR/travis-ci-log
-  - cd $TRAVIS_BUILD_DIR/travis-ci-log
-  - git clone https://github.com/anspress/travis-ci-log
-  - cp -rf $TRAVIS_BUILD_DIR/anspress/categories-for-anspress/tests/_output/* $TRAVIS_BUILD_DIR/travis-ci-log/
-  - git add .
-  - git commit -am "Updated log"
-  - git push origin/master
+  - bash tests/bin/upload.sh
 
 
