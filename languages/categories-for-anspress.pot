@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: "
 "http://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2016-02-27 06:39:50+00:00\n"
+"POT-Creation-Date: 2016-03-21 05:01:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,182 +25,182 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: categories-for-anspress.php:34
-msgid ""
-"Category extension require AnsPress 2.4-RC or above. Download from Github "
-"%shttp://github.com/anspress/anspress%s"
-msgstr ""
-
-#: categories-for-anspress.php:91 categories-for-anspress.php:455
+#: categories-for-anspress.php:82 categories-for-anspress.php:448
 #: functions.php:141
 msgid "Category"
 msgstr ""
 
-#: categories-for-anspress.php:93 categories-for-anspress.php:219
-#: categories-for-anspress.php:279 categories-for-anspress.php:538
-#: categories-for-anspress.php:541 categories-widget.php:68 functions.php:15
+#: categories-for-anspress.php:84 categories-for-anspress.php:217
+#: categories-for-anspress.php:272 categories-for-anspress.php:531
+#: categories-for-anspress.php:534 categories-widget.php:68 functions.php:15
 msgid "Categories"
 msgstr ""
 
-#: categories-for-anspress.php:226
+#: categories-for-anspress.php:224
 msgid "Question Categories"
 msgstr ""
 
-#: categories-for-anspress.php:228
+#: categories-for-anspress.php:226
 msgid "All Categories"
 msgstr ""
 
-#: categories-for-anspress.php:230
+#: categories-for-anspress.php:228
 msgid "Edit Category"
 msgstr ""
 
-#: categories-for-anspress.php:231
+#: categories-for-anspress.php:229
 msgid "New Category"
 msgstr ""
 
-#: categories-for-anspress.php:232
+#: categories-for-anspress.php:230
 msgid "View Category"
 msgstr ""
 
-#: categories-for-anspress.php:233
+#: categories-for-anspress.php:231
 msgid "Search Category"
 msgstr ""
 
-#: categories-for-anspress.php:234
+#: categories-for-anspress.php:232
 msgid "Nothing Found"
 msgstr ""
 
-#: categories-for-anspress.php:235
+#: categories-for-anspress.php:233
 msgid "Nothing found in Trash"
 msgstr ""
 
-#: categories-for-anspress.php:282
+#: categories-for-anspress.php:275
 msgid "Ask form category order"
 msgstr ""
 
-#: categories-for-anspress.php:283
+#: categories-for-anspress.php:276
 msgid "Set how you want to order categories in form."
 msgstr ""
 
-#: categories-for-anspress.php:286 categories-for-anspress.php:301
+#: categories-for-anspress.php:279 categories-for-anspress.php:294
 #: categories-widget.php:128
 msgid "ID"
 msgstr ""
 
-#: categories-for-anspress.php:287 categories-for-anspress.php:302
+#: categories-for-anspress.php:280 categories-for-anspress.php:295
 #: categories-widget.php:129
 msgid "Name"
 msgstr ""
 
-#: categories-for-anspress.php:288 categories-for-anspress.php:303
+#: categories-for-anspress.php:281 categories-for-anspress.php:296
 #: categories-widget.php:130
 msgid "Slug"
 msgstr ""
 
-#: categories-for-anspress.php:289 categories-for-anspress.php:304
+#: categories-for-anspress.php:282 categories-for-anspress.php:297
 #: categories-widget.php:127
 msgid "Count"
 msgstr ""
 
-#: categories-for-anspress.php:290 categories-for-anspress.php:305
+#: categories-for-anspress.php:283 categories-for-anspress.php:298
 msgid "Group"
 msgstr ""
 
-#: categories-for-anspress.php:297
+#: categories-for-anspress.php:290
 msgid "Categries page order by"
 msgstr ""
 
-#: categories-for-anspress.php:298 categories-for-anspress.php:313
+#: categories-for-anspress.php:291 categories-for-anspress.php:306
 msgid "Set how you want to order categories in categories page."
 msgstr ""
 
-#: categories-for-anspress.php:312
+#: categories-for-anspress.php:305
 msgid "Categries page order"
 msgstr ""
 
-#: categories-for-anspress.php:316
+#: categories-for-anspress.php:309
 msgid "Ascending"
 msgstr ""
 
-#: categories-for-anspress.php:317
+#: categories-for-anspress.php:310
 msgid "Descending"
 msgstr ""
 
-#: categories-for-anspress.php:324
+#: categories-for-anspress.php:317
 msgid "Categories page slug"
 msgstr ""
 
-#: categories-for-anspress.php:325
+#: categories-for-anspress.php:318
 msgid "Slug categories page"
 msgstr ""
 
-#: categories-for-anspress.php:333
+#: categories-for-anspress.php:326
 msgid "Category page slug"
 msgstr ""
 
-#: categories-for-anspress.php:334
+#: categories-for-anspress.php:327
 msgid "Slug for category page"
 msgstr ""
 
-#: categories-for-anspress.php:342
+#: categories-for-anspress.php:335
 msgid "Categories title"
 msgstr ""
 
-#: categories-for-anspress.php:343
+#: categories-for-anspress.php:336
 msgid "Title of the categories page"
 msgstr ""
 
-#: categories-for-anspress.php:350
+#: categories-for-anspress.php:343
 msgid "Category per page"
 msgstr ""
 
-#: categories-for-anspress.php:351
+#: categories-for-anspress.php:344
 msgid "Category to show per page"
 msgstr ""
 
-#: categories-for-anspress.php:460
+#: categories-for-anspress.php:453
 msgid "Select a topic that best fits your question"
 msgstr ""
 
-#: categories-for-anspress.php:522
+#: categories-for-anspress.php:515
 msgid "No matching category found"
 msgstr ""
 
-#: categories-for-anspress.php:582 categories-for-anspress.php:610
+#: categories-for-anspress.php:575 categories-for-anspress.php:603
 msgid "Image"
 msgstr ""
 
-#: categories-for-anspress.php:583 categories-for-anspress.php:612
+#: categories-for-anspress.php:576 categories-for-anspress.php:605
 msgid "Upload image"
 msgstr ""
 
-#: categories-for-anspress.php:587
+#: categories-for-anspress.php:580
 msgid "Category image"
 msgstr ""
 
-#: categories-for-anspress.php:590 categories-for-anspress.php:627
+#: categories-for-anspress.php:583 categories-for-anspress.php:620
 msgid "Category icon class"
 msgstr ""
 
-#: categories-for-anspress.php:592 categories-for-anspress.php:630
-#: categories-for-anspress.php:637
+#: categories-for-anspress.php:585 categories-for-anspress.php:623
+#: categories-for-anspress.php:630
 msgid "Font icon class, if image not set"
 msgstr ""
 
-#: categories-for-anspress.php:595 categories-for-anspress.php:634
+#: categories-for-anspress.php:588 categories-for-anspress.php:627
 msgid "Category icon color"
 msgstr ""
 
-#: categories-for-anspress.php:597
+#: categories-for-anspress.php:590
 msgid "Icon color"
 msgstr ""
 
-#: categories-for-anspress.php:621
+#: categories-for-anspress.php:614
 msgid "Featured image for category"
 msgstr ""
 
-#: categories-for-anspress.php:623
+#: categories-for-anspress.php:616
 msgid "Remove image"
+msgstr ""
+
+#: categories-for-anspress.php:739
+msgid ""
+"Category extension require AnsPress 2.4-RC or above. Download from Github "
+"%shttp://github.com/anspress/anspress%s"
 msgstr ""
 
 #: categories-widget.php:18
@@ -289,12 +289,12 @@ msgstr ""
 msgid "No category is set!"
 msgstr ""
 
-#: categories-for-anspress.php:227
+#: categories-for-anspress.php:225
 msgctxt "categories-for-anspress"
 msgid "Category"
 msgstr ""
 
-#: categories-for-anspress.php:229
+#: categories-for-anspress.php:227
 msgctxt "categories-for-anspress"
 msgid "Add New Category"
 msgstr ""

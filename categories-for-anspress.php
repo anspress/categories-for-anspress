@@ -29,15 +29,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-if ( ! defined( 'AP_VERSION' ) || ! version_compare( AP_VERSION, '2.3', '>' ) ) {
-	function ap_category_admin_error_notice() {
-	    echo '<div class="update-nag error"> <p>'.sprintf( __( 'Category extension require AnsPress 2.4-RC or above. Download from Github %shttp://github.com/anspress/anspress%s', 'tags-for-anspress', 'categories-for-anspress' ), '<a target="_blank" href="http://github.com/anspress/anspress">', '</a>' ).'</p></div>';
-	}
-	add_action( 'admin_notices', 'ap_category_admin_error_notice' );
-	return;
-}
-
-
 /**
  * Category extension for AnsPress
  */
@@ -97,7 +88,6 @@ class Categories_For_AnsPress
 		add_action( 'admin_init', array( $this, 'load_options' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'ap_admin_menu', array( $this, 'admin_category_menu' ) );
-		add_filter( 'ap_default_options', array( $this, 'ap_default_options' ) );
 		add_action( 'ap_display_question_metas', array( $this, 'ap_display_question_metas' ), 10, 2 );
 		add_action( 'ap_enqueue', array( $this, 'ap_enqueue' ) );
 		add_filter( 'term_link', array( $this, 'term_link_filter' ), 10, 3 );
@@ -374,7 +364,7 @@ class Categories_For_AnsPress
 	 * @return  array
 	 * @since   1.0
 	 */
-	public function ap_default_options($defaults) {
+	public static function ap_default_options($defaults) {
 		$defaults['form_category_orderby']  	= 'count';
 		$defaults['categories_page_order']  	= 'DESC';
 		$defaults['categories_page_orderby']  	= 'count';
@@ -744,10 +734,28 @@ class Categories_For_AnsPress
  * @return void
  */
 function categories_for_anspress() {
+	if ( ! defined( 'AP_VERSION' ) || ! version_compare( AP_VERSION, '2.3', '>' ) ) {
+		function ap_category_admin_error_notice() {
+		    echo '<div class="update-nag error"> <p>'.sprintf( __( 'Category extension require AnsPress 2.4-RC or above. Download from Github %shttp://github.com/anspress/anspress%s', 'tags-for-anspress', 'categories-for-anspress' ), '<a target="_blank" href="http://github.com/anspress/anspress">', '</a>' ).'</p></div>';
+		}
+		add_action( 'admin_notices', 'ap_category_admin_error_notice' );
+		return;
+	}
+
 	if( apply_filters( 'anspress_load_ext', true, 'categories-for-anspress' ) ){
 		$categories = new Categories_For_AnsPress();
 	}
 }
 add_action( 'plugins_loaded', 'categories_for_anspress' );
+
+/**
+ * Load extensions files before loading AnsPress
+ * @return void
+ * @since  1.0
+ */
+function anspress_loaded_categories_for_anspress() {	
+	add_filter( 'ap_default_options', array( 'Categories_For_AnsPress', 'ap_default_options' ) );
+}
+add_action( 'before_loading_anspress', 'anspress_loaded_categories_for_anspress' );
 
 
