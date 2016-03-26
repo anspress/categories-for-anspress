@@ -33,6 +33,11 @@ Or if you want to install it manually simple follow this:
 
 == Changelog ==
 
+= 2.0.0 =
+
+* Improved loading order
+* Added tests and travis config
+
 = 1.4.2 =
 
 * Minor bug fixes
