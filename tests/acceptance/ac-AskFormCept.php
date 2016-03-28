@@ -6,6 +6,7 @@
 $I = new AcceptanceTester($scenario );
 $I->wantTo('Check AnsPress form error message' );
 $I->switch_user('user1', 'user1' );
+$I->switch_user('user1', 'user1' );
 $I->amOnPage( '/questions/ask/' );
 $I->seeElement('#ask_form' );
 
