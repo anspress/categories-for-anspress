@@ -85,7 +85,7 @@ class Categories_For_AnsPress
 
 		add_action( 'init', array( $this, 'textdomain' ) );
 		add_action( 'init', array( $this, 'register_question_categories' ), 1 );
-		add_action( 'admin_init', array( $this, 'load_options' ) );
+		add_action( 'ap_option_groups', array( $this, 'load_options' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'ap_admin_menu', array( $this, 'admin_category_menu' ) );
 		add_action( 'ap_display_question_metas', array( $this, 'ap_display_question_metas' ), 10, 2 );
@@ -443,11 +443,13 @@ class Categories_For_AnsPress
 			$catgeory = $category[0]->term_id;
 		}
 
+		$category_post = isset($_POST['category']) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
+
 		$args['fields'][] = array(
 			'name' 		=> 'category',
 			'label' 	=> __( 'Category', 'categories-for-anspress' ),
 			'type'  	=> 'taxonomy_select',
-			'value' 	=> ( $editing ? $catgeory :  sanitize_text_field( wp_unslash( @$_POST['category'] ) ) ),
+			'value' 	=> ( $editing ? $catgeory : $category_post ),
 			'taxonomy' 	=> 'question_category',
 			'orderby' 	=> ap_opt( 'form_category_orderby' ),
 			'desc' 		=> __( 'Select a topic that best fits your question', 'categories-for-anspress' ),
