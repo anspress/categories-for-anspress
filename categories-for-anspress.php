@@ -87,6 +87,7 @@ class Categories_For_AnsPress
 		add_action( 'init', array( $this, 'register_question_categories' ), 1 );
 		add_action( 'ap_option_groups', array( $this, 'load_options' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'ap_load_admin_assets', array( $this, 'ap_load_admin_assets' ) );
 		add_action( 'ap_admin_menu', array( $this, 'admin_category_menu' ) );
 		add_action( 'ap_display_question_metas', array( $this, 'ap_display_question_metas' ), 10, 2 );
 		add_action( 'ap_enqueue', array( $this, 'ap_enqueue' ) );
@@ -353,9 +354,21 @@ class Categories_For_AnsPress
 	 * Enqueue required script
 	 */
 	public function admin_enqueue_scripts() {
+		if( !ap_load_admin_assets() ){
+			return;
+		}
 		wp_enqueue_media();
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_script( 'wp-color-picker' );
+	}
+
+	public function ap_load_admin_assets( $return ) {
+		$page = get_current_screen();
+		if( 'question_category' === $page->taxonomy ){
+			return true;
+		}
+
+		return $return;
 	}
 
 	/**
@@ -404,7 +417,6 @@ class Categories_For_AnsPress
 	 */
 	public function ap_enqueue() {
 		wp_enqueue_style( 'categories_for_anspress_css', ap_get_theme_url( 'css/categories.css', CATEGORIES_FOR_ANSPRESS_URL ) );
-
 	}
 
 	/**

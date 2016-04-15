@@ -10,7 +10,7 @@ function ap_question_categories_html($args = array()) {
 	$defaults  = array(
 		'question_id'   => get_the_ID(),
 		'list'           => false,
-		'tag'           => 'span', 
+		'tag'           => 'span',
 		'class'         => 'question-categories',
 		'label'         => __( 'Categories', 'categories-for-anspress' ),
 		'echo'          => false,
@@ -150,17 +150,24 @@ function ap_category_sorting() {
 	}
 }
 
-function ap_get_category_image($term_id) {
+/**
+ * Get category image
+ * @param  integer $term_id Category ID.
+ */
+function ap_get_category_image($term_id, $width = 32, $height = 32) {
 	$option = get_option( 'ap_cat_'.$term_id );
-	$color = isset( $option['ap_color'] ) && $option['ap_color'] != '' ? ' style="background:'.$option['ap_color'].'"' : ' style="background:#333"';
-	if ( isset( $option['ap_image']['url'] ) && $option['ap_image']['url'] != '' ) {
-		echo '<img class="ap-category-image" src="'.$option['ap_image']['url'].'" />';
-	} elseif ( isset( $option['ap_icon'] ) && $option['ap_icon'] != '' ) {
-		echo '<span class="ap-category-icon '.$option['ap_icon'].'"'.$color.'></span>';
-	} else {
-		echo '<span class="ap-category-icon apicon-category"'.$color.'></span>';
-	}
+	$color = ! empty( $option['ap_color'] ) ? ' background:'.$option['ap_color'].';' : 'background:#333;';
 
+	$style = 'style="'.$color.'width:'.$width.'px;height:'.$height.'px;"';
+
+	if ( ! empty( $option['ap_image']['id'] ) ) {
+		$image = wp_get_attachment_image( $option['ap_image']['id'], array( $width, $height ) );
+		echo $image;
+	} elseif ( ! empty( $option['ap_icon'] ) ) {
+		echo '<span class="ap-category-icon '.$option['ap_icon'].'"'.$style.'></span>';
+	} else {
+		echo '<span class="ap-category-icon apicon-category"'.$style.'></span>';
+	}
 }
 
 /**

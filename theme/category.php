@@ -7,9 +7,6 @@
 			<div class="ap-taxo-detail">
 
 				<h2 class="entry-title">
-					<a href="<?php echo get_category_link( $question_category );?>">
-						<?php echo $question_category->name; ?> 
-					</a>
 					<span class="ap-tax-item-count">
 						<?php printf( _n('1 Question', '%s Questions', $question_category->count, 'categories-for-anspress'),  $question_category->count); ?>
 					</span>

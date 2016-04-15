@@ -35,16 +35,19 @@ class AnsPress_Category_Widget extends WP_Widget {
 			'order'         => $instance['order'],
 		);
 
+		$icon_width = !empty( $instance['icon_width'] ) ? $instance['icon_width'] : 32;
+		$icon_height = !empty( $instance['icon_height'] ) ? $instance['icon_height'] : 32;
+
 		$categories = get_terms( 'question_category' , $cat_args );
 		?>
 
         <ul id="ap-categories-widget" class="ap-cat-wid clearfix">
 			<?php
-			foreach ( $categories as $key => $category ) :
+			foreach ( (array) $categories as $key => $category ) :
 				$sub_cat_count = count(get_term_children( $category->term_id, 'question_category' ) );
 			?>
                 <li class="clearfix">
-					<a class="ap-cat-image" href="<?php echo get_category_link( $category );?>"><?php echo ap_get_category_image($category->term_id ); ?></a>
+					<a class="ap-cat-image" href="<?php echo get_category_link( $category );?>"><?php echo ap_get_category_image( $category->term_id, $icon_width, $icon_height ); ?></a>
 					<a class="ap-cat-wid-title" href="<?php echo get_category_link( $category );?>">
 						<?php echo $category->name; ?>
                     </a>
@@ -63,37 +66,22 @@ class AnsPress_Category_Widget extends WP_Widget {
 	}
 
 	public function form( $instance ) {
-		if ( isset( $instance[ 'title' ] ) ) {
-			$title = $instance[ 'title' ]; } else {
-			$title = __( 'Categories', 'categories-for-anspress' ); }
+		$title = ! empty( $instance[ 'title' ] ) ? $instance[ 'title' ] : __( 'Categories', 'categories-for-anspress' );
+		$hide_empty = ! empty( $instance[ 'hide_empty' ] ) ? $instance[ 'hide_empty' ] : false;
+		$parent = ! empty( $instance[ 'parent' ] ) ? $instance[ 'parent' ] : 0;
+		$number = ! empty( $instance[ 'number' ] ) ? $instance[ 'number' ] : 10;
+		$orderby = ! empty( $instance[ 'orderby' ] ) ? $instance[ 'orderby' ] : 'count';
+		$order = ! empty( $instance[ 'order' ] ) ? $instance[ 'order' ] : 'DESC';
+		$icon_height = ! empty( $instance[ 'icon_height' ] ) ? $instance[ 'icon_height' ] : '32';
+		$icon_width = ! empty( $instance[ 'icon_width' ] ) ? $instance[ 'icon_width' ] : '32';
 
-			if ( isset( $instance[ 'hide_empty' ] ) ) {
-				$hide_empty = $instance[ 'hide_empty' ]; } else {
-				$hide_empty = false; }
+		$cat_args = array(
+			'hide_empty'    => false,
+			'orderby'       => 'count',
+			'order'         => 'DESC',
+		);
 
-				if ( isset( $instance[ 'parent' ] ) ) {
-					$parent = $instance[ 'parent' ]; } else {
-					$parent = 0; }
-
-					if ( isset( $instance[ 'number' ] ) ) {
-						$number = $instance[ 'number' ]; } else {
-						$number = 10; }
-
-						if ( isset( $instance[ 'orderby' ] ) ) {
-							$orderby = $instance[ 'orderby' ]; } else {
-							$orderby = 'count'; }
-
-							if ( isset( $instance[ 'order' ] ) ) {
-								$order = $instance[ 'order' ]; } else {
-								$order = 'DESC'; }
-
-								$cat_args = array(
-								'hide_empty'    => false,
-								'orderby'       => 'count',
-								'order'         => 'DESC',
-								);
 		$categories = get_terms( 'question_category' , $cat_args );
-
 		?>
         <p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'categories-for-anspress' ); ?></label>
@@ -138,6 +126,14 @@ class AnsPress_Category_Widget extends WP_Widget {
 				<option value="ASC" <?php echo selected($order, 'ASC' ); ?>><?php _e('ASC', 'categories-for-anspress' ); ?></option>
             </select>
         </p>
+        <p>
+			<label for="<?php echo $this->get_field_id( 'icon_width' ); ?>"><?php _e( 'Icon width:', 'categories-for-anspress' ); ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id( 'icon_width' ); ?>" name="<?php echo $this->get_field_name( 'icon_width' ); ?>" type="text" value="<?php echo esc_attr( $icon_width ); ?>">
+        </p>
+        <p>
+			<label for="<?php echo $this->get_field_id( 'icon_height' ); ?>"><?php _e( 'Icon height:', 'categories-for-anspress' ); ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id( 'icon_height' ); ?>" name="<?php echo $this->get_field_name( 'icon_height' ); ?>" type="text" value="<?php echo esc_attr( $icon_height ); ?>">
+        </p>
 		<?php
 	}
 
@@ -159,6 +155,8 @@ class AnsPress_Category_Widget extends WP_Widget {
 		$instance['number'] = ( ! empty( $new_instance['number'] ) ) ? strip_tags( $new_instance['number'] ) : '5';
 		$instance['orderby'] = ( ! empty( $new_instance['orderby'] ) ) ? strip_tags( $new_instance['orderby'] ) : 'count';
 		$instance['order'] = ( ! empty( $new_instance['order'] ) ) ? strip_tags( $new_instance['order'] ) : 'DESC';
+		$instance['icon_width'] = ( ! empty( $new_instance['icon_width'] ) ) ? (int)strip_tags( $new_instance['icon_width'] ) : 32;
+		$instance['icon_height'] = ( ! empty( $new_instance['icon_height'] ) ) ? (int)strip_tags( $new_instance['icon_height'] ) : 32;
 
 		return $instance;
 	}
