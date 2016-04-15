@@ -23,19 +23,6 @@ $I->amOnPage( '/questions/' );
 $I->see($I->questions['question1'] );
 //$I->makeScreenshot('questions_page' );
 
-// Add a dummy comment in question 1.
-$I->wantTo('Check comments' );
-$I->switch_user('user2', 'user2' );
-$I->amOnPage( '/questions/' );
-$I->click( ['link' => $I->questions['question1']] );
-$I->click( '.ap-q-cells .comment-btn' );
-$I->waitForJS( 'return jQuery.active == 0;',60 );
-$I->fillField([ 'name' => 'comment' ], $I->comment['comment1'] );
-$I->click( '#ap-commentform input[name="submit"]' );
-$I->waitForJS( 'return jQuery.active == 0;',60 );
-$I->waitForText( $I->comment['comment1'], 60 );
-$I->makeScreenshot('questions_comment' );
-
 $I->wantTo('Check categories page' );
 $I->amOnPage( '/questions/categories/' );
 $I->see('Awesome_Category');

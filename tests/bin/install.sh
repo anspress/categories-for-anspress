@@ -189,7 +189,6 @@ install_db() {
 }
 
 copy_category_ext(){
-	whoami
 	NEW_ANSPRESS_DIR="$WP_CORE_DIR/wp-content/plugins/categories-for-anspress"
 	
 	rm -rf "$NEW_ANSPRESS_DIR"
@@ -202,6 +201,14 @@ copy_category_ext(){
 	git fetch origin
 	sudo git reset --hard origin/master
 	#cp -r "../../"* "$NEW_ANSPRESS_DIR/"
+	
+	mkdir "$WP_CORE_DIR/wp-content/plugins/anspress-question-answer"
+	cd "$WP_CORE_DIR/wp-content/plugins/anspress-question-answer"
+	wget https://github.com/anspress/anspress/archive/master.zip
+	
+	unzip master.zip
+
+	mv anspress-master/* ./
 }
 
 core_install(){	
@@ -213,7 +220,7 @@ core_install(){
 	wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass="$DB_PASS" --allow-root
 	wp core install --url='http://wptest.localhost/' --title='AnsPress_test' --admin_user='admin' --admin_password='admin' --admin_email=support@wptest.localhost --allow-root
 	wp rewrite structure '/%postname%/' --hard --allow-root
-	wp plugin install anspress-question-answer --activate --allow-root
+	wp plugin activate anspress-question-answer --allow-root
 	wp plugin activate categories-for-anspress --allow-root	
 	wp plugin install tags-for-anspress --activate --allow-root
 	wp plugin install anspress-email --activate --allow-root
