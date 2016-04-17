@@ -93,7 +93,6 @@ class Categories_For_AnsPress
 		add_action( 'ap_enqueue', array( $this, 'ap_enqueue' ) );
 		add_filter( 'term_link', array( $this, 'term_link_filter' ), 10, 3 );
 		add_action( 'ap_ask_form_fields', array( $this, 'ask_from_category_field' ), 10, 2 );
-		add_action( 'ap_ask_fields_validation', array( $this, 'ap_ask_fields_validation' ) );
 		add_action( 'ap_processed_new_question', array( $this, 'after_new_question' ), 0, 2 );
 		add_action( 'ap_processed_update_question', array( $this, 'after_new_question' ), 0, 2 );
 		add_filter( 'ap_page_title', array( $this, 'page_title' ) );
@@ -149,7 +148,7 @@ class Categories_For_AnsPress
 			 * @since 1.4.2
 			 */
 			do_action( 'ap_before_category_page', $question_category );
-			
+
 			include( ap_get_theme_location( 'category.php', CATEGORIES_FOR_ANSPRESS_DIR ) );
 		} else {
 			global $wp_query;
@@ -347,6 +346,14 @@ class Categories_For_AnsPress
 				'value' 	=> @$settings['categories_per_page'],
 				'show_desc_tip' => false,
 			),
+			array(
+				'name' 		=> 'anspress_opt[categories_image_height]',
+				'label' 	=> __( 'Categories image height', 'categories-for-anspress' ),
+				'desc' 		=> __( 'Image height in categories page', 'categories-for-anspress' ),
+				'type' 		=> 'number',
+				'value' 	=> @$settings['categories_image_width'],
+				'show_desc_tip' => false,
+			),
 		));
 	}
 
@@ -354,7 +361,7 @@ class Categories_For_AnsPress
 	 * Enqueue required script
 	 */
 	public function admin_enqueue_scripts() {
-		if( !ap_load_admin_assets() ){
+		if ( ! ap_load_admin_assets() ) {
 			return;
 		}
 		wp_enqueue_media();
@@ -364,7 +371,7 @@ class Categories_For_AnsPress
 
 	public function ap_load_admin_assets( $return ) {
 		$page = get_current_screen();
-		if( 'question_category' === $page->taxonomy ){
+		if ( 'question_category' === $page->taxonomy ) {
 			return true;
 		}
 
@@ -384,6 +391,7 @@ class Categories_For_AnsPress
 		$defaults['categories_page_slug']  		= 'categories';
 		$defaults['category_page_slug']  		= 'category';
 		$defaults['categories_per_page']  		= 20;
+		$defaults['categories_image_height']  		= 150;
 
 		return $defaults;
 	}
@@ -455,7 +463,7 @@ class Categories_For_AnsPress
 			$catgeory = $category[0]->term_id;
 		}
 
-		$category_post = isset($_POST['category']) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
+		$category_post = isset($_POST['category'] ) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
 
 		$args['fields'][] = array(
 			'name' 		=> 'category',
@@ -466,23 +474,6 @@ class Categories_For_AnsPress
 			'orderby' 	=> ap_opt( 'form_category_orderby' ),
 			'desc' 		=> __( 'Select a topic that best fits your question', 'categories-for-anspress' ),
 			'order' 	=> 6,
-		);
-
-		return $args;
-	}
-
-	/**
-	 * Add category in validation field
-	 * @param  array $args validation args.
-	 * @return array
-	 * @since  1.0
-	 */
-	public function ap_ask_fields_validation($args) {
-
-		if ( wp_count_terms( 'question_category' ) == 0 ) {
-			return $args; }
-
-		$args['category'] = array(
 			'sanitize' => array( 'only_int' ),
 			'validate' => array( 'required' ),
 		);
@@ -501,7 +492,8 @@ class Categories_For_AnsPress
 		global $validate;
 
 		if ( empty( $validate ) ) {
-			return; }
+			return;
+		}
 
 		$fields = $validate->get_sanitized_fields();
 
@@ -556,7 +548,8 @@ class Categories_For_AnsPress
 	public function terms_clauses($pieces, $taxonomies, $args) {
 
 		if ( ! in_array( 'question_category', $taxonomies ) || ! isset( $args['ap_query'] ) || $args['ap_query'] != 'subscription' ) {
-			return $pieces; }
+			return $pieces;
+		}
 
 		global $wpdb;
 
@@ -585,24 +578,30 @@ class Categories_For_AnsPress
 	 * @return void
 	 */
 	public function image_field_new( $term ) {
-		echo "<div class='form-field term-image-wrap'>";
-		echo "<label for='ap_image'>".__( 'Image', 'categories-for-anspress' ).'</label>';
-		echo '<a href="#" id="ap-category-upload" data-action="ap_media_uplaod" data-title="'.__( 'Upload image', 'categories-for-anspress' ).'" data-urlc="#ap_category_media_url" data-idc="#ap_category_media_id">'.__( 'Upload image', 'categories-for-anspress' ).'</a>';
+		?>
+		<div class='form-field term-image-wrap'>
+			<label for='ap_image'><?php _e( 'Image', 'categories-for-anspress' ); ?></label>
+			<a href="#" id="ap-category-upload" class="button" data-action="ap_media_uplaod" data-title="<?php _e( 'Upload image', 'categories-for-anspress' ); ?>" data-urlc="#ap_category_media_url" data-idc="#ap_category_media_id">
+				<?php _e( 'Upload image', 'categories-for-anspress' ); ?>
+			</a>
 
-		echo '<input id="ap_category_media_url" type="hidden" name="ap_category_image_url" value="">';
-		echo '<input id="ap_category_media_id" type="hidden" name="ap_category_image_id" value="">';
-		echo '<p class="description">'.__( 'Category image', 'categories-for-anspress' ).'</p>';
-		echo '<div>';
-		echo "<div class='form-field term-image-wrap'>";
-		echo "<label for='ap_icon'>".__( 'Category icon class', 'categories-for-anspress' ).'</label>';
-		echo '<input id="ap_icon" type="text" name="ap_icon" value="">';
-		echo '<p class="description">'.__( 'Font icon class, if image not set', 'categories-for-anspress' ).'</p>';
-		echo '<div>';
-		echo "<div class='form-field term-image-wrap'>";
-		echo "<label for='ap-category-color'>".__( 'Category icon color', 'categories-for-anspress' ).'</label>';
-		echo '<input id="ap-category-color" type="text" name="ap_color" value="">';
-		echo '<p class="description">'.__( 'Icon color', 'categories-for-anspress' ).'</p>';
-		echo '<div>';
+			<input id="ap_category_media_url" type="hidden" name="ap_category_image_url" value="">
+			<input id="ap_category_media_id" type="hidden" name="ap_category_image_id" value="">
+			<p class="description"><?php _e( 'Category image', 'categories-for-anspress' ); ?></p>
+		<div>
+
+		<div class='form-field term-image-wrap'>
+			<label for='ap_icon'><?php _e( 'Category icon class', 'categories-for-anspress' ); ?></label>
+			<input id="ap_icon" type="text" name="ap_icon" value="">
+			<p class="description"><?php _e( 'Font icon class, if image not set', 'categories-for-anspress' ); ?></p>
+		<div>
+		
+		<div class='form-field term-image-wrap'>
+			<label for='ap-category-color'><?php _e( 'Category icon color', 'categories-for-anspress' ); ?></label>
+			<input id="ap-category-color" type="text" name="ap_color" value="">
+			<p class="description"><?php _e( 'Icon color', 'categories-for-anspress' ); ?></p>
+		<div>
+		<?php
 	}
 
 	public function image_field_edit( $term ) {
@@ -613,40 +612,53 @@ class Categories_For_AnsPress
 		$ap_icon        = $termMeta['ap_icon'];
 		$ap_color        = $termMeta['ap_color'];
 
-		echo "<tr class='form-field form-required term-name-wrap'>";
-		echo "<th scope='row'><label for='custom-field'>".__( 'Image', 'categories-for-anspress' ).'</label></th>';
-		echo '<td>';
-		echo '<a href="#" id="ap-category-upload" data-action="ap_media_uplaod" data-title="'.__( 'Upload image', 'categories-for-anspress' ).'" data-idc="#ap_category_media_id" data-urlc="#ap_category_media_url">'.__( 'Upload image', 'categories-for-anspress' ).'</a>';
+		?>
+		<tr class='form-field form-required term-name-wrap'>
+			<th scope='row'>
+				<label for='custom-field'><?php _e( 'Image', 'categories-for-anspress' ); ?></label>
+			</th>
+			<td>
+				<a href="#" id="ap-category-upload" class="button" data-action="ap_media_uplaod" data-title="<?php _e( 'Upload image', 'categories-for-anspress' ); ?>" data-idc="#ap_category_media_id" data-urlc="#ap_category_media_url"><?php _e( 'Upload image', 'categories-for-anspress' ); ?></a>
 
-		if ( isset( $ap_image['url'] ) && $ap_image['url'] != '' ) {
-			echo '<img id="ap_category_media_preview" data-action="ap_media_value" src="'.$ap_image['url'].'" />'; }
+				<?php if ( isset( $ap_image['url'] ) && $ap_image['url'] != '' ) { ?>
+					<img id="ap_category_media_preview" data-action="ap_media_value" src="<?php echo $ap_image['url']; ?>" />
+				<?php } ?>
 
-		echo '<input id="ap_category_media_url" type="hidden" data-action="ap_media_value" name="ap_category_image_url" value="'.$ap_image['url'].'">';
+				<input id="ap_category_media_url" type="hidden" data-action="ap_media_value" name="ap_category_image_url" value="<?php echo $ap_image['url']; ?>">
 
-		echo '<input id="ap_category_media_id" type="hidden" data-action="ap_media_value" name="ap_category_image_id" value="'.$ap_image['id'].'">';
+				<input id="ap_category_media_id" type="hidden" data-action="ap_media_value" name="ap_category_image_id" value="<?php echo $ap_image['id']; ?>">
 
-		echo "<p class='description'>".__( 'Featured image for category', 'categories-for-anspress' ).'</p>';
+				<p class='description'><?php _e( 'Featured image for category', 'categories-for-anspress' ); ?></p>
 
-		echo '<a href="#" id="ap-category-upload-remove" data-action="ap_media_remove">'.__( 'Remove image', 'categories-for-anspress' ).'</a>';
-		echo '</td></tr>';
+				<a href="#" id="ap-category-upload-remove" data-action="ap_media_remove"><?php _e( 'Remove image', 'categories-for-anspress' ); ?></a>
+			</td>
+		</tr>
 
-		echo "<tr class='form-field form-required term-name-wrap'>";
-		echo "<th scope='row'><label for='custom-field'>".__( 'Category icon class', 'categories-for-anspress' ).'</label></th>';
-		echo '<td>';
-		echo '<input id="ap_icon" type="text" name="ap_icon" value="'.$ap_icon.'">';
-		echo '<p class="description">'.__( 'Font icon class, if image not set', 'categories-for-anspress' ).'</p>';
-		echo '</td></tr>';
-
-		echo "<tr class='form-field form-required term-name-wrap'>";
-		echo "<th scope='row'><label for='ap-category-color'>".__( 'Category icon color', 'categories-for-anspress' ).'</label></th>';
-		echo '<td>';
-		echo '<input id="ap-category-color" type="text" name="ap_color" value="'.$ap_color.'">';
-		echo '<p class="description">'.__( 'Font icon class, if image not set', 'categories-for-anspress' ).'</p>';
-		echo '</td></tr>';
+		<tr class='form-field form-required term-name-wrap'>
+			<th scope='row'><label for='custom-field'><?php _e( 'Category icon class', 'categories-for-anspress' ); ?></label>
+			</th>
+			<td>
+				<input id="ap_icon" type="text" name="ap_icon" value="<?php echo $ap_icon; ?>">
+				<p class="description"><?php _e( 'Font icon class, if image not set', 'categories-for-anspress' ); ?></p>
+			</td>
+		</tr>
+		<tr class='form-field form-required term-name-wrap'>
+			<th scope='row'>
+				<label for='ap-category-color'><?php _e( 'Category icon color', 'categories-for-anspress' ); ?></label>
+			</th>
+			<td>
+				<input id="ap-category-color" type="text" name="ap_color" value="<?php echo $ap_color; ?>">
+				<p class="description"><?php _e( 'Font icon class, if image not set', 'categories-for-anspress' ); ?></p>
+			</td>
+		</tr>
+		<?php
 	}
 
+	/**
+	 * Process and save category images.
+	 * @param  integer $termID Term iD.
+	 */
 	public function save_image_field($termID) {
-
 		if ( (isset( $_POST['ap_category_image_url'] ) && isset( $_POST['ap_category_image_id'] )) || isset( $_POST['ap_icon'] ) ) {
 
 			// get options from database - if not a array create a new one
@@ -659,19 +671,22 @@ class Categories_For_AnsPress
 			if ( isset( $_POST['ap_category_image_url'] ) && isset( $_POST['ap_category_image_id'] ) ) {
 
 				if ( ! is_array( $termMeta['ap_image'] ) ) {
-					$termMeta['ap_image'] = array(); }
+					$termMeta['ap_image'] = array();
+				}
 
-				// get value and save it into the database
+				// Get value and save it into the database.
 				$termMeta['ap_image']['url'] = isset( $_POST['ap_category_image_url'] ) ? sanitize_text_field( $_POST['ap_category_image_url'] ) : '';
 
 				$termMeta['ap_image']['id'] = isset( $_POST['ap_category_image_id'] ) ? (int) $_POST['ap_category_image_id'] : '';
 			}
 
 			if ( isset( $_POST['ap_icon'] ) ) {
-				$termMeta['ap_icon'] = sanitize_text_field( $_POST['ap_icon'] ); }
+				$termMeta['ap_icon'] = sanitize_text_field( $_POST['ap_icon'] );
+			}
 
 			if ( isset( $_POST['ap_color'] ) ) {
-				$termMeta['ap_color'] = sanitize_text_field( $_POST['ap_color'] ); }
+				$termMeta['ap_color'] = sanitize_text_field( $_POST['ap_color'] );
+			}
 
 			update_option( 'ap_cat_'.$termID, $termMeta );
 		}
@@ -756,7 +771,7 @@ function categories_for_anspress() {
 		return;
 	}
 
-	if( apply_filters( 'anspress_load_ext', true, 'categories-for-anspress' ) ){
+	if ( apply_filters( 'anspress_load_ext', true, 'categories-for-anspress' ) ) {
 		$categories = new Categories_For_AnsPress();
 	}
 }
@@ -767,7 +782,7 @@ add_action( 'plugins_loaded', 'categories_for_anspress' );
  * @return void
  * @since  1.0
  */
-function anspress_loaded_categories_for_anspress() {	
+function anspress_loaded_categories_for_anspress() {
 	add_filter( 'ap_default_options', array( 'Categories_For_AnsPress', 'ap_default_options' ) );
 }
 add_action( 'before_loading_anspress', 'anspress_loaded_categories_for_anspress' );

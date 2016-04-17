@@ -22,11 +22,12 @@
                     <li class="clearfix">
                         <div class="ap-category-item">
                             <div class="ap-cat-img-c">
+                            	<?php ap_category_icon( $category->term_id ); ?>
                                 <span class="ap-term-count">
 									<?php printf(_n('%d Question', '%d Questions', $category->count, 'categories-for-anspress' ), $category->count ) ?>
                                 </span>
-								<a href="<?php echo get_category_link( $category );?>">
-									<?php echo ap_get_category_image($category->term_id ); ?>
+								<a class="ap-categories-feat" style="height:<?php echo ap_opt('categories_image_height'); ?>px" href="<?php echo get_category_link( $category );?>">
+									<?php echo ap_get_category_image( $category->term_id, ap_opt('categories_image_height') ); ?>
                                 </a>
                             </div>
 

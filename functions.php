@@ -82,9 +82,9 @@ function ap_sub_category_list($parent) {
 	$categories = get_terms( array( 'taxonomy' => 'question_category' ), array( 'parent' => $parent, 'hide_empty' => false ) );
 
 	if ( $categories ) {
-		echo '<ul class="ap-sub-taxo ap-ul-inline clearfix">';
+		echo '<ul class="ap-category-subitems ap-ul-inline clearfix">';
 		foreach ( $categories as $cat ) {
-			echo '<li><a href="'.get_category_link( $cat ).'">' .$cat->name.'<span>'.$cat->count.'</span></a></li>';
+			echo '<li><a href="'.get_category_link( $cat ).'">' .$cat->name.'<span>('.$cat->count.')</span></a></li>';
 		}
 		echo '</ul>';
 	}
@@ -154,16 +154,31 @@ function ap_category_sorting() {
  * Get category image
  * @param  integer $term_id Category ID.
  */
-function ap_get_category_image($term_id, $width = 32, $height = 32) {
+function ap_get_category_image($term_id, $height = 32) {
 	$option = get_option( 'ap_cat_'.$term_id );
 	$color = ! empty( $option['ap_color'] ) ? ' background:'.$option['ap_color'].';' : 'background:#333;';
 
-	$style = 'style="'.$color.'width:'.$width.'px;height:'.$height.'px;"';
+	$style = 'style="'.$color.'height:'.$height.'px;"';
 
 	if ( ! empty( $option['ap_image']['id'] ) ) {
-		$image = wp_get_attachment_image( $option['ap_image']['id'], array( $width, $height ) );
+		$image = wp_get_attachment_image( $option['ap_image']['id'], array( 900, $height ) );
 		echo $image;
-	} elseif ( ! empty( $option['ap_icon'] ) ) {
+	}else{
+		echo '<div class="ap-category-defimage" '.$style.'></div>';
+	}
+}
+
+/**
+ * Output category icon.
+ * @param  integer $term_id Term ID.
+ */
+function ap_category_icon( $term_id ){
+	$option = get_option( 'ap_cat_'.$term_id );
+	$color = ! empty( $option['ap_color'] ) ? ' background:'.$option['ap_color'].';' : 'background:#333;';
+
+	$style = 'style="'.$color.'"';
+
+	if ( ! empty( $option['ap_icon'] ) ) {
 		echo '<span class="ap-category-icon '.$option['ap_icon'].'"'.$style.'></span>';
 	} else {
 		echo '<span class="ap-category-icon apicon-category"'.$style.'></span>';
@@ -202,4 +217,19 @@ function ap_get_category_slug() {
 	 * FILTER: ap_category_slug
 	 */
 	return apply_filters( 'ap_category_slug', $slug );
+}
+
+/**
+ * Check if category have featured image.
+ * @param  integer $term_id Term ID.
+ * @return boolean
+ * @since  2.0.2
+ */
+function ap_category_have_image( $term_id ){
+	$option = get_option( 'ap_cat_'.$term_id );
+	if ( ! empty( $option['ap_image']['id'] ) ) {
+		return true;
+	}
+
+	return false;
 }
