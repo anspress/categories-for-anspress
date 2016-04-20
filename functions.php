@@ -29,7 +29,7 @@ function ap_question_categories_html($args = array()) {
 		if ( $args['list'] ) {
 			$o = '<ul class="'.$args['class'].'">';
 			foreach ( $cats as $c ) {
-				$o .= '<li><a href="'.esc_url( get_term_link( $c ) ).'" title="'.$c->description.'">'. $c->name .'</a></li>';
+				$o .= '<li><a href="'.esc_url( get_term_link( $c ) ).'" data-catid="'.$c->term_id.'" title="'.$c->description.'">'. $c->name .'</a></li>';
 			}
 			$o .= '</ul>';
 
@@ -37,7 +37,7 @@ function ap_question_categories_html($args = array()) {
 			$o = $args['label'];
 			$o .= '<'.$args['tag'].' class="'.$args['class'].'">';
 			foreach ( $cats as $c ) {
-				$o .= '<a href="'.esc_url( get_term_link( $c ) ).'" title="'.$c->description.'">'. $c->name .'</a>';
+				$o .= '<a data-catid="'.$c->term_id.'" href="'.esc_url( get_term_link( $c ) ).'" title="'.$c->description.'">'. $c->name .'</a>';
 			}
 			$o .= '</'.$args['tag'].'>';
 		}
@@ -151,8 +151,9 @@ function ap_category_sorting() {
 }
 
 /**
- * Get category image
+ * Return category image
  * @param  integer $term_id Category ID.
+ * @param  integer $height  image height, without PX.
  */
 function ap_get_category_image($term_id, $height = 32) {
 	$option = get_option( 'ap_cat_'.$term_id );
@@ -162,27 +163,46 @@ function ap_get_category_image($term_id, $height = 32) {
 
 	if ( ! empty( $option['ap_image']['id'] ) ) {
 		$image = wp_get_attachment_image( $option['ap_image']['id'], array( 900, $height ) );
-		echo $image;
-	}else{
-		echo '<div class="ap-category-defimage" '.$style.'></div>';
+		return $image;
+	}
+	
+	return '<div class="ap-category-defimage" '.$style.'></div>';
+}
+
+/**
+ * Output category image
+ * @param  integer $term_id Category ID.
+ * @param  integer $height  image height, without PX.
+ */
+function ap_category_image($term_id, $height = 32) {
+	echo ap_get_category_image( $term_id, $height );
+}
+
+/**
+ * Return category icon.
+ * @param  integer $term_id 	Term ID.
+ * @param  string  $attributes 	Custom attributes.
+ */
+function ap_get_category_icon( $term_id, $attributes = '' ) {
+	$option = get_option( 'ap_cat_'.$term_id );
+	$color = ! empty( $option['ap_color'] ) ? ' background:'.$option['ap_color'].';' : 'background:#333;';
+
+	$style = 'style="'.$color.$attributes.'"';
+
+	if ( ! empty( $option['ap_icon'] ) ) {
+		return '<span class="ap-category-icon '.$option['ap_icon'].'"'.$style.'></span>';
+	} else {
+		return '<span class="ap-category-icon apicon-category"'.$style.'></span>';
 	}
 }
 
 /**
  * Output category icon.
- * @param  integer $term_id Term ID.
+ * @param  integer $term_id 	Term ID.
+ * @param  string  $attributes 	Custom attributes.
  */
-function ap_category_icon( $term_id ){
-	$option = get_option( 'ap_cat_'.$term_id );
-	$color = ! empty( $option['ap_color'] ) ? ' background:'.$option['ap_color'].';' : 'background:#333;';
-
-	$style = 'style="'.$color.'"';
-
-	if ( ! empty( $option['ap_icon'] ) ) {
-		echo '<span class="ap-category-icon '.$option['ap_icon'].'"'.$style.'></span>';
-	} else {
-		echo '<span class="ap-category-icon apicon-category"'.$style.'></span>';
-	}
+function ap_category_icon( $term_id, $attributes = '' ) {
+	echo ap_get_category_icon( $term_id, $attributes );
 }
 
 /**
@@ -225,7 +245,7 @@ function ap_get_category_slug() {
  * @return boolean
  * @since  2.0.2
  */
-function ap_category_have_image( $term_id ){
+function ap_category_have_image( $term_id ) {
 	$option = get_option( 'ap_cat_'.$term_id );
 	if ( ! empty( $option['ap_image']['id'] ) ) {
 		return true;

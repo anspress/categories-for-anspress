@@ -47,7 +47,7 @@ class AnsPress_Category_Widget extends WP_Widget {
 				$sub_cat_count = count(get_term_children( $category->term_id, 'question_category' ) );
 			?>
                 <li class="clearfix">
-					<a class="ap-cat-image" href="<?php echo get_category_link( $category );?>"><?php echo ap_get_category_image( $category->term_id, $icon_width, $icon_height ); ?></a>
+					<a class="ap-cat-image" href="<?php echo get_category_link( $category );?>"><?php echo ap_category_icon( $category->term_id, 'height:'.$icon_height.'px;width:'.$icon_width.'px;' ); ?></a>
 					<a class="ap-cat-wid-title" href="<?php echo get_category_link( $category );?>">
 						<?php echo $category->name; ?>
                     </a>

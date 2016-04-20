@@ -108,6 +108,7 @@ class Categories_For_AnsPress
 		add_filter( 'ap_default_page_slugs', array( $this, 'default_page_slugs' ) );
 		add_filter( 'ap_subscribe_btn_type', array( $this, 'subscribe_type' ) );
 		add_filter( 'ap_subscribe_btn_action_type', array( $this, 'subscribe_btn_action_type' ) );
+		add_action( 'ap_hover_card_category', __CLASS__, 'hover_card_category' );
 	}
 
 	/**
@@ -753,6 +754,48 @@ class Categories_For_AnsPress
 		}
 
 		return $args;
+	}
+
+	/**
+	 * Output hover card for term.
+	 * @param  integer $id User ID.
+	 * @since  3.0.0
+	 */
+	public static function hover_card_category( $id ) {
+		$cache = get_transient( 'ap_category_card_'.$id );
+
+		if ( false !== $cache ) {
+			ap_ajax_json( $cache );
+		}
+
+		$category = get_term( $id, 'question_category' );
+		$sub_cat_count = count(get_term_children( $category->term_id, 'question_category' ) );
+
+		$data = array(
+			'template' => 'category-hover',
+			'apData' => array(
+				'id' 			=> $category->term_id,
+				'name' 			=> $category->name,
+				'link' 			=> get_category_link( $category ),
+				'image' 		=> ap_get_category_image( $category->term_id, 90 ),
+				'icon' 			=> ap_get_category_icon( $category->term_id ),
+				'description' 	=> $category->description,
+				'question_count' 	=> sprintf( _n('1 Question', '%s Questions', $category->count, 'categories-for-anspress' ),  $category->count ),
+				'sub_category' 	=> array(
+					'have' => $sub_cat_count > 0,
+					'count' => sprintf(_n('%d Sub category', '%d Sub categories', $sub_cat_count, 'categories-for-anspress' ), $sub_cat_count ),
+				),
+			),
+		);
+		/**
+		 * Filter user hover card data.
+		 * @param  array $data Card data.
+		 * @return array
+		 * @since  3.0.0
+		 */
+		$data = apply_filters( 'ap_category_hover_data', $data );
+		set_transient( 'ap_category_card_'.$id, $data, HOUR_IN_SECONDS );
+		ap_ajax_json( $data );
 	}
 }
 

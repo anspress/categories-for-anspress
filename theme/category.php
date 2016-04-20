@@ -10,7 +10,7 @@
 			
 			<?php if( ap_category_have_image( $question_category->term_id ) ): ?>
 				<div class="ap-category-feat" style="height: 300px;">
-					<?php echo ap_get_category_image( $question_category->term_id, 300 ); ?>
+					<?php ap_category_image( $question_category->term_id, 300 ); ?>
 				</div>
 			<?php endif; ?>
 
