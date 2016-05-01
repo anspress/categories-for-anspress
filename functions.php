@@ -127,22 +127,57 @@ if ( ! function_exists( 'is_question_category' ) ) {
 	}
 }
 
-function ap_category_sorting() {
+/**
+ * Return category for sorting dropdown.
+ * @return array|boolean
+ */
+function ap_get_category_filter( $search = false ) {
 	$args = array(
 		'hierarchical'      => true,
 		'hide_if_empty'     => true,
 		'number'            => 10,
 	);
 
+	if ( false !== $search ) {
+		$args['search'] = $search;
+	}
+
 	$terms = get_terms( 'question_category', $args );
+	$selected = array();
+	if ( isset( $_GET['ap_filter'], $_GET['ap_filter']['category'] ) ) {
+		$selected = (array) wp_unslash( $_GET['ap_filter']['category'] );
+	}
+
+	if ( ! $terms ) {
+		return false;
+	}
+
+	$items = array();
+	foreach ( (array) $terms as $t ) {
+		$item = [ 'key' => $t->term_id, 'title' => $t->name ];
+		// Check if active.
+		if ( in_array( $t->term_id, $selected ) ) {
+			$item['active'] = true;
+		}
+		$items[] = $item;
+	}
+
+	return $items;
+}
+
+/**
+ * Output category filter dropdown.
+ */
+function ap_category_sorting() {
+	$filters = ap_get_category_filter();
 	$selected = isset( $_GET['ap_cat_sort'] ) ? (int) $_GET['ap_cat_sort'] : '';
-	if ( $terms ) {
+	if ( $filters ) {
 		echo '<div class="ap-dropdown">';
 			echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle'.($selected != '' ? ' active' : '').'" href="#">'.__( 'Category', 'categories-for-anspress' ).'</a>';
 			echo '<div class="ap-dropdown-menu">';
-			// echo '<li class="ap-dropdown-search"><input type="text" name="apcategoryddsearch" placeholder="'.__( 'Search category', 'ap' ).'" class="ap-form-control" /></li>';
-		foreach ( $terms as $t ) {
-			echo '<li '.($selected == $t->term_id ? 'class="active" ' : '').'><a href="#" data-value="'.$t->term_id.'">'. $t->name .'</a></li>';
+
+		foreach ( $filters as $category_id => $category_name ) {
+			echo '<li '.($selected == $category_id ? 'class="active" ' : '').'><a href="#" data-value="'.$category_id.'">'. $category_name .'</a></li>';
 		}
 			echo '<input name="ap_cat_sort" type="hidden" value="'.$selected.'" />';
 			echo '</div>';
@@ -165,7 +200,7 @@ function ap_get_category_image($term_id, $height = 32) {
 		$image = wp_get_attachment_image( $option['ap_image']['id'], array( 900, $height ) );
 		return $image;
 	}
-	
+
 	return '<div class="ap-category-defimage" '.$style.'></div>';
 }
 

@@ -98,7 +98,7 @@ class Categories_For_AnsPress
 		add_filter( 'ap_page_title', array( $this, 'page_title' ) );
 		add_filter( 'ap_breadcrumbs', array( $this, 'ap_breadcrumbs' ) );
 		add_action( 'terms_clauses', array( $this, 'terms_clauses' ), 10, 3 );
-		add_action( 'ap_list_head', array( $this, 'ap_list_head' ) );
+		add_action( 'ap_list_filters', array( $this, 'ap_list_filters' ) );
 		add_action( 'question_category_add_form_fields', array( $this, 'image_field_new' ) );
 		add_action( 'question_category_edit_form_fields', array( $this, 'image_field_edit' ) );
 		add_action( 'create_question_category', array( $this, 'save_image_field' ) );
@@ -108,7 +108,8 @@ class Categories_For_AnsPress
 		add_filter( 'ap_default_page_slugs', array( $this, 'default_page_slugs' ) );
 		add_filter( 'ap_subscribe_btn_type', array( $this, 'subscribe_type' ) );
 		add_filter( 'ap_subscribe_btn_action_type', array( $this, 'subscribe_btn_action_type' ) );
-		add_action( 'ap_hover_card_category', __CLASS__, 'hover_card_category' );
+		add_action( 'ap_hover_card_cat', array( __CLASS__, 'hover_card_category' ) );
+		add_action( 'ap_list_filter_search_category', array( __CLASS__, 'filter_search_category' ) );
 	}
 
 	/**
@@ -561,16 +562,22 @@ class Categories_For_AnsPress
 	}
 
 	/**
-	 * Add category sorting in list head
-	 * @return void
+	 * Add category sorting in list filters
+	 * @return array
 	 */
-	public function ap_list_head() {
-
+	public function ap_list_filters( $filters ) {
 		global $wp;
 
-		if ( ! isset( $wp->query_vars['ap_sc_atts_categories'] ) ) {
-			ap_category_sorting();
+		if ( ! isset( $wp->query_vars['ap_categories'] ) ) {
+			$filters['category'] = array(
+				'title' => __( 'Category', 'anspress-question-answer' ),
+				'items' => ap_get_category_filter(),
+				'search' => true,
+				'multiple' => true,
+			);
 		}
+
+		return $filters;
 	}
 
 	/**
@@ -773,6 +780,7 @@ class Categories_For_AnsPress
 
 		$data = array(
 			'template' => 'category-hover',
+			'disableAutoLoad' => 'true',
 			'apData' => array(
 				'id' 			=> $category->term_id,
 				'name' 			=> $category->name,
@@ -796,6 +804,18 @@ class Categories_For_AnsPress
 		$data = apply_filters( 'ap_category_hover_data', $data );
 		set_transient( 'ap_category_card_'.$id, $data, HOUR_IN_SECONDS );
 		ap_ajax_json( $data );
+	}
+
+	/**
+	 * Send ajax response for filter search.
+	 * @param  string $search_query Search string.
+	 */
+	public static function filter_search_category( $search_query ){
+		ap_ajax_json( [ 'apData' => array(
+			'filter' => 'category',
+			'searchQuery' => $search_query,
+        	'items' => ap_get_category_filter( $search_query ),
+        )] );
 	}
 }
 
