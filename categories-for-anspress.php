@@ -110,6 +110,7 @@ class Categories_For_AnsPress
 		add_filter( 'ap_subscribe_btn_action_type', array( $this, 'subscribe_btn_action_type' ) );
 		add_action( 'ap_hover_card_cat', array( __CLASS__, 'hover_card_category' ) );
 		add_action( 'ap_list_filter_search_category', array( __CLASS__, 'filter_search_category' ) );
+		add_filter( 'ap_main_questions_args', array( __CLASS__, 'ap_main_questions_args' ) );
 	}
 
 	/**
@@ -810,12 +811,47 @@ class Categories_For_AnsPress
 	 * Send ajax response for filter search.
 	 * @param  string $search_query Search string.
 	 */
-	public static function filter_search_category( $search_query ){
-		ap_ajax_json( [ 'apData' => array(
+	public static function filter_search_category( $search_query ) {
+		ap_ajax_json( [
+			'apData' => array(
 			'filter' => 'category',
 			'searchQuery' => $search_query,
-        	'items' => ap_get_category_filter( $search_query ),
-        )] );
+			'items' => ap_get_category_filter( $search_query ),
+			),
+		] );
+	}
+
+	/**
+	 * Filter main questions query args. Modify and add category args.
+	 * @param  array $args Questions args.
+	 * @return array
+	 */
+	public static function ap_main_questions_args( $args ) {
+		global $questions, $wp;
+		$query = $wp->query_vars;
+
+		$categories_operator = ! empty( $wp->query_vars['ap_categories_operator'] ) ? $wp->query_vars['ap_categories_operator'] : 'IN';
+
+		$filters = ap_list_filters_get_active( 'category' );
+
+		if ( isset( $query['ap_categories'] ) && is_array( $query['ap_categories'] ) ) {
+			$args['tax_query'][] = array(
+				'taxonomy' => 'question_category',
+				'field'    => 'slug',
+				'terms'    => $query['ap_categories'],
+				'operator' => $categories_operator,
+			);
+		} elseif ( false !== $filters ) {
+			$filters = (array) wp_unslash( $filters );
+			$filters = array_map( 'sanitize_text_field', $filters );
+			$args['tax_query'][] = array(
+				'taxonomy' => 'question_category',
+				'field'    => 'term_id',
+				'terms'    => $filters,
+			);
+		}
+
+		return $args;
 	}
 }
 
