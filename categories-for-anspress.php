@@ -98,7 +98,7 @@ class Categories_For_AnsPress
 		add_filter( 'ap_page_title', array( $this, 'page_title' ) );
 		add_filter( 'ap_breadcrumbs', array( $this, 'ap_breadcrumbs' ) );
 		add_action( 'terms_clauses', array( $this, 'terms_clauses' ), 10, 3 );
-		add_action( 'ap_list_filters', array( $this, 'ap_list_filters' ) );
+		add_filter( 'ap_list_filters', array( __CLASS__, 'ap_list_filters' ) );
 		add_action( 'question_category_add_form_fields', array( $this, 'image_field_new' ) );
 		add_action( 'question_category_edit_form_fields', array( $this, 'image_field_edit' ) );
 		add_action( 'create_question_category', array( $this, 'save_image_field' ) );
@@ -111,6 +111,7 @@ class Categories_For_AnsPress
 		add_action( 'ap_hover_card_cat', array( __CLASS__, 'hover_card_category' ) );
 		add_action( 'ap_list_filter_search_category', array( __CLASS__, 'filter_search_category' ) );
 		add_filter( 'ap_main_questions_args', array( __CLASS__, 'ap_main_questions_args' ) );
+		add_filter( 'ap_question_subscribers_action_id', array( __CLASS__, 'subscribers_action_id' ) );
 	}
 
 	/**
@@ -566,7 +567,7 @@ class Categories_For_AnsPress
 	 * Add category sorting in list filters
 	 * @return array
 	 */
-	public function ap_list_filters( $filters ) {
+	public static function ap_list_filters( $filters ) {
 		global $wp;
 
 		if ( ! isset( $wp->query_vars['ap_categories'] ) ) {
@@ -852,6 +853,20 @@ class Categories_For_AnsPress
 		}
 
 		return $args;
+	}
+
+	/**
+	 * Subscriber action ID.
+	 * @param  integer $action_id Current action ID.
+	 * @return integer
+	 */
+	public static function subscribers_action_id( $action_id ) {
+		if ( is_question_category() ) {
+			global $question_category;
+			$action_id = $question_category->term_id;
+		}
+
+		return $action_id;
 	}
 }
 
