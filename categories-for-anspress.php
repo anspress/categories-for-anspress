@@ -112,6 +112,7 @@ class Categories_For_AnsPress
 		add_action( 'ap_list_filter_search_category', array( __CLASS__, 'filter_search_category' ) );
 		add_filter( 'ap_main_questions_args', array( __CLASS__, 'ap_main_questions_args' ) );
 		add_filter( 'ap_question_subscribers_action_id', array( __CLASS__, 'subscribers_action_id' ) );
+		add_filter( 'ap_ask_btn_link', array( __CLASS__, 'ap_ask_btn_link' ) );
 	}
 
 	/**
@@ -458,7 +459,8 @@ class Categories_For_AnsPress
 	 */
 	public function ask_from_category_field($args, $editing) {
 		if ( wp_count_terms( 'question_category' ) == 0 ) {
-			return $args; }
+			return $args;
+		}
 
 		global $editing_post;
 
@@ -467,7 +469,7 @@ class Categories_For_AnsPress
 			$catgeory = $category[0]->term_id;
 		}
 
-		$category_post = isset($_POST['category'] ) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ) : '';
+		$category_post = ap_sanitize_unslash( 'category', 'request' );
 
 		$args['fields'][] = array(
 			'name' 		=> 'category',
@@ -570,7 +572,7 @@ class Categories_For_AnsPress
 	public static function ap_list_filters( $filters ) {
 		global $wp;
 
-		if ( ! isset( $wp->query_vars['ap_categories'] ) && !is_question_category() ) {
+		if ( ! isset( $wp->query_vars['ap_categories'] ) && ! is_question_category() ) {
 			$filters['category'] = array(
 				'title' => __( 'Category', 'anspress-question-answer' ),
 				'items' => ap_get_category_filter(),
@@ -867,6 +869,20 @@ class Categories_For_AnsPress
 		}
 
 		return $action_id;
+	}
+
+	/**
+	 * Filter ask button link to append current category link.
+	 * @param  string $link Ask button link.
+	 * @return string
+	 */
+	public static function ap_ask_btn_link( $link ) {
+		if ( is_question_category() ) {
+			global $question_category;
+			return $link.'?category=' .$question_category->term_id;
+		}
+
+		return $link;
 	}
 }
 
