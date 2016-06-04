@@ -570,7 +570,7 @@ class Categories_For_AnsPress
 	public static function ap_list_filters( $filters ) {
 		global $wp;
 
-		if ( ! isset( $wp->query_vars['ap_categories'] ) ) {
+		if ( ! isset( $wp->query_vars['ap_categories'] ) && !is_question_category() ) {
 			$filters['category'] = array(
 				'title' => __( 'Category', 'anspress-question-answer' ),
 				'items' => ap_get_category_filter(),
