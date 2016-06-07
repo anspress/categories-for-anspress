@@ -113,6 +113,7 @@ class Categories_For_AnsPress
 		add_filter( 'ap_main_questions_args', array( __CLASS__, 'ap_main_questions_args' ) );
 		add_filter( 'ap_question_subscribers_action_id', array( __CLASS__, 'subscribers_action_id' ) );
 		add_filter( 'ap_ask_btn_link', array( __CLASS__, 'ap_ask_btn_link' ) );
+		add_filter( 'ap_canonical_url', array( __CLASS__, 'ap_canonical_url' ) );
 	}
 
 	/**
@@ -883,6 +884,26 @@ class Categories_For_AnsPress
 		}
 
 		return $link;
+	}
+
+	/**
+	 * Filter canonical URL when in category page.
+	 * @param  string $canonical_url url.
+	 * @return string
+	 */
+	public static function ap_canonical_url( $canonical_url ){
+		if ( is_question_category() ) {
+			global $question_category;
+
+			if( ! $question_category ){
+				$category_id = sanitize_text_field( get_query_var( 'q_cat' ) );
+				$question_category = get_term_by( is_numeric( $category_id ) ? 'id' : 'slug', $category_id, 'question_category' );
+			}
+			
+			return get_term_link( $question_category );
+		}
+
+		return $canonical_url;
 	}
 }
 
