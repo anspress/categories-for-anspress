@@ -15,7 +15,7 @@
  * Plugin URI:        http://anspress.io/downloads/categories-for-anspress
  * Description:       Extension for AnsPress. Add categories in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           2.0.1
+ * Version:           2.3
  * Author:            Rahul Aryan
  * Author URI:        http://anspress.io
  * Text Domain:       categories-for-anspress
@@ -274,7 +274,6 @@ class Categories_For_AnsPress
 	 * Register Categories options
 	 */
 	public function load_options() {
-		$settings = ap_opt();
 		ap_register_option_group( 'categories', __( 'Categories', 'categories-for-anspress' ), array(
 			array(
 				'name'              => 'anspress_opt[form_category_orderby]',
@@ -288,7 +287,6 @@ class Categories_For_AnsPress
 					'count' 		=> __( 'Count', 'categories-for-anspress' ),
 					'term_group' 	=> __( 'Group', 'categories-for-anspress' ),
 					),
-				'value'             => @$settings['form_category_orderby'],
 			),
 
 			array(
@@ -303,7 +301,6 @@ class Categories_For_AnsPress
 					'count' 		=> __( 'Count', 'categories-for-anspress' ),
 					'term_group' 	=> __( 'Group', 'categories-for-anspress' ),
 					),
-				'value'             => @$settings['categories_page_orderby'],
 			),
 
 			array(
@@ -314,8 +311,7 @@ class Categories_For_AnsPress
 				'options'			=> array(
 					'ASC' 			=> __( 'Ascending', 'categories-for-anspress' ),
 					'DESC' 			=> __( 'Descending', 'categories-for-anspress' ),
-				),
-				'value'             => @$settings['categories_page_order'],
+				)
 			),
 
 			array(
@@ -323,7 +319,6 @@ class Categories_For_AnsPress
 				'label' 	=> __( 'Categories page slug', 'categories-for-anspress' ),
 				'desc' 		=> __( 'Slug categories page', 'categories-for-anspress' ),
 				'type' 		=> 'text',
-				'value' 	=> @$settings['categories_page_slug'],
 				'show_desc_tip' => false,
 			),
 
@@ -332,7 +327,6 @@ class Categories_For_AnsPress
 				'label' 	=> __( 'Category page slug', 'categories-for-anspress' ),
 				'desc' 		=> __( 'Slug for category page', 'categories-for-anspress' ),
 				'type' 		=> 'text',
-				'value' 	=> @$settings['category_page_slug'],
 				'show_desc_tip' => false,
 			),
 
@@ -341,7 +335,6 @@ class Categories_For_AnsPress
 				'label' 	=> __( 'Categories title', 'categories-for-anspress' ),
 				'desc' 		=> __( 'Title of the categories page', 'categories-for-anspress' ),
 				'type' 		=> 'text',
-				'value' 	=> @$settings['categories_page_title'],
 				'show_desc_tip' => false,
 			),
 			array(
@@ -349,7 +342,6 @@ class Categories_For_AnsPress
 				'label' 	=> __( 'Category per page', 'categories-for-anspress' ),
 				'desc' 		=> __( 'Category to show per page', 'categories-for-anspress' ),
 				'type' 		=> 'number',
-				'value' 	=> @$settings['categories_per_page'],
 				'show_desc_tip' => false,
 			),
 			array(
@@ -357,7 +349,6 @@ class Categories_For_AnsPress
 				'label' 	=> __( 'Categories image height', 'categories-for-anspress' ),
 				'desc' 		=> __( 'Image height in categories page', 'categories-for-anspress' ),
 				'type' 		=> 'number',
-				'value' 	=> @$settings['categories_image_width'],
 				'show_desc_tip' => false,
 			),
 		));

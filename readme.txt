@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_
 Tags: anspress, question, answer, q&a, forum, stackoverflow, quora
 Requires at least: 4.1.1
 Tested up to: 4.4
-Stable tag: 2.0.1
+Stable tag: 2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,20 @@ Or if you want to install it manually simple follow this:
     * Activate the plugin through the 'Plugins' menu in WordPress
 
 == Changelog ==
+
+= 2.3 =
+
+* Added category canonical url
+* Select current category in ask form
+* Hide category filter is single category page
+* Fix: Subscribe Widget fatal error
+* Improved category filter
+* Improved list filters
+* Added category hover card
+* Added featured image for category
+* Fixed tests to use AnsPress form github
+* Added icon thumb size in widget
+* Fixed warnings and use ap_option_groups to register options
 
 = 2.0.1 =
 
