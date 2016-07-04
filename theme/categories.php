@@ -55,7 +55,7 @@
 				<?php endforeach; ?>
             </ul>
         </div>
-		<?php ap_pagination(); ?>
+		<?php ap_pagination( ); ?>
     </div>
 	<?php if ( is_active_sidebar( 'ap-category' ) && is_anspress() ) { ?>
     <div class="ap-question-right col-md-3">

@@ -172,9 +172,9 @@ class Categories_For_AnsPress
 
 		$paged 				= max( 1, get_query_var( 'paged' ) );
 		$per_page           = ap_opt( 'categories_per_page' );
-		$total_terms        = wp_count_terms( 'question_category' );
+		$total_terms        = wp_count_terms( 'question_category', [ 'hide_empty' => false, 'parent' => 0 ] );
 		$offset             = $per_page * ( $paged - 1) ;
-		$ap_max_num_pages   = $total_terms / $per_page ;
+		$ap_max_num_pages   = ceil($total_terms / $per_page) ;
 
 		$order = ap_opt( 'categories_page_order' ) == 'ASC' ? 'ASC' : 'DESC';
 
@@ -276,7 +276,7 @@ class Categories_For_AnsPress
 	public function load_options() {
 		ap_register_option_group( 'categories', __( 'Categories', 'categories-for-anspress' ), array(
 			array(
-				'name'              => 'anspress_opt[form_category_orderby]',
+				'name'              => 'form_category_orderby',
 				'label'             => __( 'Ask form category order', 'categories-for-anspress' ),
 				'description'       => __( 'Set how you want to order categories in form.', 'categories-for-anspress' ),
 				'type'              => 'select',
@@ -290,7 +290,7 @@ class Categories_For_AnsPress
 			),
 
 			array(
-				'name'              => 'anspress_opt[categories_page_orderby]',
+				'name'              => 'categories_page_orderby',
 				'label'             => __( 'Categries page order by', 'categories-for-anspress' ),
 				'description'       => __( 'Set how you want to order categories in categories page.', 'categories-for-anspress' ),
 				'type'              => 'select',
@@ -304,7 +304,7 @@ class Categories_For_AnsPress
 			),
 
 			array(
-				'name'              => 'anspress_opt[categories_page_order]',
+				'name'              => 'categories_page_order',
 				'label'             => __( 'Categries page order', 'categories-for-anspress' ),
 				'description'       => __( 'Set how you want to order categories in categories page.', 'categories-for-anspress' ),
 				'type'              => 'select',
@@ -315,7 +315,7 @@ class Categories_For_AnsPress
 			),
 
 			array(
-				'name' 		=> 'anspress_opt[categories_page_slug]',
+				'name' 		=> 'categories_page_slug',
 				'label' 	=> __( 'Categories page slug', 'categories-for-anspress' ),
 				'desc' 		=> __( 'Slug categories page', 'categories-for-anspress' ),
 				'type' 		=> 'text',
@@ -323,7 +323,7 @@ class Categories_For_AnsPress
 			),
 
 			array(
-				'name' 		=> 'anspress_opt[category_page_slug]',
+				'name' 		=> 'category_page_slug',
 				'label' 	=> __( 'Category page slug', 'categories-for-anspress' ),
 				'desc' 		=> __( 'Slug for category page', 'categories-for-anspress' ),
 				'type' 		=> 'text',
@@ -331,21 +331,21 @@ class Categories_For_AnsPress
 			),
 
 			array(
-				'name' 		=> 'anspress_opt[categories_page_title]',
+				'name' 		=> 'categories_page_title',
 				'label' 	=> __( 'Categories title', 'categories-for-anspress' ),
 				'desc' 		=> __( 'Title of the categories page', 'categories-for-anspress' ),
 				'type' 		=> 'text',
 				'show_desc_tip' => false,
 			),
 			array(
-				'name' 		=> 'anspress_opt[categories_per_page]',
+				'name' 		=> 'categories_per_page',
 				'label' 	=> __( 'Category per page', 'categories-for-anspress' ),
 				'desc' 		=> __( 'Category to show per page', 'categories-for-anspress' ),
 				'type' 		=> 'number',
 				'show_desc_tip' => false,
 			),
 			array(
-				'name' 		=> 'anspress_opt[categories_image_height]',
+				'name' 		=> 'categories_image_height',
 				'label' 	=> __( 'Categories image height', 'categories-for-anspress' ),
 				'desc' 		=> __( 'Image height in categories page', 'categories-for-anspress' ),
 				'type' 		=> 'number',
@@ -905,7 +905,7 @@ class Categories_For_AnsPress
  * @return void
  */
 function categories_for_anspress() {
-	if ( ! defined( 'AP_VERSION' ) || ! version_compare( AP_VERSION, '2.3', '>' ) ) {
+	if ( ! defined( 'AP_VERSION' ) || ! version_compare( AP_VERSION, '3.0.0', '>=' ) ) {
 		function ap_category_admin_error_notice() {
 		    echo '<div class="update-nag error"> <p>'.sprintf( __( 'Category extension require AnsPress 2.4-RC or above. Download from Github %shttp://github.com/anspress/anspress%s', 'tags-for-anspress', 'categories-for-anspress' ), '<a target="_blank" href="http://github.com/anspress/anspress">', '</a>' ).'</p></div>';
 		}
