@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_
 Tags: anspress, question, answer, q&a, forum, stackoverflow, quora
 Requires at least: 4.1.1
 Tested up to: 4.4
-Stable tag: 2.3
+Stable tag: 3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,11 @@ Or if you want to install it manually simple follow this:
     * Activate the plugin through the 'Plugins' menu in WordPress
 
 == Changelog ==
+
+= 3.0 =
+
+* Fixed theme related bug.
+* Made compatible with AnsPress 3.0.0
 
 = 2.3 =
 
