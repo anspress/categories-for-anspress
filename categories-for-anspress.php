@@ -114,6 +114,7 @@ class Categories_For_AnsPress
 		add_filter( 'ap_question_subscribers_action_id', array( __CLASS__, 'subscribers_action_id' ) );
 		add_filter( 'ap_ask_btn_link', array( __CLASS__, 'ap_ask_btn_link' ) );
 		add_filter( 'ap_canonical_url', array( __CLASS__, 'ap_canonical_url' ) );
+		add_filter( 'wp_head', array( __CLASS__, 'category_feed' ) );
 	}
 
 	/**
@@ -174,7 +175,7 @@ class Categories_For_AnsPress
 		$per_page           = ap_opt( 'categories_per_page' );
 		$total_terms        = wp_count_terms( 'question_category', [ 'hide_empty' => false, 'parent' => 0 ] );
 		$offset             = $per_page * ( $paged - 1) ;
-		$ap_max_num_pages   = ceil($total_terms / $per_page) ;
+		$ap_max_num_pages   = ceil($total_terms / $per_page );
 
 		$order = ap_opt( 'categories_page_order' ) == 'ASC' ? 'ASC' : 'DESC';
 
@@ -311,7 +312,7 @@ class Categories_For_AnsPress
 				'options'			=> array(
 					'ASC' 			=> __( 'Ascending', 'categories-for-anspress' ),
 					'DESC' 			=> __( 'Descending', 'categories-for-anspress' ),
-				)
+				),
 			),
 
 			array(
@@ -583,28 +584,28 @@ class Categories_For_AnsPress
 	 */
 	public function image_field_new( $term ) {
 		?>
-		<div class='form-field term-image-wrap'>
+        <div class='form-field term-image-wrap'>
 			<label for='ap_image'><?php _e( 'Image', 'categories-for-anspress' ); ?></label>
 			<a href="#" id="ap-category-upload" class="button" data-action="ap_media_uplaod" data-title="<?php _e( 'Upload image', 'categories-for-anspress' ); ?>" data-urlc="#ap_category_media_url" data-idc="#ap_category_media_id">
 				<?php _e( 'Upload image', 'categories-for-anspress' ); ?>
-			</a>
+            </a>
 
-			<input id="ap_category_media_url" type="hidden" name="ap_category_image_url" value="">
-			<input id="ap_category_media_id" type="hidden" name="ap_category_image_id" value="">
+            <input id="ap_category_media_url" type="hidden" name="ap_category_image_url" value="">
+            <input id="ap_category_media_id" type="hidden" name="ap_category_image_id" value="">
 			<p class="description"><?php _e( 'Category image', 'categories-for-anspress' ); ?></p>
-		<div>
+        <div>
 
-		<div class='form-field term-image-wrap'>
+        <div class='form-field term-image-wrap'>
 			<label for='ap_icon'><?php _e( 'Category icon class', 'categories-for-anspress' ); ?></label>
-			<input id="ap_icon" type="text" name="ap_icon" value="">
+            <input id="ap_icon" type="text" name="ap_icon" value="">
 			<p class="description"><?php _e( 'Font icon class, if image not set', 'categories-for-anspress' ); ?></p>
-		<div>
-		
-		<div class='form-field term-image-wrap'>
+        <div>
+        
+        <div class='form-field term-image-wrap'>
 			<label for='ap-category-color'><?php _e( 'Category icon color', 'categories-for-anspress' ); ?></label>
-			<input id="ap-category-color" type="text" name="ap_color" value="">
+            <input id="ap-category-color" type="text" name="ap_color" value="">
 			<p class="description"><?php _e( 'Icon color', 'categories-for-anspress' ); ?></p>
-		<div>
+        <div>
 		<?php
 	}
 
@@ -617,11 +618,11 @@ class Categories_For_AnsPress
 		$ap_color        = $termMeta['ap_color'];
 
 		?>
-		<tr class='form-field form-required term-name-wrap'>
-			<th scope='row'>
+        <tr class='form-field form-required term-name-wrap'>
+            <th scope='row'>
 				<label for='custom-field'><?php _e( 'Image', 'categories-for-anspress' ); ?></label>
-			</th>
-			<td>
+            </th>
+            <td>
 				<a href="#" id="ap-category-upload" class="button" data-action="ap_media_uplaod" data-title="<?php _e( 'Upload image', 'categories-for-anspress' ); ?>" data-idc="#ap_category_media_id" data-urlc="#ap_category_media_url"><?php _e( 'Upload image', 'categories-for-anspress' ); ?></a>
 
 				<?php if ( isset( $ap_image['url'] ) && $ap_image['url'] != '' ) { ?>
@@ -635,26 +636,26 @@ class Categories_For_AnsPress
 				<p class='description'><?php _e( 'Featured image for category', 'categories-for-anspress' ); ?></p>
 
 				<a href="#" id="ap-category-upload-remove" data-action="ap_media_remove"><?php _e( 'Remove image', 'categories-for-anspress' ); ?></a>
-			</td>
-		</tr>
+            </td>
+        </tr>
 
-		<tr class='form-field form-required term-name-wrap'>
+        <tr class='form-field form-required term-name-wrap'>
 			<th scope='row'><label for='custom-field'><?php _e( 'Category icon class', 'categories-for-anspress' ); ?></label>
-			</th>
-			<td>
+            </th>
+            <td>
 				<input id="ap_icon" type="text" name="ap_icon" value="<?php echo $ap_icon; ?>">
 				<p class="description"><?php _e( 'Font icon class, if image not set', 'categories-for-anspress' ); ?></p>
-			</td>
-		</tr>
-		<tr class='form-field form-required term-name-wrap'>
-			<th scope='row'>
+            </td>
+        </tr>
+        <tr class='form-field form-required term-name-wrap'>
+            <th scope='row'>
 				<label for='ap-category-color'><?php _e( 'Category icon color', 'categories-for-anspress' ); ?></label>
-			</th>
-			<td>
+            </th>
+            <td>
 				<input id="ap-category-color" type="text" name="ap_color" value="<?php echo $ap_color; ?>">
 				<p class="description"><?php _e( 'Font icon class, if image not set', 'categories-for-anspress' ); ?></p>
-			</td>
-		</tr>
+            </td>
+        </tr>
 		<?php
 	}
 
@@ -882,19 +883,32 @@ class Categories_For_AnsPress
 	 * @param  string $canonical_url url.
 	 * @return string
 	 */
-	public static function ap_canonical_url( $canonical_url ){
+	public static function ap_canonical_url( $canonical_url ) {
 		if ( is_question_category() ) {
 			global $question_category;
 
-			if( ! $question_category ){
+			if ( ! $question_category ) {
 				$category_id = sanitize_text_field( get_query_var( 'q_cat' ) );
 				$question_category = get_term_by( is_numeric( $category_id ) ? 'id' : 'slug', $category_id, 'question_category' );
 			}
-			
+
 			return get_term_link( $question_category );
 		}
 
 		return $canonical_url;
+	}
+
+	public static function category_feed() {
+		if ( is_question_category() ) {
+			global $question_category;
+
+			if ( ! $question_category ) {
+				$category_id = sanitize_title( get_query_var( 'q_cat' ) );
+				$question_category = get_term_by( is_numeric( $category_id ) ? 'id' : 'slug', $category_id, 'question_category' );
+			}
+
+			echo '<link href="' . home_url( 'feed' ) . '?post_type=question&question_category='.$question_category->slug.'" title="' . esc_attr__( 'Question category feed', 'categories-for-anspress' ) . '" type="application/rss+xml" rel="alternate">';
+		}
 	}
 }
 
