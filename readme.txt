@@ -1,10 +1,10 @@
 === Categories for AnsPress ===
 Contributors: nerdaryan
-Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
+Donate link: http://paypal.me/nerdaryan
 Tags: anspress, question, answer, q&a, forum, stackoverflow, quora
 Requires at least: 4.1.1
 Tested up to: 4.4
-Stable tag: 3.0
+Stable tag: 3.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,10 @@ Or if you want to install it manually simple follow this:
     * Activate the plugin through the 'Plugins' menu in WordPress
 
 == Changelog ==
+
+= 3.0.1 =
+
+* Added category feed link
 
 = 3.0 =
 

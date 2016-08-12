@@ -14,8 +14,8 @@
  * Plugin Name:       Categories for AnsPress
  * Plugin URI:        http://anspress.io/downloads/categories-for-anspress
  * Description:       Extension for AnsPress. Add categories in AnsPress.
- * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           3.0
+ * Donate link: 	  http://paypal.me/nerdaryan
+ * Version:           3.0.1
  * Author:            Rahul Aryan
  * Author URI:        http://anspress.io
  * Text Domain:       categories-for-anspress
