@@ -412,7 +412,8 @@ class Categories_For_AnsPress
 	 */
 	public function ap_display_question_metas($metas, $question_id) {
 		if ( ap_question_have_category( $question_id ) && ! is_singular( 'question' ) ) {
-			$metas['categories'] = ap_question_categories_html( array( 'label' => ap_icon( 'category', true ) ) ); }
+			$metas['categories'] = ap_question_categories_html( array( 'label' => ap_icon( 'category', true ) ) );
+		}
 
 		return $metas;
 	}
@@ -530,7 +531,13 @@ class Categories_For_AnsPress
 	 * @return array
 	 */
 	public function ap_breadcrumbs($navs) {
-		if ( is_question_category() ) {
+		//var_dump($navs);
+		if ( is_question() && taxonomy_exists( 'question_category' ) ) {
+			$cats = get_the_terms( get_question_id(), 'question_category' );
+			if( $cats ){
+				$navs['category'] = array( 'title' => $cats[0]->name, 'link' => get_term_link( $cats[0], 'question_category' ), 'order' => 2 );
+			}
+		} elseif ( is_question_category() ) {
 			$category_id = sanitize_text_field( get_query_var( 'q_cat' ) );
 			$category = get_term_by( is_numeric( $category_id ) ? 'id' : 'slug', $category_id, 'question_category' );
 			$navs['page'] = array( 'title' => __( 'Categories', 'categories-for-anspress' ), 'link' => ap_get_link_to( 'categories' ), 'order' => 8 );
