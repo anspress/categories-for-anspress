@@ -1,7 +1,7 @@
 {
 	"name": "Categories for AnsPress",
 	"description": "Add category support in AnsPress",
-	"version": "3.0",
+	"version": "3.0.2",
 	"tested_up_to": "4.4",
 	"updated": "",
 	"licence": "GPL-3.0+",

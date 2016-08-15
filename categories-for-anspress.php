@@ -15,7 +15,7 @@
  * Plugin URI:        http://anspress.io/downloads/categories-for-anspress
  * Description:       Extension for AnsPress. Add categories in AnsPress.
  * Donate link: 	  http://paypal.me/nerdaryan
- * Version:           3.0.1
+ * Version:           3.0.2
  * Author:            Rahul Aryan
  * Author URI:        http://anspress.io
  * Text Domain:       categories-for-anspress
@@ -531,7 +531,6 @@ class Categories_For_AnsPress
 	 * @return array
 	 */
 	public function ap_breadcrumbs($navs) {
-		//var_dump($navs);
 		if ( is_question() && taxonomy_exists( 'question_category' ) ) {
 			$cats = get_the_terms( get_question_id(), 'question_category' );
 			if( $cats ){

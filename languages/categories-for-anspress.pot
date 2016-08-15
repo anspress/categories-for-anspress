@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: "
 "http://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2016-08-12 15:12:13+00:00\n"
+"POT-Creation-Date: 2016-08-15 13:41:07+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,14 +25,14 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: categories-for-anspress.php:82 categories-for-anspress.php:469
-#: categories-for-anspress.php:570 functions.php:176
+#: categories-for-anspress.php:82 categories-for-anspress.php:470
+#: categories-for-anspress.php:576 functions.php:176
 msgid "Category"
 msgstr ""
 
 #: categories-for-anspress.php:84 categories-for-anspress.php:224
-#: categories-for-anspress.php:278 categories-for-anspress.php:536
-#: categories-for-anspress.php:539 categories-widget.php:69 functions.php:15
+#: categories-for-anspress.php:278 categories-for-anspress.php:542
+#: categories-for-anspress.php:545 categories-widget.php:69 functions.php:15
 msgid "Categories"
 msgstr ""
 
@@ -160,69 +160,69 @@ msgstr ""
 msgid "Image height in categories page"
 msgstr ""
 
-#: categories-for-anspress.php:474
+#: categories-for-anspress.php:475
 msgid "Select a topic that best fits your question"
 msgstr ""
 
-#: categories-for-anspress.php:520
+#: categories-for-anspress.php:521
 msgid "No matching category found"
 msgstr ""
 
-#: categories-for-anspress.php:588 categories-for-anspress.php:623
+#: categories-for-anspress.php:594 categories-for-anspress.php:629
 msgid "Image"
 msgstr ""
 
-#: categories-for-anspress.php:589 categories-for-anspress.php:590
-#: categories-for-anspress.php:626
+#: categories-for-anspress.php:595 categories-for-anspress.php:596
+#: categories-for-anspress.php:632
 msgid "Upload image"
 msgstr ""
 
-#: categories-for-anspress.php:595
+#: categories-for-anspress.php:601
 msgid "Category image"
 msgstr ""
 
-#: categories-for-anspress.php:599 categories-for-anspress.php:643
+#: categories-for-anspress.php:605 categories-for-anspress.php:649
 msgid "Category icon class"
 msgstr ""
 
-#: categories-for-anspress.php:601 categories-for-anspress.php:647
-#: categories-for-anspress.php:656
+#: categories-for-anspress.php:607 categories-for-anspress.php:653
+#: categories-for-anspress.php:662
 msgid "Font icon class, if image not set"
 msgstr ""
 
-#: categories-for-anspress.php:605 categories-for-anspress.php:652
+#: categories-for-anspress.php:611 categories-for-anspress.php:658
 msgid "Category icon color"
 msgstr ""
 
-#: categories-for-anspress.php:607
+#: categories-for-anspress.php:613
 msgid "Icon color"
 msgstr ""
 
-#: categories-for-anspress.php:636
+#: categories-for-anspress.php:642
 msgid "Featured image for category"
 msgstr ""
 
-#: categories-for-anspress.php:638
+#: categories-for-anspress.php:644
 msgid "Remove image"
 msgstr ""
 
-#: categories-for-anspress.php:788 theme/category.php:27
+#: categories-for-anspress.php:794 theme/category.php:27
 msgid "1 Question"
 msgid_plural "%s Questions"
 msgstr[0] ""
 msgstr[1] ""
 
-#: categories-for-anspress.php:791 theme/categories.php:42
+#: categories-for-anspress.php:797 theme/categories.php:42
 msgid "%d Sub category"
 msgid_plural "%d Sub categories"
 msgstr[0] ""
 msgstr[1] ""
 
-#: categories-for-anspress.php:910
+#: categories-for-anspress.php:916
 msgid "Question category feed"
 msgstr ""
 
-#: categories-for-anspress.php:924
+#: categories-for-anspress.php:930
 msgid ""
 "Category extension require AnsPress 3.0.0 or above. Download from Github "
 "%shttp://github.com/anspress/anspress%s"
