@@ -599,19 +599,19 @@ class Categories_For_AnsPress
             <input id="ap_category_media_url" type="hidden" name="ap_category_image_url" value="">
             <input id="ap_category_media_id" type="hidden" name="ap_category_image_id" value="">
 			<p class="description"><?php _e( 'Category image', 'categories-for-anspress' ); ?></p>
-        <div>
+        </div>
 
         <div class='form-field term-image-wrap'>
 			<label for='ap_icon'><?php _e( 'Category icon class', 'categories-for-anspress' ); ?></label>
             <input id="ap_icon" type="text" name="ap_icon" value="">
 			<p class="description"><?php _e( 'Font icon class, if image not set', 'categories-for-anspress' ); ?></p>
-        <div>
+        </div>
         
         <div class='form-field term-image-wrap'>
 			<label for='ap-category-color'><?php _e( 'Category icon color', 'categories-for-anspress' ); ?></label>
             <input id="ap-category-color" type="text" name="ap_color" value="">
 			<p class="description"><?php _e( 'Icon color', 'categories-for-anspress' ); ?></p>
-        <div>
+        </div>
 		<?php
 	}
 
