@@ -24,7 +24,7 @@
 							<?php echo $question_category->name;?>
 						</a>
 						<span class="ap-tax-count">
-							<?php printf( _n('1 Question', '%s Questions', $question_category->count, 'categories-for-anspress'),  $question_category->count); ?>
+							<?php printf( _n('1 Question', '%s Questions', ap_category_posts_count($question_category->term_id), 'categories-for-anspress'),  ap_category_posts_count($question_category->term_id)); ?>
 						</span>
 						<?php ap_subscribe_btn_html($question_category->term_id, 'category'); ?>
 					</div>
