@@ -599,19 +599,19 @@ class Categories_For_AnsPress
             <input id="ap_category_media_url" type="hidden" name="ap_category_image_url" value="">
             <input id="ap_category_media_id" type="hidden" name="ap_category_image_id" value="">
 			<p class="description"><?php _e( 'Category image', 'categories-for-anspress' ); ?></p>
-        </div>
+        <div>
 
         <div class='form-field term-image-wrap'>
 			<label for='ap_icon'><?php _e( 'Category icon class', 'categories-for-anspress' ); ?></label>
             <input id="ap_icon" type="text" name="ap_icon" value="">
 			<p class="description"><?php _e( 'Font icon class, if image not set', 'categories-for-anspress' ); ?></p>
-        </div>
+        <div>
         
         <div class='form-field term-image-wrap'>
 			<label for='ap-category-color'><?php _e( 'Category icon color', 'categories-for-anspress' ); ?></label>
             <input id="ap-category-color" type="text" name="ap_color" value="">
 			<p class="description"><?php _e( 'Icon color', 'categories-for-anspress' ); ?></p>
-        </div>
+        <div>
 		<?php
 	}
 
@@ -791,7 +791,7 @@ class Categories_For_AnsPress
 				'image' 		=> ap_get_category_image( $category->term_id, 90 ),
 				'icon' 			=> ap_get_category_icon( $category->term_id ),
 				'description' 	=> $category->description,
-				'question_count' 	=> sprintf( _n('1 Question', '%s Questions', $category->count, 'categories-for-anspress' ),  $category->count ),
+				'question_count' 	=> sprintf( _n('1 Question', '%s Questions', ap_category_posts_count($category->term_id), 'categories-for-anspress' ),  ap_category_posts_count($category->term_id) ),
 				'sub_category' 	=> array(
 					'have' => $sub_cat_count > 0,
 					'count' => sprintf(_n('%d Sub category', '%d Sub categories', $sub_cat_count, 'categories-for-anspress' ), $sub_cat_count ),

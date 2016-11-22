@@ -288,3 +288,26 @@ function ap_category_have_image( $term_id ) {
 
 	return false;
 }
+
+/**
+ * Count questions under a category with its subcategories.
+ * @param  integer $term_id Term ID.
+ * @return integer
+ */
+function ap_category_posts_count( $term_id ) {
+	$category = get_term($term_id, 'question_category');
+	$count = $category->count;
+
+	$terms = get_terms( array(
+		'orderby' => 'count',
+		'order' => 'DESC',
+		'taxonomy' => 'question_category',
+		'child_of' => $term_id,
+		'hide_empty' => true,
+	) );
+
+	foreach ($terms as $term)
+		$count += $term->count;
+
+	return $count;	
+}

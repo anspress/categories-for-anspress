@@ -45,6 +45,7 @@ class AnsPress_Category_Widget extends WP_Widget {
 			<?php
 			foreach ( (array) $categories as $key => $category ) :
 				$sub_cat_count = count(get_term_children( $category->term_id, 'question_category' ) );
+				$posts_count = ap_category_posts_count($category->term_id);
 			?>
                 <li class="clearfix">
 					<a class="ap-cat-image" href="<?php echo get_category_link( $category );?>"><?php echo ap_category_icon( $category->term_id, 'height:'.$icon_height.'px;width:'.$icon_width.'px;' ); ?></a>
@@ -52,7 +53,7 @@ class AnsPress_Category_Widget extends WP_Widget {
 						<?php echo $category->name; ?>
                     </a>
                     <div class="ap-cat-count">
-						<span><?php printf(_n('%d Question', '%d Questions', $category->count, 'categories-for-anspress' ), $category->count ); ?></span>
+						<span><?php printf(_n('%d Question', '%d Questions', $posts_count, 'categories-for-anspress' ), $posts_count ); ?></span>
 						<?php if ( $sub_cat_count > 0 ) : ?>
 							<span><?php printf(__('%d Child', 'categories-for-anspress' ), $sub_cat_count ); ?></span>
 						<?php endif; ?>
